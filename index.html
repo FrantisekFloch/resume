@@ -1,444 +1,572 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frantisek Floch | CV</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --primary: #1a365d;
-    --accent: #2b6cb0;
-    --light-accent: #ebf4ff;
-    --text: #2d3748;
-    --text-light: #718096;
+    --primary: #0f172a;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59,130,246,0.15);
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --card-hover: #f1f5f9;
     --border: #e2e8f0;
-    --bg: #f7fafc;
-    --white: #ffffff;
+    --nav-bg: rgba(255,255,255,0.85);
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.07);
+    --radius: 12px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  [data-theme="dark"] {
+    --primary: #f1f5f9;
+    --accent: #60a5fa;
+    --accent-glow: rgba(96,165,250,0.12);
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #334155;
+    --border: #334155;
+    --nav-bg: rgba(15,23,42,0.9);
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+  }
+
+  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
     color: var(--text);
     background: var(--bg);
-    line-height: 1.6;
+    line-height: 1.65;
     font-size: 15px;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
   }
 
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, var(--primary) 0%, #2a4a7f 100%);
-    color: var(--white);
-    padding: 3rem 2rem;
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition), border var(--transition);
   }
-  .header-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
+  .nav-inner {
+    max-width: 1000px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.75rem 1.5rem;
   }
-  .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
-  .header .subtitle { font-size: 1.1rem; font-weight: 300; opacity: 0.9; margin-top: 0.25rem; }
-  .contact-info { text-align: right; font-size: 0.9rem; opacity: 0.9; line-height: 1.8; }
-  .contact-info a { color: var(--white); }
+  .nav-brand { font-weight: 700; font-size: 1rem; color: var(--primary); }
+  .nav-links { display: flex; gap: 0.25rem; align-items: center; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    padding: 0.4rem 0.75rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500;
+    transition: all var(--transition);
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--accent); background: var(--accent-glow);
+  }
+  .theme-toggle {
+    background: none; border: 2px solid var(--border); border-radius: 8px;
+    padding: 0.4rem 0.6rem; cursor: pointer; font-size: 1rem;
+    color: var(--text); transition: all var(--transition); margin-left: 0.5rem;
+  }
+  .theme-toggle:hover { border-color: var(--accent); background: var(--accent-glow); }
 
-  /* Main */
-  .main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 6rem 1.5rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139,92,246,0.08), transparent);
+  }
+  .hero-content { position: relative; z-index: 1; text-align: center; max-width: 700px; }
+  .hero-badge {
+    display: inline-block; padding: 0.35rem 1rem; border-radius: 50px;
+    background: var(--accent-glow); color: var(--accent);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 1.5rem;
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800;
+    color: var(--primary); line-height: 1.15; margin-bottom: 0.75rem;
+    letter-spacing: -1px;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero-subtitle {
+    font-size: 1.1rem; color: var(--text-secondary); max-width: 550px;
+    margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .hero-cta { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.7rem 1.5rem; border-radius: 10px; font-size: 0.9rem;
+    font-weight: 600; text-decoration: none; transition: all var(--transition); cursor: pointer; border: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,130,246,0.45); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 2px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
 
-  /* Section */
-  .section { margin-bottom: 2.5rem; }
-  .section-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.25rem;
+  /* ── SECTIONS ── */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 5rem 0; }
+  .section-label {
+    display: inline-block; font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px; color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .section-heading {
+    font-size: 1.8rem; font-weight: 700; color: var(--primary);
+    margin-bottom: 2rem; letter-spacing: -0.5px;
   }
 
-  /* Profile */
-  .profile p { margin-bottom: 0.75rem; color: var(--text); }
-
-  /* Skills grid */
+  /* ── SKILLS ── */
   .skills-grid {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 0.5rem 1rem;
-    font-size: 0.9rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
   }
-  .skills-grid dt {
-    font-weight: 600;
-    color: var(--primary);
+  .skill-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.25rem 1.5rem; transition: all var(--transition);
+    box-shadow: var(--shadow);
   }
-  .skills-grid dd { color: var(--text-light); }
+  .skill-card:hover {
+    transform: translateY(-3px); box-shadow: var(--shadow-lg);
+    border-color: var(--accent);
+  }
+  .skill-card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .skill-card h3 { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; }
+  .skill-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 
-  /* Job card */
-  .job { margin-bottom: 2rem; }
-  .job-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    margin-bottom: 0.25rem;
+  /* ── TIMELINE ── */
+  .timeline-container { position: relative; }
+  .timeline-line {
+    position: absolute; left: 20px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--border));
   }
-  .job-title { font-size: 1.05rem; font-weight: 600; color: var(--primary); }
-  .job-date { font-size: 0.85rem; color: var(--text-light); white-space: nowrap; }
-  .job-company { font-size: 0.9rem; color: var(--accent); font-weight: 500; }
-  .job-tagline { font-size: 0.85rem; font-style: italic; color: var(--text-light); margin-bottom: 0.5rem; }
-  .job-summary { font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--text); }
+  .timeline-item {
+    position: relative; padding-left: 52px; margin-bottom: 1rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateY(0); }
+  .timeline-dot {
+    position: absolute; left: 12px; top: 1.5rem; width: 18px; height: 18px;
+    border-radius: 50%; background: var(--bg); border: 3px solid var(--accent);
+    z-index: 2; transition: all var(--transition);
+  }
+  .timeline-item:hover .timeline-dot { background: var(--accent); transform: scale(1.2); }
 
-  .job-group-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0.75rem 0 0.35rem;
+  .job-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; transition: all var(--transition); box-shadow: var(--shadow);
+  }
+  .job-card:hover { box-shadow: var(--shadow-lg); border-color: var(--accent); }
+  .job-card-header {
+    padding: 1.25rem 1.5rem; cursor: pointer; display: flex;
+    justify-content: space-between; align-items: flex-start; gap: 1rem;
+    user-select: none;
+  }
+  .job-card-header:hover { background: var(--card-hover); }
+  .job-meta { flex: 1; }
+  .job-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 0.15rem; }
+  .job-company-line {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    font-size: 0.85rem; margin-bottom: 0.2rem;
+  }
+  .job-company { color: var(--accent); font-weight: 600; }
+  .job-date { color: var(--text-secondary); }
+  .job-tagline { font-size: 0.8rem; color: var(--text-secondary); font-style: italic; }
+  .expand-icon {
+    font-size: 1.2rem; color: var(--text-secondary); transition: transform var(--transition);
+    flex-shrink: 0; margin-top: 0.25rem;
+  }
+  .job-card.open .expand-icon { transform: rotate(180deg); }
+
+  .job-card-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .job-card.open .job-card-body { max-height: 2000px; }
+  .job-card-content { padding: 0 1.5rem 1.5rem; }
+  .job-card-content .group-title {
+    font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--accent); margin: 1rem 0 0.4rem;
+  }
+  .job-card-content ul { list-style: none; padding: 0; }
+  .job-card-content li {
+    position: relative; padding-left: 1rem; margin-bottom: 0.35rem;
+    font-size: 0.88rem; color: var(--text); line-height: 1.6;
+  }
+  .job-card-content li::before {
+    content: ''; position: absolute; left: 0; top: 0.6rem;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  }
+  .job-card-content ul ul { margin: 0.25rem 0 0.25rem 0.75rem; }
+  .job-card-content ul ul li::before { background: var(--text-secondary); width: 4px; height: 4px; }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .contact-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.5rem; text-align: center; transition: all var(--transition);
+    box-shadow: var(--shadow);
+  }
+  .contact-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+  .contact-card .icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .contact-card .label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .contact-card .value { font-size: 0.95rem; color: var(--primary); font-weight: 600; margin-top: 0.25rem; }
+  .contact-card a { color: var(--primary); text-decoration: none; }
+  .contact-card a:hover { color: var(--accent); }
+
+  /* ── SCROLL TOP ── */
+  .scroll-top {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 90;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent); color: #fff; border: none;
+    font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 14px rgba(59,130,246,0.4);
+    opacity: 0; transform: translateY(10px);
+    transition: all var(--transition); display: flex; align-items: center; justify-content: center;
+  }
+  .scroll-top.visible { opacity: 1; transform: translateY(0); }
+  .scroll-top:hover { transform: translateY(-3px); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 2rem 1.5rem;
+    font-size: 0.8rem; color: var(--text-secondary);
+    border-top: 1px solid var(--border);
   }
 
-  .job ul {
-    list-style: none;
-    padding: 0;
-  }
-  .job ul li {
-    position: relative;
-    padding-left: 1.1rem;
-    margin-bottom: 0.3rem;
-    font-size: 0.9rem;
-    color: var(--text);
-  }
-  .job ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.55rem;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-  .job ul ul { margin-top: 0.25rem; margin-left: 0.5rem; }
-  .job ul ul li::before { background: var(--text-light); width: 4px; height: 4px; }
+  /* ── MOBILE NAV ── */
+  .nav-toggle { display: none; background: none; border: none; font-size: 1.3rem; color: var(--text); cursor: pointer; padding: 0.4rem; }
 
-  /* Timeline dot */
-  .timeline { position: relative; padding-left: 1.5rem; border-left: 2px solid var(--border); }
-  .job::before {
-    content: '';
-    position: absolute;
-    left: -1.5rem;
-    top: 0.35rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--white);
-    border: 3px solid var(--accent);
-    margin-left: -5px;
-  }
-  .timeline .job { position: relative; }
-
-  /* Responsive */
   @media (max-width: 640px) {
-    .header-inner { flex-direction: column; text-align: center; }
-    .contact-info { text-align: center; }
-    .header h1 { font-size: 1.5rem; }
-    .skills-grid { grid-template-columns: 1fr; }
-    .job-header { flex-direction: column; }
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--nav-bg); backdrop-filter: blur(12px); flex-direction: column; padding: 0.5rem; border-bottom: 1px solid var(--border); }
+    .nav-links.open { display: flex; }
+    .nav-toggle { display: block; }
+    .hero h1 { font-size: 2rem; }
+    .timeline-line { left: 14px; }
+    .timeline-item { padding-left: 40px; }
+    .timeline-dot { left: 6px; width: 16px; height: 16px; }
+    section { padding: 3rem 0; }
   }
 
-  @media print {
-    body { font-size: 12px; background: white; }
-    .header { padding: 1.5rem; }
-    .main { padding: 1rem; }
-    .section { margin-bottom: 1.5rem; }
-    .job { break-inside: avoid; }
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<header class="header" role="banner">
-  <div class="header-inner">
-    <div>
-      <h1>Frantisek Floch</h1>
-      <div class="subtitle">AWS AR Global Data Lead</div>
-    </div>
-    <div class="contact-info">
-      Bratislava, Slovakia<br>
-      <a href="tel:+421948960600">+421 948 960 600</a><br>
-      <a href="mailto:[email]">[email]</a>
+<!-- Nav -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <span class="nav-brand">FF</span>
+    <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
     </div>
   </div>
-</header>
+</nav>
 
-<main class="main" role="main">
+<!-- Hero -->
+<section class="hero" id="about">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Data Research &amp; Analytics Leader</div>
+    <h1>Frantisek <span class="accent">Floch</span></h1>
+    <p class="hero-subtitle">Driving optimization, predictive modeling, and strategic forecasting solutions across global finance operations. Bridging technical capabilities with business needs to deliver measurable impact.</p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn btn-primary">View Experience ↓</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+</section>
 
-  <!-- Profile -->
-  <section class="section profile" aria-label="Professional Profile">
-    <h2 class="section-title">Professional Profile &amp; Core Strengths</h2>
-    <p>As a Data Research &amp; Analytics Leader, I drive optimization, predictive modeling, and strategic forecasting solutions across global finance operations. My approach combines systematic thinking with deep data expertise to transform complex challenges into actionable insights and scalable solutions.</p>
-    <p>Throughout my career, I have built a proven track record in leading AI/ML initiatives in close collaboration with technical development teams, driving data governance standards, and building cross-functional partnerships within accounts receivable operations. My strength lies in bridging technical capabilities with business needs to deliver measurable improvements in operational efficiency and decision-making.</p>
-  </section>
+<!-- Skills -->
+<section id="skills">
+  <div class="container">
+    <span class="section-label">Expertise</span>
+    <h2 class="section-heading">Skills &amp; Qualifications</h2>
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <div class="skill-card-icon">💻</div>
+        <h3>Technical</h3>
+        <p>SQL (Advanced) · C# · .NET · Excel · Power BI · MS Office · Visio/Draw.io · IT &amp; Server Infrastructure · Python</p>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-card-icon">📊</div>
+        <h3>Analytics</h3>
+        <p>Predictive Modeling · Strategic Forecasting · Process Automation · Free Cash Flow &amp; Headcount Planning · ML Integration · Data Governance</p>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-card-icon">🤝</div>
+        <h3>Leadership</h3>
+        <p>Cross-Functional Collaboration · Stakeholder Communication · Presentations · Technical Mentorship · Virtual Team Management</p>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-card-icon">🌍</div>
+        <h3>Languages</h3>
+        <p>Slovak (Native) · English (Fluent) · German (Proficient) · Spanish (Learning)</p>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-card-icon">🏅</div>
+        <h3>Certifications</h3>
+        <p>Lean Six Sigma — 2× Yellow Belt, 5× Green Belt · Certified Soft Skills Trainer</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Skills -->
-  <section class="section" aria-label="Skills">
-    <h2 class="section-title">Skills &amp; Qualifications</h2>
-    <dl class="skills-grid">
-      <dt>Technical</dt>
-      <dd>SQL (Advanced) · C# · .NET · Excel · Power BI · MS Office · Visio/Draw.io · IT &amp; Server Infrastructure · Python (Learning)</dd>
-      <dt>Analytics</dt>
-      <dd>Predictive Modeling · Strategic Forecasting · Process Automation · Free Cash Flow &amp; Headcount Planning · ML Integration · Data Governance</dd>
-      <dt>Leadership</dt>
-      <dd>Cross-Functional Collaboration · Stakeholder Communication · Presentations · Technical Mentorship · Virtual Team Manager</dd>
-      <dt>Languages</dt>
-      <dd>Slovak (Native) · English (Fluent) · German (Proficient) · Spanish (Learning)</dd>
-      <dt>Certification</dt>
-      <dd>Lean Six Sigma (2× Yellow Belt, 5× Green Belt) · Certified Soft Skills Trainer</dd>
-    </dl>
-  </section>
+<!-- Experience -->
+<section id="experience">
+  <div class="container">
+    <span class="section-label">Career</span>
+    <h2 class="section-heading">Professional Experience</h2>
+    <div class="timeline-container">
+      <div class="timeline-line"></div>
 
-  <!-- Career -->
-  <section class="section" aria-label="Career Summary">
-    <h2 class="section-title">Career Summary</h2>
-    <div class="timeline">
-
-      <!-- Job 1 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">AWS AR Global Data Lead</span>
-          <span class="job-date">Jan 2021 – Present</span>
+      <!-- 1 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card" onclick="this.classList.toggle('open')">
+          <div class="job-card-header">
+            <div class="job-meta">
+              <div class="job-title">AWS AR Global Data Lead</div>
+              <div class="job-company-line">
+                <span class="job-company">Amazon</span>
+                <span class="job-date">Jan 2021 – Present</span>
+              </div>
+              <div class="job-tagline">Data Architecture &amp; Advanced Analytics</div>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-card-content">
+              <div class="group-title">AI/ML Development &amp; Leadership</div>
+              <ul>
+                <li>Lead AI development teams to build predictive and analytical models used by FinOps, FinAuto, Billing, Customer Service, Finance and Sales</li>
+                <li>Establish continuous improvement cycles by evaluating model outputs against real-world results through feedback loops</li>
+                <li>Develop and document SOPs for AI-readable environments, enabling seamless human-ML integration</li>
+                <li>Architect unified recommendation engine consolidating all AI efforts into a single output:
+                  <ul>
+                    <li>Customer email communication history summary</li>
+                    <li>Behavior trends and development over time</li>
+                    <li>Free cash flow risk assessment</li>
+                    <li>Human vs. automated handling recommendation</li>
+                    <li>Next-step actions (proprietary Atlas model)</li>
+                  </ul>
+                </li>
+              </ul>
+              <div class="group-title">Data Architecture & Systems</div>
+              <ul>
+                <li>Architect the Advanced Tiering &amp; Learning Analysis System, transforming AR operations from channel-based to ML-driven workflows</li>
+                <li>Design business logic governing ML models for customer scorecards and risk-based cohorts</li>
+                <li>Drive end-to-end transformation through advanced analytics, predictive modeling, and intelligent automation</li>
+              </ul>
+              <div class="group-title">Forecasting & Analytics</div>
+              <ul>
+                <li>Develop Revenue and Receivables forecast models including free cash flow, headcount planning, ROI, and invoice count headwinds</li>
+                <li>Lead data integrity initiatives, process automation, and cash reconciliation across global Finance operations</li>
+              </ul>
+              <div class="group-title">Data Governance & Standards</div>
+              <ul>
+                <li>Establish guardrails for long-term data integrity within governance frameworks</li>
+                <li>Build strategic partnerships across Receivables, Accounting, Finance, Sales, Customer Support, and Billing</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="job-company">Amazon</div>
-        <div class="job-tagline">Data Architecture &amp; Advanced Analytics</div>
+      </div>
 
-        <div class="job-group-title">AI/ML Development &amp; Leadership</div>
-        <ul>
-          <li>Lead AI development teams to build predictive and analytical models used by FinOps and its Leadership, FinAuto, Billing, Customer Service, Finance and Sales</li>
-          <li>Establish continuous improvement cycles by evaluating model outputs against real-world results and training models through feedback loops</li>
-          <li>Develop and document SOPs for processes in AI-readable environments, enabling seamless integration between human workflows and ML systems</li>
-          <li>Architect unified recommendation engine consolidating all AI efforts into a single, cohesive output:
-            <ul>
-              <li>Summary of customer email communication history</li>
-              <li>Customer behavior trends and development over time</li>
-              <li>Free cash flow risk assessment</li>
-              <li>Recommendation for human interaction vs. automated handling</li>
-              <li>Suggested next-step actions (powered by proprietary Atlas model)</li>
-            </ul>
-          </li>
-        </ul>
-
-        <div class="job-group-title">Data Architecture & Systems</div>
-        <ul>
-          <li>Architect and implement the Advanced Tiering &amp; Learning Analysis System, transforming AR operations from channel-based to ML-driven workflows</li>
-          <li>Design business logic and data parameters governing ML models that define customer scorecards and risk-based cohorts</li>
-          <li>Drive end-to-end transformation of manual processes through advanced analytics, predictive modeling, and intelligent automation</li>
-        </ul>
-
-        <div class="job-group-title">Forecasting & Analytics</div>
-        <ul>
-          <li>Develop Revenue and Receivables forecast models for Finance and Accounting:
-            <ul>
-              <li>Free cash flow analysis</li>
-              <li>Headcount planning projections</li>
-              <li>Project ROI / Investment Returns</li>
-              <li>Invoice count headwinds</li>
-            </ul>
-          </li>
-          <li>Lead data integrity initiatives, process automation, and cash reconciliation analysis across global Finance operations</li>
-        </ul>
-
-        <div class="job-group-title">Data Governance & Standards</div>
-        <ul>
-          <li>Establish guardrails for long-term data integrity by developing governance standards within data governance frameworks</li>
-          <li>Build strategic partnerships across Receivables, Accounting, Finance, Sales, Customer Support, and Billing as a trusted data advisor</li>
-        </ul>
-      </article>
-
-      <!-- Job 2 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">AWS Finance Program Manager</span>
-          <span class="job-date">Feb 2019 – Jan 2021</span>
+      <!-- 2 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card" onclick="this.classList.toggle('open')">
+          <div class="job-card-header">
+            <div class="job-meta">
+              <div class="job-title">AWS Finance Program Manager</div>
+              <div class="job-company-line">
+                <span class="job-company">Amazon</span>
+                <span class="job-date">Feb 2019 – Jan 2021</span>
+              </div>
+              <div class="job-tagline">Cross-Functional Programs & Operational Excellence</div>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-card-content">
+              <div class="group-title">Program Leadership</div>
+              <ul>
+                <li>Delivered critical support for Global Late Fee program, aligning technical, legal, accounting, and finance stakeholders</li>
+                <li>Redesigned global AWS invoice count logic for variable cost per invoice and long-term operational planning</li>
+              </ul>
+              <div class="group-title">Risk Management & Financial Impact</div>
+              <ul>
+                <li>Drive proactive Bad Debt and Fraud identification to prevent P&amp;L impact</li>
+                <li>Identify VAT reclaim potential for suspended accounts across US, UK and Germany</li>
+                <li>Develop scalable top accounts analysis to train AI models on decision-making patterns</li>
+              </ul>
+              <div class="group-title">Stakeholder Management &amp; Mentorship</div>
+              <ul>
+                <li>Expand Sales Engagement programs toward Free Cash Flow improvement</li>
+                <li>Serve as Consultant for Virtual Analytics Team with regional Data Analysts</li>
+                <li>Deliver cross-business unit SQL mentorship and technical training workshops</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="job-company">Amazon</div>
-        <div class="job-tagline">Cross-Functional Programs & Operational Excellence</div>
+      </div>
 
-        <div class="job-group-title">Program Leadership & Implementation</div>
-        <ul>
-          <li>Delivered critical support for Global Late Fee program implementation, aligning technical, legal, accounting, and finance stakeholders</li>
-          <li>Identify and execute optimization opportunities through situational analysis, delivering scalable solutions</li>
-          <li>Redesigned global AWS invoice count logic as a work driver for variable cost per invoice and long-term operational planning</li>
-        </ul>
-
-        <div class="job-group-title">Risk Management & Financial Impact</div>
-        <ul>
-          <li>Drive proactive Bad Debt and Fraud identification and communication to prevent P&amp;L impact</li>
-          <li>Identify VAT reclaim potential resulting in Bad Debt adjustment claims for suspended accounts</li>
-          <li>Develop scalable top accounts analysis to train AI models on decision-making patterns and risk assessment</li>
-        </ul>
-
-        <div class="job-group-title">Cross-Functional Partnership &amp; Stakeholder Management</div>
-        <ul>
-          <li>Expand Sales Engagement programs to broader Sales and Finance teams toward Free Cash Flow improvement</li>
-          <li>Serve as Consultant for Virtual Analytics Team, collaborating with regional Data Analysts</li>
-          <li>Support Global and Regional Accounting teams with data-based reports for annual submissions</li>
-        </ul>
-
-        <div class="job-group-title">Strategic Support & Mentorship</div>
-        <ul>
-          <li>Provide marketplace strategic support covering dispute governance, listing fee allocations, and future deals</li>
-          <li>Deliver cross-business unit SQL mentorship programs, knowledge-sharing sessions, and technical training workshops</li>
-        </ul>
-      </article>
-
-      <!-- Job 3 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">Global Process Optimization Advisor</span>
-          <span class="job-date">Jan 2017 – Feb 2019</span>
+      <!-- 3 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card" onclick="this.classList.toggle('open')">
+          <div class="job-card-header">
+            <div class="job-meta">
+              <div class="job-title">Global Process Optimization Advisor</div>
+              <div class="job-company-line">
+                <span class="job-company">DELL Technologies</span>
+                <span class="job-date">Jan 2017 – Feb 2019</span>
+              </div>
+              <div class="job-tagline">Global Process Innovation & Governance</div>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-card-content">
+              <ul>
+                <li>Led global process innovation initiatives and sustained governance frameworks across multiple business units</li>
+                <li>Drove optimization of global reporting structures and delivery models</li>
+                <li>Established global reporting quality governance standards</li>
+                <li>Strengthened cross-departmental KPI connections, creating unified performance visibility</li>
+                <li>Conducted project reviews assessing global impact and scalability</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Global Process Innovation &amp; Governance</div>
+      </div>
 
-        <div class="job-group-title">Process Innovation & Governance</div>
-        <ul>
-          <li>Led global process innovation initiatives and sustained governance frameworks across multiple business units</li>
-          <li>Drove optimization of global reporting structures and delivery models</li>
-          <li>Established global reporting quality governance standards</li>
-        </ul>
-
-        <div class="job-group-title">Cross-Functional Integration &amp; KPI Management</div>
-        <ul>
-          <li>Strengthened cross-departmental KPI connections, creating unified performance visibility</li>
-          <li>Served as primary interface between KPI frameworks and global projects</li>
-          <li>Conducted project reviews assessing global impact and scalability</li>
-        </ul>
-      </article>
-
-      <!-- Job 4 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">Listening Post Site Operations Manager</span>
-          <span class="job-date">May 2014 – Jan 2017</span>
+      <!-- 4 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card" onclick="this.classList.toggle('open')">
+          <div class="job-card-header">
+            <div class="job-meta">
+              <div class="job-title">Listening Post Site Operations Manager</div>
+              <div class="job-company-line">
+                <span class="job-company">DELL Technologies</span>
+                <span class="job-date">May 2014 – Jan 2017</span>
+              </div>
+              <div class="job-tagline">Global Innovation, Customer Experience &amp; Operational Excellence</div>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-card-content">
+              <ul>
+                <li>Managed Global GLP pillars with KPI interlock across internal and OSP sites</li>
+                <li>Led global innovation project implementation and governance</li>
+                <li>Drove customer journey quality review and improvement initiatives</li>
+                <li>Delivered one-screen end-to-end KPI performance dashboards</li>
+                <li>Developed tools using C# and .NET; database admin across Oracle, MSSQL, MySQL</li>
+                <li>Spearheaded NetworX Bratislava Site innovation and retail business globalization</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Global Innovation, Customer Experience &amp; Operational Excellence</div>
+      </div>
 
-        <div class="job-group-title">Global Program Leadership & Innovation</div>
-        <ul>
-          <li>Managed Global GLP pillars with KPI interlock</li>
-          <li>Led global innovation project implementation and governance across internal and OSP sites</li>
-          <li>Developed and delivered global soft skill innovation programs</li>
-          <li>Spearheaded NetworX Bratislava Site innovation project and retail business globalization</li>
-        </ul>
-
-        <div class="job-group-title">Customer Experience &amp; Quality Governance</div>
-        <ul>
-          <li>Drove customer journey quality review and improvement initiatives</li>
-          <li>Managed global customer experience programs across internal teams and outsourced service partners</li>
-          <li>Led EMEA hygiene quality sustain governance</li>
-        </ul>
-
-        <div class="job-group-title">Systems Development & Technical Leadership</div>
-        <ul>
-          <li>Delivered one-screen end-to-end KPI performance dashboards for real-time operational visibility</li>
-          <li>Developed and maintained tools using C# and .NET frameworks</li>
-          <li>Served as database developer and administrator across Oracle, MSSQL, and MySQL platforms</li>
-        </ul>
-      </article>
-
-      <!-- Job 5 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">CSMB Revenue Lead for Outsourcing Partners</span>
-          <span class="job-date">Nov 2012 – May 2014</span>
+      <!-- 5 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card" onclick="this.classList.toggle('open')">
+          <div class="job-card-header">
+            <div class="job-meta">
+              <div class="job-title">CSMB Revenue Lead for Outsourcing Partners</div>
+              <div class="job-company-line">
+                <span class="job-company">DELL Technologies</span>
+                <span class="job-date">Nov 2012 – May 2014</span>
+              </div>
+              <div class="job-tagline">Revenue Operations, Partner Management & Strategic Transformation</div>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-card-content">
+              <ul>
+                <li>Primary revenue and quality contact for outsourcing service partners across EMEA</li>
+                <li>Led headcount and site staffing planning aligned with business demand</li>
+                <li>Co-designed System Renewal Global Project</li>
+                <li>Led EMEA Point of Need Revenue Quality Control Governance</li>
+                <li>Designed EMEA Quality pillars and governance model across partner network</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Revenue Operations, Partner Management & Strategic Transformation</div>
-        <ul>
-          <li>Primary revenue and quality contact for outsourcing service partners across EMEA</li>
-          <li>Led headcount and site staffing planning aligned with business demand</li>
-          <li>Co-designed System Renewal Global Project, contributing to architecture and requirements</li>
-          <li>Led EMEA Point of Need Revenue Quality Control Governance</li>
-          <li>Designed EMEA Quality pillars and implemented governance model across partner network</li>
-        </ul>
-      </article>
+      </div>
 
-      <!-- Job 6 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">CER PON Revenue Analyst</span>
-          <span class="job-date">Dec 2011 – Nov 2012</span>
+      <!-- 6 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="job-card" onclick="this.classList.toggle('open')">
+          <div class="job-card-header">
+            <div class="job-meta">
+              <div class="job-title">CER PON Revenue Analyst</div>
+              <div class="job-company-line">
+                <span class="job-company">DELL Technologies</span>
+                <span class="job-date">Dec 2011 – Nov 2012</span>
+              </div>
+              <div class="job-tagline">Revenue Strategy, Program Management & Operational Governance</div>
+            </div>
+            <span class="expand-icon">▼</span>
+          </div>
+          <div class="job-card-body">
+            <div class="job-card-content">
+              <ul>
+                <li>Drove EMEA services strategy development and daily governance</li>
+                <li>Revenue program management consultant guiding initiatives from concept to execution</li>
+                <li>Developed services revenue roadmap with cost-benefit analysis</li>
+                <li>Implemented ORL global compliance model across EMEA</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Revenue Strategy, Program Management & Operational Governance</div>
-        <ul>
-          <li>Drove EMEA services strategy development and maintained daily governance oversight</li>
-          <li>Served as revenue program management consultant</li>
-          <li>Developed services revenue roadmap with comprehensive cost-benefit analysis</li>
-          <li>Implemented ORL global compliance model across EMEA and outsourced service partners</li>
-        </ul>
-      </article>
+      </div>
 
-      <!-- Job 7 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">Revenue Learning Coordinator</span>
-          <span class="job-date">Nov 2009 – Jan 2012</span>
-        </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Training Coordination, Revenue Compliance & Process Development</div>
-        <ul>
-          <li>Coordinated EMEA trainers and coaches across revenue and new hire projects</li>
-          <li>EMEA subject matter expert for revenue compliance and processes</li>
-          <li>Developed effective information delivery training programs for EMEA region</li>
-          <li>Revenue single point of contact for outsourcing service partners</li>
-        </ul>
-      </article>
-
-      <!-- Job 8 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">Services Soft Skills Coach</span>
-          <span class="job-date">Dec 2007 – Nov 2009</span>
-        </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Coaching, Quality &amp; Process Improvement</div>
-        <ul>
-          <li>Quality and performance responsibility for desktop support teams</li>
-          <li>Coached agents through call monitoring and developed productivity training</li>
-          <li>Developed and implemented process improvement pilots</li>
-        </ul>
-      </article>
-
-      <!-- Job 9 -->
-      <article class="job">
-        <div class="job-header">
-          <span class="job-title">XPS Premium Support Specialist</span>
-          <span class="job-date">Jun 2005 – Dec 2007</span>
-        </div>
-        <div class="job-company">DELL Technologies</div>
-        <div class="job-tagline">Premium Support &amp; Team Coordination</div>
-        <ul>
-          <li>Quality and performance responsibility for desktop support teams</li>
-          <li>Owned customer and hygiene control review processes</li>
-          <li>Developed and delivered productivity and efficiency training programs</li>
-        </ul>
-      </article>
-
-    </div><!-- /timeline -->
-  </section>
-
-</main>
-
-</body>
-</html>
+      <!-- 7 -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="
