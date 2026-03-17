@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frantisek Floch | CV</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #1a365d;
+    --accent: #2b6cb0;
+    --light-accent: #ebf4ff;
+    --text: #2d3748;
+    --text-light: #718096;
+    --border: #e2e8f0;
+    --bg: #f7fafc;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, #2a4a7f 100%);
+    color: var(--white);
+    padding: 3rem 2rem;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+  .header .subtitle { font-size: 1.1rem; font-weight: 300; opacity: 0.9; margin-top: 0.25rem; }
+  .contact-info { text-align: right; font-size: 0.9rem; opacity: 0.9; line-height: 1.8; }
+  .contact-info a { color: var(--white); }
+
+  /* Main */
+  .main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* Section */
+  .section { margin-bottom: 2.5rem; }
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Profile */
+  .profile p { margin-bottom: 0.75rem; color: var(--text); }
+
+  /* Skills grid */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  .skills-grid dt {
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .skills-grid dd { color: var(--text-light); }
+
+  /* Job card */
+  .job { margin-bottom: 2rem; }
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  .job-title { font-size: 1.05rem; font-weight: 600; color: var(--primary); }
+  .job-date { font-size: 0.85rem; color: var(--text-light); white-space: nowrap; }
+  .job-company { font-size: 0.9rem; color: var(--accent); font-weight: 500; }
+  .job-tagline { font-size: 0.85rem; font-style: italic; color: var(--text-light); margin-bottom: 0.5rem; }
+  .job-summary { font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--text); }
+
+  .job-group-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0.75rem 0 0.35rem;
+  }
+
+  .job ul {
+    list-style: none;
+    padding: 0;
+  }
+  .job ul li {
+    position: relative;
+    padding-left: 1.1rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+  .job ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .job ul ul { margin-top: 0.25rem; margin-left: 0.5rem; }
+  .job ul ul li::before { background: var(--text-light); width: 4px; height: 4px; }
+
+  /* Timeline dot */
+  .timeline { position: relative; padding-left: 1.5rem; border-left: 2px solid var(--border); }
+  .job::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 0.35rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 3px solid var(--accent);
+    margin-left: -5px;
+  }
+  .timeline .job { position: relative; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header-inner { flex-direction: column; text-align: center; }
+    .contact-info { text-align: center; }
+    .header h1 { font-size: 1.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .job-header { flex-direction: column; }
+  }
+
+  @media print {
+    body { font-size: 12px; background: white; }
+    .header { padding: 1.5rem; }
+    .main { padding: 1rem; }
+    .section { margin-bottom: 1.5rem; }
+    .job { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header" role="banner">
+  <div class="header-inner">
+    <div>
+      <h1>Frantisek Floch</h1>
+      <div class="subtitle">AWS AR Global Data Lead</div>
+    </div>
+    <div class="contact-info">
+      Bratislava, Slovakia<br>
+      <a href="tel:+421948960600">+421 948 960 600</a><br>
+      <a href="mailto:[email]">[email]</a>
+    </div>
+  </div>
+</header>
+
+<main class="main" role="main">
+
+  <!-- Profile -->
+  <section class="section profile" aria-label="Professional Profile">
+    <h2 class="section-title">Professional Profile &amp; Core Strengths</h2>
+    <p>As a Data Research &amp; Analytics Leader, I drive optimization, predictive modeling, and strategic forecasting solutions across global finance operations. My approach combines systematic thinking with deep data expertise to transform complex challenges into actionable insights and scalable solutions.</p>
+    <p>Throughout my career, I have built a proven track record in leading AI/ML initiatives in close collaboration with technical development teams, driving data governance standards, and building cross-functional partnerships within accounts receivable operations. My strength lies in bridging technical capabilities with business needs to deliver measurable improvements in operational efficiency and decision-making.</p>
+  </section>
+
+  <!-- Skills -->
+  <section class="section" aria-label="Skills">
+    <h2 class="section-title">Skills &amp; Qualifications</h2>
+    <dl class="skills-grid">
+      <dt>Technical</dt>
+      <dd>SQL (Advanced) · C# · .NET · Excel · Power BI · MS Office · Visio/Draw.io · IT &amp; Server Infrastructure · Python (Learning)</dd>
+      <dt>Analytics</dt>
+      <dd>Predictive Modeling · Strategic Forecasting · Process Automation · Free Cash Flow &amp; Headcount Planning · ML Integration · Data Governance</dd>
+      <dt>Leadership</dt>
+      <dd>Cross-Functional Collaboration · Stakeholder Communication · Presentations · Technical Mentorship · Virtual Team Manager</dd>
+      <dt>Languages</dt>
+      <dd>Slovak (Native) · English (Fluent) · German (Proficient) · Spanish (Learning)</dd>
+      <dt>Certification</dt>
+      <dd>Lean Six Sigma (2× Yellow Belt, 5× Green Belt) · Certified Soft Skills Trainer</dd>
+    </dl>
+  </section>
+
+  <!-- Career -->
+  <section class="section" aria-label="Career Summary">
+    <h2 class="section-title">Career Summary</h2>
+    <div class="timeline">
+
+      <!-- Job 1 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">AWS AR Global Data Lead</span>
+          <span class="job-date">Jan 2021 – Present</span>
+        </div>
+        <div class="job-company">Amazon</div>
+        <div class="job-tagline">Data Architecture &amp; Advanced Analytics</div>
+
+        <div class="job-group-title">AI/ML Development &amp; Leadership</div>
+        <ul>
+          <li>Lead AI development teams to build predictive and analytical models used by FinOps and its Leadership, FinAuto, Billing, Customer Service, Finance and Sales</li>
+          <li>Establish continuous improvement cycles by evaluating model outputs against real-world results and training models through feedback loops</li>
+          <li>Develop and document SOPs for processes in AI-readable environments, enabling seamless integration between human workflows and ML systems</li>
+          <li>Architect unified recommendation engine consolidating all AI efforts into a single, cohesive output:
+            <ul>
+              <li>Summary of customer email communication history</li>
+              <li>Customer behavior trends and development over time</li>
+              <li>Free cash flow risk assessment</li>
+              <li>Recommendation for human interaction vs. automated handling</li>
+              <li>Suggested next-step actions (powered by proprietary Atlas model)</li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="job-group-title">Data Architecture & Systems</div>
+        <ul>
+          <li>Architect and implement the Advanced Tiering &amp; Learning Analysis System, transforming AR operations from channel-based to ML-driven workflows</li>
+          <li>Design business logic and data parameters governing ML models that define customer scorecards and risk-based cohorts</li>
+          <li>Drive end-to-end transformation of manual processes through advanced analytics, predictive modeling, and intelligent automation</li>
+        </ul>
+
+        <div class="job-group-title">Forecasting & Analytics</div>
+        <ul>
+          <li>Develop Revenue and Receivables forecast models for Finance and Accounting:
+            <ul>
+              <li>Free cash flow analysis</li>
+              <li>Headcount planning projections</li>
+              <li>Project ROI / Investment Returns</li>
+              <li>Invoice count headwinds</li>
+            </ul>
+          </li>
+          <li>Lead data integrity initiatives, process automation, and cash reconciliation analysis across global Finance operations</li>
+        </ul>
+
+        <div class="job-group-title">Data Governance & Standards</div>
+        <ul>
+          <li>Establish guardrails for long-term data integrity by developing governance standards within data governance frameworks</li>
+          <li>Build strategic partnerships across Receivables, Accounting, Finance, Sales, Customer Support, and Billing as a trusted data advisor</li>
+        </ul>
+      </article>
+
+      <!-- Job 2 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">AWS Finance Program Manager</span>
+          <span class="job-date">Feb 2019 – Jan 2021</span>
+        </div>
+        <div class="job-company">Amazon</div>
+        <div class="job-tagline">Cross-Functional Programs & Operational Excellence</div>
+
+        <div class="job-group-title">Program Leadership & Implementation</div>
+        <ul>
+          <li>Delivered critical support for Global Late Fee program implementation, aligning technical, legal, accounting, and finance stakeholders</li>
+          <li>Identify and execute optimization opportunities through situational analysis, delivering scalable solutions</li>
+          <li>Redesigned global AWS invoice count logic as a work driver for variable cost per invoice and long-term operational planning</li>
+        </ul>
+
+        <div class="job-group-title">Risk Management & Financial Impact</div>
+        <ul>
+          <li>Drive proactive Bad Debt and Fraud identification and communication to prevent P&amp;L impact</li>
+          <li>Identify VAT reclaim potential resulting in Bad Debt adjustment claims for suspended accounts</li>
+          <li>Develop scalable top accounts analysis to train AI models on decision-making patterns and risk assessment</li>
+        </ul>
+
+        <div class="job-group-title">Cross-Functional Partnership &amp; Stakeholder Management</div>
+        <ul>
+          <li>Expand Sales Engagement programs to broader Sales and Finance teams toward Free Cash Flow improvement</li>
+          <li>Serve as Consultant for Virtual Analytics Team, collaborating with regional Data Analysts</li>
+          <li>Support Global and Regional Accounting teams with data-based reports for annual submissions</li>
+        </ul>
+
+        <div class="job-group-title">Strategic Support & Mentorship</div>
+        <ul>
+          <li>Provide marketplace strategic support covering dispute governance, listing fee allocations, and future deals</li>
+          <li>Deliver cross-business unit SQL mentorship programs, knowledge-sharing sessions, and technical training workshops</li>
+        </ul>
+      </article>
+
+      <!-- Job 3 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">Global Process Optimization Advisor</span>
+          <span class="job-date">Jan 2017 – Feb 2019</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Global Process Innovation &amp; Governance</div>
+
+        <div class="job-group-title">Process Innovation & Governance</div>
+        <ul>
+          <li>Led global process innovation initiatives and sustained governance frameworks across multiple business units</li>
+          <li>Drove optimization of global reporting structures and delivery models</li>
+          <li>Established global reporting quality governance standards</li>
+        </ul>
+
+        <div class="job-group-title">Cross-Functional Integration &amp; KPI Management</div>
+        <ul>
+          <li>Strengthened cross-departmental KPI connections, creating unified performance visibility</li>
+          <li>Served as primary interface between KPI frameworks and global projects</li>
+          <li>Conducted project reviews assessing global impact and scalability</li>
+        </ul>
+      </article>
+
+      <!-- Job 4 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">Listening Post Site Operations Manager</span>
+          <span class="job-date">May 2014 – Jan 2017</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Global Innovation, Customer Experience &amp; Operational Excellence</div>
+
+        <div class="job-group-title">Global Program Leadership & Innovation</div>
+        <ul>
+          <li>Managed Global GLP pillars with KPI interlock</li>
+          <li>Led global innovation project implementation and governance across internal and OSP sites</li>
+          <li>Developed and delivered global soft skill innovation programs</li>
+          <li>Spearheaded NetworX Bratislava Site innovation project and retail business globalization</li>
+        </ul>
+
+        <div class="job-group-title">Customer Experience &amp; Quality Governance</div>
+        <ul>
+          <li>Drove customer journey quality review and improvement initiatives</li>
+          <li>Managed global customer experience programs across internal teams and outsourced service partners</li>
+          <li>Led EMEA hygiene quality sustain governance</li>
+        </ul>
+
+        <div class="job-group-title">Systems Development & Technical Leadership</div>
+        <ul>
+          <li>Delivered one-screen end-to-end KPI performance dashboards for real-time operational visibility</li>
+          <li>Developed and maintained tools using C# and .NET frameworks</li>
+          <li>Served as database developer and administrator across Oracle, MSSQL, and MySQL platforms</li>
+        </ul>
+      </article>
+
+      <!-- Job 5 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">CSMB Revenue Lead for Outsourcing Partners</span>
+          <span class="job-date">Nov 2012 – May 2014</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Revenue Operations, Partner Management & Strategic Transformation</div>
+        <ul>
+          <li>Primary revenue and quality contact for outsourcing service partners across EMEA</li>
+          <li>Led headcount and site staffing planning aligned with business demand</li>
+          <li>Co-designed System Renewal Global Project, contributing to architecture and requirements</li>
+          <li>Led EMEA Point of Need Revenue Quality Control Governance</li>
+          <li>Designed EMEA Quality pillars and implemented governance model across partner network</li>
+        </ul>
+      </article>
+
+      <!-- Job 6 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">CER PON Revenue Analyst</span>
+          <span class="job-date">Dec 2011 – Nov 2012</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Revenue Strategy, Program Management & Operational Governance</div>
+        <ul>
+          <li>Drove EMEA services strategy development and maintained daily governance oversight</li>
+          <li>Served as revenue program management consultant</li>
+          <li>Developed services revenue roadmap with comprehensive cost-benefit analysis</li>
+          <li>Implemented ORL global compliance model across EMEA and outsourced service partners</li>
+        </ul>
+      </article>
+
+      <!-- Job 7 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">Revenue Learning Coordinator</span>
+          <span class="job-date">Nov 2009 – Jan 2012</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Training Coordination, Revenue Compliance & Process Development</div>
+        <ul>
+          <li>Coordinated EMEA trainers and coaches across revenue and new hire projects</li>
+          <li>EMEA subject matter expert for revenue compliance and processes</li>
+          <li>Developed effective information delivery training programs for EMEA region</li>
+          <li>Revenue single point of contact for outsourcing service partners</li>
+        </ul>
+      </article>
+
+      <!-- Job 8 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">Services Soft Skills Coach</span>
+          <span class="job-date">Dec 2007 – Nov 2009</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Coaching, Quality &amp; Process Improvement</div>
+        <ul>
+          <li>Quality and performance responsibility for desktop support teams</li>
+          <li>Coached agents through call monitoring and developed productivity training</li>
+          <li>Developed and implemented process improvement pilots</li>
+        </ul>
+      </article>
+
+      <!-- Job 9 -->
+      <article class="job">
+        <div class="job-header">
+          <span class="job-title">XPS Premium Support Specialist</span>
+          <span class="job-date">Jun 2005 – Dec 2007</span>
+        </div>
+        <div class="job-company">DELL Technologies</div>
+        <div class="job-tagline">Premium Support &amp; Team Coordination</div>
+        <ul>
+          <li>Quality and performance responsibility for desktop support teams</li>
+          <li>Owned customer and hygiene control review processes</li>
+          <li>Developed and delivered productivity and efficiency training programs</li>
+        </ul>
+      </article>
+
+    </div><!-- /timeline -->
+  </section>
+
+</main>
+
+</body>
+</html>
