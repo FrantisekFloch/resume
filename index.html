@@ -6,14 +6,14 @@
     <title>Frantisek Floch | Resume</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
     font-family: 'Montserrat', sans-serif;
     background: #000;
-    color: #333;
+    color: #3d3632;
     overflow: hidden;
     -webkit-font-smoothing: antialiased;
 }
@@ -26,128 +26,40 @@ body {
     transition: opacity 1s ease;
 }
 .landing.fade-out { opacity: 0; pointer-events: none; }
-
-.desk-wrap {
-    position: relative;
-    width: 520px; max-width: 90vw;
-    cursor: pointer;
-}
-.desk-img-box {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-}
-.desk-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    transition: transform 1s cubic-bezier(0.23,1,0.32,1);
-}
-/* Fade edges to white */
-.desk-img-box::after {
-    content: '';
-    position: absolute; inset: 0;
-    background:
-        radial-gradient(ellipse at center, transparent 50%, rgba(255,255,255,0.6) 80%, #fff 100%);
-    pointer-events: none;
-}
-
-/* Hover zoom */
-.desk-wrap:hover .desk-img {
-    transform: scale(1.12);
-}
-
-/* "Click to view" overlay — hidden by default, appears on hover */
-.desk-overlay {
-    position: absolute; inset: 0; z-index: 2;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
+.desk-wrap { position: relative; width: 520px; max-width: 90vw; cursor: pointer; }
+.desk-img-box { position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+.desk-img { display: block; width: 100%; height: auto; transition: transform 1s cubic-bezier(0.23,1,0.32,1); }
+.desk-img-box::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(255,255,255,0.6) 80%, #fff 100%); pointer-events: none; }
+.desk-wrap:hover .desk-img { transform: scale(1.12); }
+.desk-overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; }
 .desk-wrap:hover .desk-overlay { opacity: 1; }
-
-.desk-overlay-bg {
-    position: absolute; inset: 0;
-    background: rgba(44,62,80,0.45);
-    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
-    border-radius: 12px;
-}
-.desk-cta {
-    position: relative; z-index: 3;
-    background: #fff;
-    color: #2c3e50;
-    padding: 14px 36px;
-    border-radius: 30px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.desk-wrap:hover .desk-cta {
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-}
-.desk-subtitle {
-    position: relative; z-index: 3;
-    color: rgba(255,255,255,0.9);
-    font-size: 12px; font-weight: 300; letter-spacing: 1.5px;
-    margin-top: 12px;
-}
-
-/* Name below the image */
-.desk-name {
-    text-align: center; margin-top: 28px;
-    opacity: 0; animation: deskNameIn 0.8s ease 0.5s forwards;
-}
-.desk-name h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px; font-weight: 700; letter-spacing: 5px; color: #2c3e50;
-}
-.desk-name p {
-    font-size: 11px; font-weight: 400; letter-spacing: 3px;
-    color: #95a5a6; text-transform: uppercase; margin-top: 6px;
-}
+.desk-overlay-bg { position: absolute; inset: 0; background: rgba(30,42,56,0.45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); border-radius: 12px; }
+.desk-cta { position: relative; z-index: 3; background: #fff; color: #1e2a38; padding: 14px 36px; border-radius: 30px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; box-shadow: 0 8px 30px rgba(0,0,0,0.2); transition: transform 0.3s, box-shadow 0.3s; }
+.desk-wrap:hover .desk-cta { transform: scale(1.05); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.desk-subtitle { position: relative; z-index: 3; color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 300; letter-spacing: 1.5px; margin-top: 12px; }
+.desk-name { text-align: center; margin-top: 28px; opacity: 0; animation: deskNameIn 0.8s ease 0.5s forwards; }
+.desk-name h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; letter-spacing: 5px; color: #1e2a38; }
+.desk-name p { font-size: 11px; font-weight: 400; letter-spacing: 3px; color: #9a918a; text-transform: uppercase; margin-top: 6px; }
 @keyframes deskNameIn { to { opacity: 1; } }
 
 /* ===== MAIN ===== */
-.resume-main { position: relative; background: #f5f5f0; min-height: 100vh; }
+.resume-main { position: relative; background: #faf8f5; min-height: 100vh; }
 .resume-main.hidden { display: none; }
 .resume-main.show { display: block; animation: fadeUp .8s ease forwards; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
 /* ===== NAV ===== */
-.top-nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(44,62,80,0.97); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    opacity: 0; transform: translateY(-100%); transition: all .5s ease;
-}
+.top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(30,42,56,0.97); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; transform: translateY(-100%); transition: all .5s ease; }
 .top-nav.show { opacity: 1; transform: translateY(0); }
 .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-end; height: 54px; padding: 0 30px; }
 .nav-links { display: flex; gap: 28px; }
-.nav-link {
-    color: rgba(255,255,255,0.55); text-decoration: none;
-    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-    padding: 4px 0; border-bottom: 2px solid transparent; transition: all .3s;
-}
-.nav-link:hover, .nav-link.active { color: #fff; border-bottom-color: #e74c3c; }
+.nav-link { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 4px 0; border-bottom: 2px solid transparent; transition: all .3s; }
+.nav-link:hover, .nav-link.active { color: #fff; border-bottom-color: #c8956c; }
 
 /* ===== PAGE NAV ===== */
-.page-nav {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 100;
-    display: flex; align-items: center; gap: 18px;
-    background: rgba(44,62,80,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    padding: 10px 22px; border-radius: 40px; opacity: 0; transition: opacity .5s ease .4s;
-}
+.page-nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 18px; background: rgba(30,42,56,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 10px 22px; border-radius: 40px; opacity: 0; transition: opacity .5s ease .4s; }
 .page-nav.show { opacity: 1; }
-.pg-btn {
-    background: none; border: 1px solid rgba(255,255,255,0.25); color: #fff;
-    width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
-    font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .3s;
-}
+.pg-btn { background: none; border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .3s; }
 .pg-btn:hover:not(:disabled) { background: rgba(255,255,255,0.15); border-color: #fff; }
 .pg-btn:disabled { opacity: .25; cursor: default; }
 .pg-num { color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 500; letter-spacing: 2px; }
@@ -207,9 +119,9 @@ body {
                         <p class="hero-subtitle">AWS AR Global Data Lead</p>
                         <div class="hero-sep"></div>
                         <p class="hero-bio">
-                            Data Research &amp; Analytics Leader driving optimization, predictive modeling, 
-                            and strategic forecasting solutions across global finance operations. Combining 
-                            systematic thinking with deep data expertise to transform complex challenges 
+                            Data Research &amp; Analytics Leader driving optimization, predictive modeling,
+                            and strategic forecasting solutions across global finance operations. Combining
+                            systematic thinking with deep data expertise to transform complex challenges
                             into actionable insights and scalable solutions.
                         </p>
                     </div>
@@ -225,13 +137,15 @@ body {
             </div>
         </section>
 
-        <!-- PAGE 2: ALL EXPERIENCE -->
+        <!-- PAGE 2: EXPERIENCE -->
         <section class="page" data-page="2">
             <div class="container">
                 <h2 class="sec-heading reveal" data-tip="Click any role to expand">
                     <span>EXPERIENCE</span><span class="heading-line"></span>
                 </h2>
                 <div class="timeline">
+
+                    <!-- 1. AWS AR Global Data Lead -->
                     <div class="tl-item reveal" data-tip="Click to see details">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -240,6 +154,12 @@ body {
                                 <span class="tl-plus">+</span>
                             </div>
                             <div class="tl-body">
+                                <div class="tl-body-top">
+                                    <button class="explainer-link" onclick="openExplainer('aws')">
+                                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                                        Discover this role
+                                    </button>
+                                </div>
                                 <div class="tl-cat"><h4>AI/ML Development & Leadership</h4><ul>
                                     <li>Lead AI development teams building predictive and analytical models for FinOps, Billing, Customer Service, Finance and Sales</li>
                                     <li>Establish continuous improvement cycles evaluating model outputs against real-world results through feedback loops</li>
@@ -257,6 +177,8 @@ body {
                             </div>
                         </div>
                     </div>
+
+                    <!-- 2. AWS Finance Program Manager -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -264,15 +186,20 @@ body {
                                 <div><div class="tl-date">Feb 2019 – Jan 2021</div><div class="tl-role">AWS Finance Program Manager</div><div class="tl-co">Amazon</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Delivered Global Late Fee program implementation across regions</li>
-                                <li>Redesigned global AWS invoice count logic as work driver for variable cost per invoice</li>
-                                <li>Drive proactive Bad Debt and Fraud identification to prevent P&L impact</li>
-                                <li>Expand Sales Engagement programs toward Free Cash Flow improvement</li>
-                                <li>Deliver cross-business unit SQL mentorship and technical training workshops</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('fpm')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Delivered Global Late Fee program implementation across regions</li>
+                                    <li>Redesigned global AWS invoice count logic as work driver for variable cost per invoice</li>
+                                    <li>Drive proactive Bad Debt and Fraud identification to prevent P&L impact</li>
+                                    <li>Expand Sales Engagement programs toward Free Cash Flow improvement</li>
+                                    <li>Deliver cross-business unit SQL mentorship and technical training workshops</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 3. Global Process Optimization Advisor -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -280,14 +207,19 @@ body {
                                 <div><div class="tl-date">Jan 2017 – Feb 2019</div><div class="tl-role">Global Process Optimization Advisor</div><div class="tl-co">DELL Technologies</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Led global process innovation initiatives and sustained governance frameworks</li>
-                                <li>Optimized global reporting structures and delivery models</li>
-                                <li>Established global reporting quality governance standards</li>
-                                <li>Strengthened cross-departmental KPI connections for unified performance visibility</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('gpoa')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Led global process innovation initiatives and sustained governance frameworks</li>
+                                    <li>Optimized global reporting structures and delivery models</li>
+                                    <li>Established global reporting quality governance standards</li>
+                                    <li>Strengthened cross-departmental KPI connections for unified performance visibility</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 4. Listening Post Site Operations Manager -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -295,14 +227,19 @@ body {
                                 <div><div class="tl-date">May 2014 – Jan 2017</div><div class="tl-role">Listening Post Site Operations Manager</div><div class="tl-co">DELL Technologies — Global Operation Excellence</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Managed Global GLP pillars with KPI interlock across internal and OSP sites</li>
-                                <li>Led global innovation project implementation and governance</li>
-                                <li>Delivered one-screen end-to-end KPI performance dashboards</li>
-                                <li>System development using C# and .NET; DBA across Oracle, MSSQL, MySQL</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('lpsom')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Managed Global GLP pillars with KPI interlock across internal and OSP sites</li>
+                                    <li>Led global innovation project implementation and governance</li>
+                                    <li>Delivered one-screen end-to-end KPI performance dashboards</li>
+                                    <li>System development using C# and .NET; DBA across Oracle, MSSQL, MySQL</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 5. CSMB Revenue Lead -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -310,13 +247,18 @@ body {
                                 <div><div class="tl-date">Nov 2012 – May 2014</div><div class="tl-role">CSMB Revenue Lead for Outsourcing Partners</div><div class="tl-co">DELL Technologies</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Primary revenue and quality contact for OSPs across EMEA</li>
-                                <li>Transformation and transition consultant; co-designed System Renewal Global Project</li>
-                                <li>Led EMEA Point of Need Revenue Quality Control Governance</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('csmb')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Primary revenue and quality contact for OSPs across EMEA</li>
+                                    <li>Transformation and transition consultant; co-designed System Renewal Global Project</li>
+                                    <li>Led EMEA Point of Need Revenue Quality Control Governance</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 6. CER PON Revenue Analyst -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -324,13 +266,18 @@ body {
                                 <div><div class="tl-date">Dec 2011 – Nov 2012</div><div class="tl-role">CER PON Revenue Analyst</div><div class="tl-co">DELL Technologies</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Drove EMEA services strategy development and daily governance</li>
-                                <li>Developed services revenue roadmap with cost-benefit analysis</li>
-                                <li>Implemented ORL global compliance model across EMEA and OSPs</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('cerpon')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Drove EMEA services strategy development and daily governance</li>
+                                    <li>Developed services revenue roadmap with cost-benefit analysis</li>
+                                    <li>Implemented ORL global compliance model across EMEA and OSPs</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 7. Revenue Learning Coordinator -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -338,12 +285,17 @@ body {
                                 <div><div class="tl-date">Nov 2009 – Jan 2012</div><div class="tl-role">Revenue Learning Coordinator</div><div class="tl-co">DELL Technologies</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Coordinated EMEA trainers and coaches across revenue and new hire projects</li>
-                                <li>EMEA subject matter expert for revenue compliance and processes</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('rlc')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Coordinated EMEA trainers and coaches across revenue and new hire projects</li>
+                                    <li>EMEA subject matter expert for revenue compliance and processes</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 8. Services Soft Skills Coach -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -351,12 +303,17 @@ body {
                                 <div><div class="tl-date">Dec 2007 – Nov 2009</div><div class="tl-role">Services Soft Skills Coach</div><div class="tl-co">DELL Technologies</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Quality and performance responsibility for desktop support teams</li>
-                                <li>Developed productivity training and process improvement pilots</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('sssc')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Quality and performance responsibility for desktop support teams</li>
+                                    <li>Developed productivity training and process improvement pilots</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- 9. XPS Premium Support Specialist -->
                     <div class="tl-item reveal">
                         <div class="tl-dot"></div>
                         <div class="tl-card">
@@ -364,29 +321,26 @@ body {
                                 <div><div class="tl-date">Jun 2005 – Dec 2007</div><div class="tl-role">XPS Premium Support Specialist</div><div class="tl-co">DELL Technologies</div></div>
                                 <span class="tl-plus">+</span>
                             </div>
-                            <div class="tl-body"><ul>
-                                <li>Premium technical support and team coordination</li>
-                                <li>Process improvement pilots and project rollouts</li>
-                            </ul></div>
+                            <div class="tl-body">
+                                <div class="tl-body-top"><button class="explainer-link" onclick="openExplainer('xps')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>Discover this role</button></div>
+                                <ul>
+                                    <li>Premium technical support and team coordination</li>
+                                    <li>Process improvement pilots and project rollouts</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 3: SKILLS (full professional page) -->
+        <!-- PAGE 3: SKILLS -->
         <section class="page" data-page="3">
             <div class="container">
-                <h2 class="sec-heading reveal">
-                    <span>SKILLS & EXPERTISE</span><span class="heading-line"></span>
-                </h2>
-
-                <!-- Technical Skills with proficiency bars -->
+                <h2 class="sec-heading reveal"><span>SKILLS & EXPERTISE</span><span class="heading-line"></span></h2>
                 <div class="skills-panel reveal">
-                    <div class="sp-header">
-                        <span class="sp-icon">⚙️</span>
-                        <h3 class="sp-title">Technical Skills</h3>
-                    </div>
+                    <div class="sp-header"><span class="sp-icon">⚙️</span><h3 class="sp-title">Technical Skills</h3></div>
                     <div class="sp-grid">
                         <div class="sp-bar-item"><div class="sp-bar-label"><span>SQL</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:95%"></div></div></div>
                         <div class="sp-bar-item"><div class="sp-bar-label"><span>C# / .NET</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:85%"></div></div></div>
@@ -397,13 +351,8 @@ body {
                         <div class="sp-bar-item"><div class="sp-bar-label"><span>Python</span><span class="sp-level">Learning</span></div><div class="sp-bar"><div class="sp-fill sp-fill-learn" style="width:30%"></div></div></div>
                     </div>
                 </div>
-
-                <!-- Analytics & Data -->
                 <div class="skills-panel reveal">
-                    <div class="sp-header">
-                        <span class="sp-icon">📊</span>
-                        <h3 class="sp-title">Analytics & Data Science</h3>
-                    </div>
+                    <div class="sp-header"><span class="sp-icon">📊</span><h3 class="sp-title">Analytics & Data Science</h3></div>
                     <div class="sp-tags">
                         <span class="stag"><span class="stag-dot"></span>Predictive Modeling</span>
                         <span class="stag"><span class="stag-dot"></span>Strategic Forecasting</span>
@@ -417,13 +366,8 @@ body {
                         <span class="stag"><span class="stag-dot"></span>ROI Analysis</span>
                     </div>
                 </div>
-
-                <!-- Leadership -->
                 <div class="skills-panel reveal">
-                    <div class="sp-header">
-                        <span class="sp-icon">🎯</span>
-                        <h3 class="sp-title">Leadership & Management</h3>
-                    </div>
+                    <div class="sp-header"><span class="sp-icon">🎯</span><h3 class="sp-title">Leadership & Management</h3></div>
                     <div class="sp-tags">
                         <span class="stag"><span class="stag-dot"></span>Cross-Functional Collaboration</span>
                         <span class="stag"><span class="stag-dot"></span>Stakeholder Communication</span>
@@ -435,14 +379,9 @@ body {
                         <span class="stag"><span class="stag-dot"></span>Process Governance</span>
                     </div>
                 </div>
-
-                <!-- Two-column: Languages + Certifications -->
                 <div class="skills-split">
                     <div class="skills-panel reveal">
-                        <div class="sp-header">
-                            <span class="sp-icon">🌍</span>
-                            <h3 class="sp-title">Languages</h3>
-                        </div>
+                        <div class="sp-header"><span class="sp-icon">🌍</span><h3 class="sp-title">Languages</h3></div>
                         <div class="lang-rows">
                             <div class="lang-row"><span class="lang-name">Slovak</span><div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div><span class="lang-lbl">Native</span></div>
                             <div class="lang-row"><span class="lang-name">English</span><div class="lang-bar"><div class="lang-fill" style="width:95%"></div></div><span class="lang-lbl">Fluent</span></div>
@@ -451,23 +390,11 @@ body {
                         </div>
                     </div>
                     <div class="skills-panel reveal">
-                        <div class="sp-header">
-                            <span class="sp-icon">🏅</span>
-                            <h3 class="sp-title">Certifications</h3>
-                        </div>
+                        <div class="sp-header"><span class="sp-icon">🏅</span><h3 class="sp-title">Certifications</h3></div>
                         <div class="cert-rows">
-                            <div class="cert-row">
-                                <div class="cert-badge yb">YB</div>
-                                <div><div class="cert-name">Lean Six Sigma — Yellow Belt</div><div class="cert-sub">2× Certified</div></div>
-                            </div>
-                            <div class="cert-row">
-                                <div class="cert-badge gb">GB</div>
-                                <div><div class="cert-name">Lean Six Sigma — Green Belt</div><div class="cert-sub">5× Certified</div></div>
-                            </div>
-                            <div class="cert-row">
-                                <div class="cert-badge tr">ST</div>
-                                <div><div class="cert-name">Certified Soft Skills Trainer</div><div class="cert-sub">Professional Certification</div></div>
-                            </div>
+                            <div class="cert-row"><div class="cert-badge yb">YB</div><div><div class="cert-name">Lean Six Sigma — Yellow Belt</div><div class="cert-sub">2× Certified</div></div></div>
+                            <div class="cert-row"><div class="cert-badge gb">GB</div><div><div class="cert-name">Lean Six Sigma — Green Belt</div><div class="cert-sub">5× Certified</div></div></div>
+                            <div class="cert-row"><div class="cert-badge tr">ST</div><div><div class="cert-name">Certified Soft Skills Trainer</div><div class="cert-sub">Professional Certification</div></div></div>
                         </div>
                     </div>
                 </div>
@@ -475,125 +402,144 @@ body {
         </section>
     </div>
 
+    <!-- ===== EXPLAINER MODAL ===== -->
+    <div class="modal-overlay" id="explainerModal">
+        <div class="modal-box">
+            <canvas id="matrixCanvas"></canvas>
+            <div class="scanlines"></div>
+            <button class="modal-close" onclick="closeExplainer()" aria-label="Close">&times;</button>
+            <div class="scene">
+                <div class="modal-role-title" id="modalRoleTitle"></div>
+                <div class="topic-img-wrap" id="topicImgWrap"><img id="topicImg" src="" alt="" class="topic-img"></div>
+                <div class="narration" id="narration"></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+            <div class="modal-controls">
+                <button class="ctrl-btn" id="soundBtn" onclick="toggleSound()">🔊 SOUND ON</button>
+                <button class="ctrl-btn" id="pauseBtn" onclick="togglePause()">PAUSE</button>
+                <button class="ctrl-btn" onclick="closeExplainer()">SKIP</button>
+            </div>
+        </div>
+    </div>
+
     <style>
 /* ===== HERO ===== */
 .hero-section { max-width: 880px; margin: 0 auto; text-align: center; }
-.hero-dark {
-    background: linear-gradient(135deg, #2c3e50, #1a252f);
-    border-radius: 12px 12px 0 0; padding: 50px 40px 40px;
-}
+.hero-dark { background: linear-gradient(135deg, #1e2a38, #141e28); border-radius: 12px 12px 0 0; padding: 50px 40px 40px; }
 .hero-line { width: 80px; height: 2px; margin: 0 auto 30px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); }
 .hero-photo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.2); box-shadow: 0 8px 30px rgba(0,0,0,0.3); margin-bottom: 22px; }
-.hero-photo-fb { width: 110px; height: 110px; border-radius: 50%; background: #fff; margin: 0 auto 22px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #2c3e50; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+.hero-photo-fb { width: 110px; height: 110px; border-radius: 50%; background: #fff; margin: 0 auto 22px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #1e2a38; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
 .hero-name { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: #fff; letter-spacing: 5px; margin-bottom: 8px; }
-.hero-subtitle { font-size: 13px; font-weight: 500; letter-spacing: 4px; color: #e0c068; text-transform: uppercase; margin-bottom: 24px; }
+.hero-subtitle { font-size: 13px; font-weight: 500; letter-spacing: 4px; color: #c8956c; text-transform: uppercase; margin-bottom: 24px; }
 .hero-sep { width: 40px; height: 2px; background: rgba(255,255,255,0.25); margin: 0 auto 24px; }
-.hero-bio { font-size: 14px; line-height: 1.9; color: rgba(255,255,255,0.82); max-width: 600px; margin: 0 auto; font-weight: 300; }
-
-/* Contact strip under hero */
-.hero-contact {
-    background: #fff; border-radius: 0 0 12px 12px;
-    padding: 28px 40px;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-}
-.hc-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #555; }
-.hc-item a { color: #2c3e50; text-decoration: none; transition: color .3s; }
-.hc-item a:hover { color: #e74c3c; }
+.hero-bio { font-size: 14px; line-height: 1.9; color: rgba(255,255,255,0.82); max-width: 600px; margin: 0 auto; }
+.hero-contact { background: #fff; border-radius: 0 0 12px 12px; padding: 28px 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
+.hc-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #5a524b; }
+.hc-item a { color: #1e2a38; text-decoration: none; transition: color .3s; }
+.hc-item a:hover { color: #c8956c; }
 .hc-icon { font-size: 16px; }
 
 /* ===== SECTIONS ===== */
 .container { max-width: 960px; margin: 0 auto; }
-.sec-heading { display: flex; align-items: center; gap: 18px; margin-bottom: 36px; font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; letter-spacing: 4px; color: #2c3e50; }
-.heading-line { flex: 1; height: 1px; background: #ddd; }
+.sec-heading { display: flex; align-items: center; gap: 18px; margin-bottom: 36px; font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; letter-spacing: 4px; color: #1e2a38; }
+.heading-line { flex: 1; height: 1px; background: #ddd5cc; }
 
 /* ===== TIMELINE ===== */
 .timeline { position: relative; padding-left: 36px; }
-.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #2c3e50, #ccc); }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #1e2a38, #d5cec6); }
 .tl-item { position: relative; margin-bottom: 20px; }
-.tl-dot { position: absolute; left: -36px; top: 18px; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #2c3e50; z-index: 1; transition: all .3s; }
-.tl-item:hover .tl-dot { background: #2c3e50; transform: scale(1.2); }
+.tl-dot { position: absolute; left: -36px; top: 18px; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #1e2a38; z-index: 1; transition: all .3s; }
+.tl-item:hover .tl-dot { background: #1e2a38; transform: scale(1.2); }
 .tl-card { background: #fff; border-radius: 8px; box-shadow: 0 3px 16px rgba(0,0,0,0.05); overflow: hidden; transition: box-shadow .3s; }
 .tl-card:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.09); }
 .tl-head { padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background .3s; }
-.tl-head:hover { background: #f9fafb; }
-.tl-date { font-size: 11px; font-weight: 600; color: #e74c3c; letter-spacing: 1px; }
-.tl-role { font-size: 15px; font-weight: 600; color: #2c3e50; margin-top: 2px; }
-.tl-co { font-size: 12px; color: #95a5a6; margin-top: 2px; }
+.tl-head:hover { background: #faf8f5; }
+.tl-date { font-size: 11px; font-weight: 600; color: #c8956c; letter-spacing: 1px; }
+.tl-role { font-size: 15px; font-weight: 600; color: #1e2a38; margin-top: 2px; }
+.tl-co { font-size: 12px; color: #9a918a; margin-top: 2px; }
 .tl-plus { font-size: 20px; color: #ccc; font-weight: 300; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; transition: all .3s; flex-shrink: 0; }
-.tl-head:hover .tl-plus { color: #2c3e50; }
-.tl-head.open .tl-plus { transform: rotate(45deg); color: #e74c3c; }
+.tl-head:hover .tl-plus { color: #1e2a38; }
+.tl-head.open .tl-plus { transform: rotate(45deg); color: #c8956c; }
 .tl-body { max-height: 0; overflow: hidden; padding: 0 22px; transition: max-height .5s cubic-bezier(.23,1,.32,1), padding .3s; }
 .tl-body.open { max-height: 800px; padding: 0 22px 18px; }
 .tl-cat { margin-bottom: 12px; }
-.tl-cat h4 { font-size: 12px; font-weight: 600; color: #2c3e50; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #f0f0f0; }
+.tl-cat h4 { font-size: 12px; font-weight: 600; color: #1e2a38; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #ede8e3; }
 .tl-body ul { list-style: none; padding: 0; }
-.tl-body li { font-size: 13px; line-height: 1.7; color: #555; padding: 3px 0 3px 14px; position: relative; }
-.tl-body li::before { content: '◆'; position: absolute; left: 0; color: #ccc; font-size: 7px; top: 7px; }
+.tl-body li { font-size: 13px; line-height: 1.7; color: #5a524b; padding: 3px 0 3px 14px; position: relative; }
+.tl-body li::before { content: '◆'; position: absolute; left: 0; color: #d5cec6; font-size: 7px; top: 7px; }
+
+/* ===== EXPLAINER LINK inside tl-body ===== */
+.tl-body-top { display: flex; justify-content: flex-end; margin-bottom: 10px; padding-right: 20px; }
+.explainer-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    color: #9a918a; font-size: 10px; font-weight: 500; letter-spacing: 1.2px;
+    text-transform: uppercase; cursor: pointer;
+    text-decoration: none; border: none; background: none; padding: 4px 0;
+    transition: color .3s; font-family: 'Montserrat', sans-serif; white-space: nowrap;
+}
+.explainer-link:hover { color: #c8956c; }
+.explainer-link svg { width: 13px; height: 13px; fill: currentColor; opacity: 0.6; transition: opacity .3s; }
+.explainer-link:hover svg { opacity: 1; }
 
 /* ===== SKILLS PAGE ===== */
-.skills-panel {
-    background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    border-left: 4px solid #2c3e50;
-}
+.skills-panel { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-left: 4px solid #1e2a38; }
 .sp-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .sp-icon { font-size: 22px; }
-.sp-title { font-size: 16px; font-weight: 700; color: #2c3e50; letter-spacing: 1px; }
-
-/* Proficiency bars */
+.sp-title { font-size: 16px; font-weight: 700; color: #1e2a38; letter-spacing: 1px; }
 .sp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 40px; }
 .sp-bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; }
-.sp-bar-label span { font-size: 12px; font-weight: 500; color: #2c3e50; }
-.sp-level { color: #95a5a6 !important; font-weight: 400 !important; font-size: 11px !important; }
-.sp-bar { height: 7px; background: #ecf0f1; border-radius: 4px; overflow: hidden; }
-.sp-fill { height: 100%; background: linear-gradient(90deg, #2c3e50, #4a7c9b); border-radius: 4px; transition: width 1.2s ease; }
-.sp-fill-learn { background: linear-gradient(90deg, #95a5a6, #bdc3c7); }
-
-/* Skill tags */
+.sp-bar-label span { font-size: 12px; font-weight: 500; color: #1e2a38; }
+.sp-level { color: #9a918a !important; font-weight: 400 !important; font-size: 11px !important; }
+.sp-bar { height: 7px; background: #ede8e3; border-radius: 4px; overflow: hidden; }
+.sp-fill { height: 100%; background: linear-gradient(90deg, #1e2a38, #4a6274); border-radius: 4px; transition: width 1.2s ease; }
+.sp-fill-learn { background: linear-gradient(90deg, #9a918a, #c5bdb5); }
 .sp-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-.stag {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 16px; background: #f8f9fa; border: 1px solid #e8e8e8;
-    border-radius: 6px; font-size: 12px; color: #2c3e50; font-weight: 500;
-    transition: all .3s;
-}
-.stag:hover { background: #2c3e50; color: #fff; border-color: #2c3e50; transform: translateY(-2px); }
-.stag:hover .stag-dot { background: #e74c3c; }
-.stag-dot { width: 6px; height: 6px; border-radius: 50%; background: #2c3e50; flex-shrink: 0; transition: background .3s; }
-
-/* Skills split */
+.stag { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #faf8f5; border: 1px solid #e8e2db; border-radius: 6px; font-size: 12px; color: #1e2a38; font-weight: 500; transition: all .3s; }
+.stag:hover { background: #1e2a38; color: #fff; border-color: #1e2a38; transform: translateY(-2px); }
+.stag:hover .stag-dot { background: #c8956c; }
+.stag-dot { width: 6px; height: 6px; border-radius: 50%; background: #1e2a38; flex-shrink: 0; transition: background .3s; }
 .skills-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-
-/* Languages */
 .lang-row { display: grid; grid-template-columns: 72px 1fr 65px; align-items: center; gap: 10px; padding: 8px 0; }
-.lang-name { font-size: 12px; font-weight: 500; color: #2c3e50; }
-.lang-bar { height: 6px; background: #ecf0f1; border-radius: 3px; overflow: hidden; }
-.lang-fill { height: 100%; background: linear-gradient(90deg, #2c3e50, #4a7c9b); border-radius: 3px; }
-.lang-lbl { font-size: 10px; color: #95a5a6; text-align: right; }
-
-/* Certifications */
+.lang-name { font-size: 12px; font-weight: 500; color: #1e2a38; }
+.lang-bar { height: 6px; background: #ede8e3; border-radius: 3px; overflow: hidden; }
+.lang-fill { height: 100%; background: linear-gradient(90deg, #1e2a38, #4a6274); border-radius: 3px; }
+.lang-lbl { font-size: 10px; color: #9a918a; text-align: right; }
 .cert-rows { display: flex; flex-direction: column; gap: 14px; }
 .cert-row { display: flex; align-items: center; gap: 14px; }
-.cert-badge {
-    width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
-}
+.cert-badge { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
 .cert-badge.yb { background: linear-gradient(135deg, #f1c40f, #e67e22); }
 .cert-badge.gb { background: linear-gradient(135deg, #27ae60, #2ecc71); }
-.cert-badge.tr { background: linear-gradient(135deg, #2c3e50, #4a6274); }
-.cert-name { font-size: 13px; font-weight: 600; color: #2c3e50; }
-.cert-sub { font-size: 11px; color: #95a5a6; margin-top: 1px; }
+.cert-badge.tr { background: linear-gradient(135deg, #1e2a38, #4a6274); }
+.cert-name { font-size: 13px; font-weight: 600; color: #1e2a38; }
+.cert-sub { font-size: 11px; color: #9a918a; margin-top: 1px; }
 
 /* ===== REVEAL ===== */
 .reveal { opacity: 0; transform: translateY(25px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.show { opacity: 1; transform: translateY(0); }
-.float-tip {
-    position: fixed; z-index: 200; background: rgba(44,62,80,0.92); color: #fff;
-    padding: 7px 16px; border-radius: 18px; font-size: 11px; font-weight: 400; letter-spacing: 1px;
-    pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .4s, transform .4s;
-}
+.float-tip { position: fixed; z-index: 200; background: rgba(30,42,56,0.92); color: #fff; padding: 7px 16px; border-radius: 18px; font-size: 11px; font-weight: 400; letter-spacing: 1px; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .4s, transform .4s; }
 .float-tip.on { opacity: 1; transform: translateY(0); }
+
+/* ===== MODAL ===== */
+.modal-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(250,248,245,0.92); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity .5s; }
+.modal-overlay.active { display: flex; opacity: 1; }
+.modal-box { position: relative; width: 840px; max-width: 94vw; height: 540px; max-height: 84vh; background: #faf8f5; border: 1px solid #ddd5cc; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 80px rgba(30,42,56,0.12); }
+#matrixCanvas { position: absolute; inset: 0; z-index: 0; opacity: 0.10; }
+.scanlines { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(30,42,56,0.012) 3px, rgba(30,42,56,0.012) 6px); }
+.modal-close { position: absolute; top: 16px; right: 16px; z-index: 10; background: none; border: 1px solid #ddd5cc; color: #9a918a; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all .3s; font-family: 'Montserrat', sans-serif; }
+.modal-close:hover { border-color: #1e2a38; color: #1e2a38; }
+.scene { position: relative; z-index: 2; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 50px; }
+.modal-role-title { font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 3px; color: #9a918a; text-transform: uppercase; margin-bottom: 24px; border: 1px solid #ddd5cc; padding: 6px 18px; border-radius: 20px; }
+.topic-img-wrap { width: 180px; height: 120px; border-radius: 10px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 6px 24px rgba(30,42,56,0.1); border: 3px solid #fff; opacity: 0; transform: scale(0.9); transition: all .7s cubic-bezier(.23,1,.32,1); }
+.topic-img-wrap.visible { opacity: 1; transform: scale(1); }
+.topic-img { width: 100%; height: 100%; object-fit: cover; transition: opacity .5s; }
+.narration { text-align: center; max-width: 580px; font-family: 'Share Tech Mono', monospace; font-size: 14px; line-height: 1.9; color: #1e2a38; min-height: 70px; }
+.narration .cursor { display: inline-block; width: 2px; height: 15px; background: #c8956c; margin-left: 2px; animation: curBlink 0.8s infinite; vertical-align: text-bottom; }
+@keyframes curBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+.progress-track { position: absolute; bottom: 20px; left: 50px; right: 50px; height: 2px; background: #ede8e3; border-radius: 1px; z-index: 5; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #c8956c, #1e2a38); border-radius: 1px; transition: width 0.3s linear; }
+.modal-controls { position: absolute; bottom: 32px; right: 50px; z-index: 5; display: flex; gap: 8px; }
+.ctrl-btn { background: none; border: 1px solid #ddd5cc; color: #9a918a; padding: 5px 14px; border-radius: 20px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; transition: all .3s; }
+.ctrl-btn:hover { border-color: #1e2a38; color: #1e2a38; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
@@ -605,10 +551,15 @@ body {
     .nav-link { font-size: 9px; letter-spacing: 1px; }
     .sp-grid { grid-template-columns: 1fr; }
     .skills-split { grid-template-columns: 1fr; }
+    .modal-box { height: 75vh; }
+    .scene { padding: 30px 24px; }
+    .topic-img-wrap { width: 140px; height: 90px; }
+    .narration { font-size: 12px; }
 }
     </style>
 
     <script>
+/* ===== ORIGINAL RESUME LOGIC ===== */
 var cur = 1, total = 3;
 var landing = document.getElementById('landing');
 var main = document.getElementById('resumeMain');
@@ -625,11 +576,7 @@ document.getElementById('deskWrap').addEventListener('click', function() {
         document.body.style.overflow = 'auto';
         main.classList.remove('hidden');
         main.classList.add('show');
-        setTimeout(function() {
-            nav.classList.add('show');
-            pnav.classList.add('show');
-            revealPage();
-        }, 300);
+        setTimeout(function() { nav.classList.add('show'); pnav.classList.add('show'); revealPage(); }, 300);
     }, 900);
 });
 
@@ -640,107 +587,321 @@ function revealPage() {
     var tip = getTip();
     for (var i = 0; i < els.length; i++) {
         (function(el, idx) {
-            setTimeout(function() {
-                el.classList.add('show');
-                var t = el.getAttribute('data-tip');
-                if (t) showTip(tip, el, t);
-            }, 300 + idx * 500);
+            setTimeout(function() { el.classList.add('show'); var t = el.getAttribute('data-tip'); if (t) showTip(tip, el, t); }, 300 + idx * 500);
         })(els[i], i);
     }
 }
-
-function getTip() {
-    var el = document.querySelector('.float-tip');
-    if (!el) { el = document.createElement('div'); el.className = 'float-tip'; document.body.appendChild(el); }
-    return el;
-}
-
+function getTip() { var el = document.querySelector('.float-tip'); if (!el) { el = document.createElement('div'); el.className = 'float-tip'; document.body.appendChild(el); } return el; }
 function showTip(el, target, text) {
-    var r = target.getBoundingClientRect();
-    el.textContent = text;
+    var r = target.getBoundingClientRect(); el.textContent = text;
     el.style.top = (r.top + r.height / 2 - 14) + 'px';
-    if (r.right + 180 < window.innerWidth) {
-        el.style.left = (r.right + 12) + 'px';
-        el.style.transform = 'translateY(0)';
-    } else {
-        el.style.left = (r.left - 12) + 'px';
-        el.style.transform = 'translateX(-100%)';
-    }
-    el.classList.add('on');
-    setTimeout(function() { el.classList.remove('on'); }, 2200);
+    if (r.right + 180 < window.innerWidth) { el.style.left = (r.right + 12) + 'px'; el.style.transform = 'translateY(0)'; }
+    else { el.style.left = (r.left - 12) + 'px'; el.style.transform = 'translateX(-100%)'; }
+    el.classList.add('on'); setTimeout(function() { el.classList.remove('on'); }, 2200);
 }
-
 function goTo(n) {
     if (n < 1 || n > total || n === cur) return;
     var old = document.querySelector('.page.active');
-    if (old) {
-        old.style.animation = 'slideOut .35s ease forwards';
-        setTimeout(function() {
-            old.classList.remove('active'); old.style.display = 'none'; old.style.animation = '';
-            showP(n);
-        }, 350);
-    } else { showP(n); }
+    if (old) { old.style.animation = 'slideOut .35s ease forwards'; setTimeout(function() { old.classList.remove('active'); old.style.display = 'none'; old.style.animation = ''; showP(n); }, 350); }
+    else { showP(n); }
 }
-
 function showP(n) {
-    cur = n;
-    var p = document.querySelectorAll('.page')[n - 1];
-    p.style.display = 'block'; p.classList.add('active');
-    p.style.animation = 'slideIn .5s ease forwards';
+    cur = n; var p = document.querySelectorAll('.page')[n - 1];
+    p.style.display = 'block'; p.classList.add('active'); p.style.animation = 'slideIn .5s ease forwards';
     var els = p.querySelectorAll('.reveal');
-    for (var i = 0; i < els.length; i++) {
-        (function(el, idx) {
-            el.classList.remove('show');
-            setTimeout(function() { el.classList.add('show'); }, 150 + idx * 250);
-        })(els[i], i);
-    }
-    updCtrl(); updNav(n);
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    for (var i = 0; i < els.length; i++) { (function(el, idx) { el.classList.remove('show'); setTimeout(function() { el.classList.add('show'); }, 150 + idx * 250); })(els[i], i); }
+    updCtrl(); updNav(n); window.scrollTo({top: 0, behavior: 'smooth'});
 }
-
-function updCtrl() {
-    pgNum.textContent = cur + ' / ' + total;
-    prevB.disabled = cur === 1;
-    nextB.disabled = cur === total;
-}
-
-function updNav(n) {
-    var links = document.querySelectorAll('.nav-link');
-    for (var i = 0; i < links.length; i++) links[i].classList.remove('active');
-    for (var i = 0; i < links.length; i++) {
-        if (parseInt(links[i].getAttribute('data-page')) === n) { links[i].classList.add('active'); break; }
-    }
-}
-
+function updCtrl() { pgNum.textContent = cur + ' / ' + total; prevB.disabled = cur === 1; nextB.disabled = cur === total; }
+function updNav(n) { var links = document.querySelectorAll('.nav-link'); for (var i = 0; i < links.length; i++) links[i].classList.remove('active'); for (var i = 0; i < links.length; i++) { if (parseInt(links[i].getAttribute('data-page')) === n) { links[i].classList.add('active'); break; } } }
 prevB.addEventListener('click', function() { goTo(cur - 1); });
 nextB.addEventListener('click', function() { goTo(cur + 1); });
-
 var navLinks = document.querySelectorAll('.nav-link');
-for (var i = 0; i < navLinks.length; i++) {
-    navLinks[i].addEventListener('click', function(e) {
-        e.preventDefault(); goTo(parseInt(this.getAttribute('data-page')));
-    });
-}
-
-document.addEventListener('keydown', function(e) {
-    if (landing.style.display !== 'none') return;
-    if (e.key === 'ArrowRight') goTo(cur + 1);
-    if (e.key === 'ArrowLeft') goTo(cur - 1);
-});
+for (var i = 0; i < navLinks.length; i++) { navLinks[i].addEventListener('click', function(e) { e.preventDefault(); goTo(parseInt(this.getAttribute('data-page'))); }); }
+document.addEventListener('keydown', function(e) { if (landing.style.display !== 'none') return; if (e.key === 'ArrowRight') goTo(cur + 1); if (e.key === 'ArrowLeft') goTo(cur - 1); });
 
 function toggle(head) {
     var body = head.nextElementSibling;
     var isOpen = body.classList.contains('open');
     var page = head.closest('.page');
     var allBodies = page.querySelectorAll('.tl-body.open');
-    for (var i = 0; i < allBodies.length; i++) {
-        allBodies[i].classList.remove('open');
-        allBodies[i].previousElementSibling.classList.remove('open');
-    }
+    for (var i = 0; i < allBodies.length; i++) { allBodies[i].classList.remove('open'); allBodies[i].previousElementSibling.classList.remove('open'); }
     if (!isOpen) { body.classList.add('open'); head.classList.add('open'); }
 }
-
 updCtrl();
+
+/* ===== EXPLAINER: TOPIC IMAGES ===== */
+var topicImages = {
+    ai_team:    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=260&fit=crop',
+    datacenter: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=260&fit=crop',
+    ml_abstract:'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=260&fit=crop',
+    analytics:  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=260&fit=crop',
+    forecast:   'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=260&fit=crop',
+    strategy:   'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=260&fit=crop',
+    finance:    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=260&fit=crop',
+    billing:    'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=260&fit=crop',
+    mentorship: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=260&fit=crop',
+    global:     'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400&h=260&fit=crop',
+    process:    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=260&fit=crop',
+    dashboard:  'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&h=260&fit=crop',
+    coding:     'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=260&fit=crop',
+    handshake:  'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=260&fit=crop',
+    training:   'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=260&fit=crop',
+    support:    'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=260&fit=crop',
+    quality:    'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=400&h=260&fit=crop'
+};
+
+/* ===== EXPLAINER: ROLE DATA ===== */
+var roleData = {
+    aws: {
+        title: 'AWS AR GLOBAL DATA LEAD',
+        scenes: [
+            { image: 'ai_team', text: 'So let me walk you through this role. Since January 2021, this position sits at the intersection of artificial intelligence and global finance operations at Amazon Web Services.' },
+            { image: 'ml_abstract', text: 'At its core, the job is about leading teams that build predictive and analytical models. These models serve FinOps, Billing, Customer Service, Finance, and Sales — essentially every function that touches revenue.' },
+            { image: 'datacenter', text: 'One of the biggest achievements here has been architecting Atlas — the Advanced Tiering and Learning Analysis System. Think of it as the brain that transformed how AR operations work, moving from traditional channel-based approaches to intelligent, ML-driven workflows.' },
+            { image: 'analytics', text: 'The day-to-day involves designing the business logic behind machine learning models that power customer scorecards and risk-based cohorts. Every model output gets evaluated against real-world results through continuous feedback loops, so the system keeps getting smarter over time.' },
+            { image: 'forecast', text: 'Beyond the AI work, there is a strong forecasting dimension. Building models for revenue and receivables forecasting, free cash flow projections, headcount planning, and calculating ROI on strategic projects.' },
+            { image: 'strategy', text: 'And tying it all together is data governance — establishing guardrails, building strategic partnerships across Finance functions, and making sure that every insight is not just accurate but actionable and scalable.' },
+            { image: 'ai_team', text: 'In short, this role is about combining systematic thinking with deep data expertise to turn complex global challenges into clear, measurable solutions. It is where data science meets real business impact.' }
+        ]
+    },
+    fpm: {
+        title: 'AWS FINANCE PROGRAM MANAGER',
+        scenes: [
+            { image: 'finance', text: 'Let me tell you about this role. From February 2019 to January 2021, this was a Finance Program Manager position within AWS at Amazon, focused on driving global financial programs.' },
+            { image: 'global', text: 'One of the flagship deliverables was the Global Late Fee program — a cross-functional initiative that required coordinating implementation across multiple regions simultaneously, touching billing processes worldwide.' },
+            { image: 'billing', text: 'Another key contribution was completely redesigning how AWS counts invoices globally. This new logic became the work driver for calculating variable cost per invoice — a fundamental metric for the finance organization.' },
+            { image: 'analytics', text: 'A big part of the role was being proactive rather than reactive. That meant building programs to identify Bad Debt and Fraud risks early, before they could impact the profit and loss statement.' },
+            { image: 'forecast', text: 'On the growth side, the role expanded Sales Engagement programs specifically aimed at improving Free Cash Flow — connecting sales activity directly to financial outcomes.' },
+            { image: 'mentorship', text: 'And there was a strong people development angle too. Delivering SQL mentorship and technical training workshops across multiple business units, helping teams become more self-sufficient with data.' },
+            { image: 'strategy', text: 'Overall, this was a role that bridged the gap between finance strategy and technical execution, operating at a truly global scale. It laid the groundwork for the data leadership position that followed.' }
+        ]
+    },
+    gpoa: {
+        title: 'GLOBAL PROCESS OPTIMIZATION ADVISOR',
+        scenes: [
+            { image: 'process', text: 'This role at Dell Technologies ran from January 2017 to February 2019, and it was all about making global operations run better. The title says it well — process optimization, but at a truly global scale.' },
+            { image: 'strategy', text: 'The core responsibility was leading process innovation initiatives across the organization. That meant identifying inefficiencies, designing better workflows, and building governance frameworks that would sustain those improvements long after the initial project ended.' },
+            { image: 'dashboard', text: 'A major focus was on reporting. The role involved optimizing how global reporting structures were built and delivered, making sure the right information reached the right people in the right format.' },
+            { image: 'analytics', text: 'Quality governance was another pillar. Establishing standards that ensured reporting accuracy and consistency across all regions, so leadership could trust the numbers they were seeing.' },
+            { image: 'global', text: 'Perhaps most importantly, this role strengthened the connections between KPIs across departments. Creating unified performance visibility meant that teams were no longer working in silos — everyone could see how their work connected to the bigger picture.' }
+        ]
+    },
+    lpsom: {
+        title: 'LISTENING POST SITE OPERATIONS MANAGER',
+        scenes: [
+            { image: 'global', text: 'From May 2014 to January 2017, this was a Site Operations Manager role within Dell Technologies Global Operation Excellence division. It was a unique blend of operations management and hands-on technical work.' },
+            { image: 'dashboard', text: 'The role managed Global GLP pillars with KPI interlock across both internal sites and outsourcing partners. That meant ensuring performance metrics were aligned and consistent no matter where the work was being done.' },
+            { image: 'process', text: 'Leading global innovation projects was a big part of it — taking ideas from concept through implementation and then establishing the governance to keep them running smoothly.' },
+            { image: 'analytics', text: 'One of the standout deliverables was creating one-screen end-to-end KPI performance dashboards. The goal was to give leadership a single view of everything that mattered, without having to dig through multiple reports.' },
+            { image: 'coding', text: 'And here is where it gets technical — this role also involved system development using C sharp and dot NET, plus database administration across Oracle, Microsoft SQL Server, and MySQL. It was a rare combination of operational leadership and real engineering work.' }
+        ]
+    },
+    csmb: {
+        title: 'CSMB REVENUE LEAD FOR OUTSOURCING PARTNERS',
+        scenes: [
+            { image: 'handshake', text: 'From November 2012 to May 2014, this role at Dell Technologies was the primary revenue and quality contact for outsourcing service partners across the entire EMEA region.' },
+            { image: 'global', text: 'It was essentially a bridge role — sitting between Dell and its external partners, making sure revenue targets were met and quality standards were maintained across every engagement.' },
+            { image: 'process', text: 'A significant achievement was co-designing the System Renewal Global Project. This was a major transformation initiative that required both consulting expertise and deep understanding of how systems and processes needed to evolve.' },
+            { image: 'quality', text: 'The role also led EMEA Point of Need Revenue Quality Control Governance — ensuring that revenue quality was monitored and maintained at every touchpoint across the region.' }
+        ]
+    },
+    cerpon: {
+        title: 'CER PON REVENUE ANALYST',
+        scenes: [
+            { image: 'analytics', text: 'This role at Dell Technologies ran from December 2011 to November 2012. It was focused on driving EMEA services strategy development and maintaining daily governance over revenue operations.' },
+            { image: 'forecast', text: 'A key deliverable was developing the services revenue roadmap, complete with cost-benefit analysis. This meant looking at where revenue opportunities existed and building a clear plan to capture them.' },
+            { image: 'global', text: 'The role also implemented the ORL global compliance model across EMEA and all outsourcing partners — making sure that revenue processes met global standards consistently across every market.' }
+        ]
+    },
+    rlc: {
+        title: 'REVENUE LEARNING COORDINATOR',
+        scenes: [
+            { image: 'training', text: 'From November 2009 to January 2012, this role at Dell Technologies was about building capability across the EMEA region. It involved coordinating trainers and coaches across revenue and new hire projects.' },
+            { image: 'mentorship', text: 'The position served as the EMEA subject matter expert for revenue compliance and processes. That meant being the go-to person when teams had questions about how things should work, and making sure everyone was aligned on best practices.' },
+            { image: 'strategy', text: 'It was a foundational role that combined deep process knowledge with a passion for developing people — skills that would prove essential in every position that followed.' }
+        ]
+    },
+    sssc: {
+        title: 'SERVICES SOFT SKILLS COACH',
+        scenes: [
+            { image: 'mentorship', text: 'From December 2007 to November 2009, this coaching role at Dell Technologies carried quality and performance responsibility for desktop support teams.' },
+            { image: 'training', text: 'The focus was on developing productivity training programs and running process improvement pilots. It was about helping technical teams communicate better, work more efficiently, and deliver a higher quality of service.' },
+            { image: 'ai_team', text: 'This was where the journey into people development and process thinking really began — understanding that great results come from great teams, and great teams are built through coaching and continuous improvement.' }
+        ]
+    },
+    xps: {
+        title: 'XPS PREMIUM SUPPORT SPECIALIST',
+        scenes: [
+            { image: 'support', text: 'This is where it all started. From June 2005 to December 2007, this role at Dell Technologies was about delivering premium technical support for the XPS product line — Dell\'s flagship consumer brand.' },
+            { image: 'process', text: 'Beyond day-to-day support, the role involved team coordination and running process improvement pilots and project rollouts. Even at this early stage, there was a drive to make things work better, not just fix what was broken.' },
+            { image: 'coding', text: 'It was the foundation of a career built on technical expertise, problem-solving, and a constant push to improve how things are done. Every role that followed grew from the skills and mindset developed here.' }
+        ]
+    }
+};
+
+/* ===== MATRIX RAIN ===== */
+var matrixCanvas, matrixCtx, matrixCols, matrixDrops, matrixAnim, matrixFrame = 0;
+var matrixChars = '01アイウエオカキクケコ∑∏∫∂λΩΔΘΠ';
+
+function initMatrix() {
+    matrixCanvas = document.getElementById('matrixCanvas');
+    var box = matrixCanvas.parentElement;
+    matrixCanvas.width = box.offsetWidth;
+    matrixCanvas.height = box.offsetHeight;
+    matrixCtx = matrixCanvas.getContext('2d');
+    matrixCtx.fillStyle = '#faf8f5';
+    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+    var fontSize = 24;
+    matrixCols = Math.floor(matrixCanvas.width / fontSize);
+    matrixDrops = [];
+    for (var i = 0; i < matrixCols; i++) matrixDrops[i] = Math.random() * -40;
+    matrixFrame = 0;
+    drawMatrix(fontSize);
+}
+function drawMatrix(fontSize) {
+    matrixFrame++;
+    var shouldAdvance = (matrixFrame % 4 === 0);
+    matrixCtx.fillStyle = 'rgba(250, 248, 245, 0.06)';
+    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+    matrixCtx.font = fontSize + 'px "Share Tech Mono", monospace';
+    for (var i = 0; i < matrixDrops.length; i++) {
+        var ch = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+        matrixCtx.fillStyle = 'rgba(30, 42, 56, ' + (0.1 + Math.random() * 0.15) + ')';
+        matrixCtx.fillText(ch, i * fontSize, matrixDrops[i] * fontSize);
+        if (shouldAdvance) {
+            if (matrixDrops[i] * fontSize > matrixCanvas.height && Math.random() > 0.98) matrixDrops[i] = 0;
+            matrixDrops[i] += 0.4;
+        }
+    }
+    matrixAnim = requestAnimationFrame(function() { drawMatrix(fontSize); });
+}
+
+/* ===== SPEECH SYNTHESIS ===== */
+var soundEnabled = true;
+var currentUtterance = null;
+
+function speak(text, onEnd) {
+    if (!soundEnabled) { if (onEnd) onEnd(); return; }
+    window.speechSynthesis.cancel();
+    currentUtterance = new SpeechSynthesisUtterance(text);
+    currentUtterance.rate = 0.9;
+    currentUtterance.pitch = 1.0;
+    currentUtterance.volume = 0.85;
+    var voices = window.speechSynthesis.getVoices();
+    var preferred = voices.find(function(v) { return v.lang.startsWith('en') && v.name.toLowerCase().indexOf('google') > -1; })
+        || voices.find(function(v) { return v.lang.startsWith('en-US'); })
+        || voices.find(function(v) { return v.lang.startsWith('en'); });
+    if (preferred) currentUtterance.voice = preferred;
+    if (onEnd) currentUtterance.onend = onEnd;
+    window.speechSynthesis.speak(currentUtterance);
+}
+function stopSpeech() { window.speechSynthesis.cancel(); currentUtterance = null; }
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    document.getElementById('soundBtn').textContent = soundEnabled ? '🔊 SOUND ON' : '🔇 SOUND OFF';
+    if (!soundEnabled) stopSpeech();
+}
+if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); }; }
+
+/* ===== TYPING ENGINE ===== */
+var typeTimer, sceneTimer, progressTimer;
+var isPaused = false, totalDuration = 0, elapsed = 0;
+
+function typeText(el, text, speed, callback) {
+    var i = 0; el.innerHTML = '';
+    function tick() {
+        if (isPaused) { typeTimer = setTimeout(tick, 50); return; }
+        if (i < text.length) { el.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>'; i++; typeTimer = setTimeout(tick, speed); }
+        else { el.innerHTML = text; if (callback) callback(); }
+    }
+    tick();
+}
+
+function showTopicImage(key) {
+    var wrap = document.getElementById('topicImgWrap');
+    var img = document.getElementById('topicImg');
+    wrap.classList.remove('visible');
+    setTimeout(function() {
+        img.src = topicImages[key] || '';
+        img.alt = key.replace(/_/g, ' ');
+        img.onload = function() { wrap.classList.add('visible'); };
+        img.onerror = function() { wrap.classList.add('visible'); };
+    }, 150);
+}
+
+function playScene(roleKey, idx) {
+    var data = roleData[roleKey];
+    if (!data || idx >= data.scenes.length) {
+        document.getElementById('narration').innerHTML = '<span style="color:#9a918a;">Session complete.</span>';
+        return;
+    }
+    var scene = data.scenes[idx];
+    showTopicImage(scene.image);
+    speak(scene.text, function() {
+        sceneTimer = setTimeout(function() {
+            if (!isPaused) { playScene(roleKey, idx + 1); }
+            else { var wid = setInterval(function() { if (!isPaused) { clearInterval(wid); playScene(roleKey, idx + 1); } }, 100); }
+        }, 800);
+    });
+    typeText(document.getElementById('narration'), scene.text, 30, function() {
+        if (!soundEnabled) {
+            sceneTimer = setTimeout(function() {
+                if (!isPaused) { playScene(roleKey, idx + 1); }
+                else { var wid = setInterval(function() { if (!isPaused) { clearInterval(wid); playScene(roleKey, idx + 1); } }, 100); }
+            }, 2000);
+        }
+    });
+}
+
+function startProgress(roleKey) {
+    var data = roleData[roleKey];
+    totalDuration = data.scenes.length * 12000;
+    elapsed = 0;
+    var fill = document.getElementById('progressFill');
+    fill.style.width = '0%';
+    progressTimer = setInterval(function() {
+        if (!isPaused) { elapsed += 100; fill.style.width = Math.min((elapsed / totalDuration) * 100, 100) + '%'; }
+    }, 100);
+}
+
+var activeRole = null;
+function openExplainer(roleKey) {
+    activeRole = roleKey;
+    var data = roleData[roleKey];
+    if (!data) return;
+    document.getElementById('modalRoleTitle').textContent = data.title;
+    document.getElementById('narration').innerHTML = '';
+    document.getElementById('topicImgWrap').classList.remove('visible');
+    document.getElementById('progressFill').style.width = '0%';
+    isPaused = false;
+    document.getElementById('pauseBtn').textContent = 'PAUSE';
+    var modal = document.getElementById('explainerModal');
+    modal.style.display = 'flex';
+    requestAnimationFrame(function() {
+        modal.classList.add('active');
+        initMatrix();
+        setTimeout(function() { playScene(roleKey, 0); startProgress(roleKey); }, 600);
+    });
+}
+
+function closeExplainer() {
+    var modal = document.getElementById('explainerModal');
+    modal.classList.remove('active');
+    setTimeout(function() { modal.style.display = 'none'; }, 500);
+    clearTimeout(typeTimer); clearTimeout(sceneTimer); clearInterval(progressTimer);
+    cancelAnimationFrame(matrixAnim); stopSpeech();
+    activeRole = null; isPaused = false;
+}
+
+function togglePause() {
+    isPaused = !isPaused;
+    document.getElementById('pauseBtn').textContent = isPaused ? 'RESUME' : 'PAUSE';
+    if (isPaused) window.speechSynthesis.pause(); else window.speechSynthesis.resume();
+}
+
+document.getElementById('explainerModal').addEventListener('click', function(e) { if (e.target === this) closeExplainer(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeExplainer(); });
     </script>
 </body>
 </html>
