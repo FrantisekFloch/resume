@@ -271,7 +271,7 @@ body {
             <div class="container">
                 <h2 class="sec-heading reveal"><span>KEY PROJECTS</span><span class="heading-line"></span></h2>
                 <div class="projects-grid">
-                    <div class="project-card reveal" onclick="openProject(0)"><div class="project-img-wrap"><img class="project-img" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&h=300&fit=crop" alt="Atlas"><span class="project-badge badge-ai">AI / ML</span></div><div class="project-body"><div class="project-title">Atlas — ML-Driven AR System</div><div class="project-sub">Amazon Web Services</div><div class="project-desc">Architected the Advanced Tiering & Learning Analysis System, transforming global AR operations from channel-based to intelligent ML-driven workflows.</div><div class="project-tags"><span class="ptag">Machine Learning</span><span class="ptag">Python</span><span class="ptag">SQL</span><span class="ptag">Data Architecture</span></div><div class="project-impact"><span class="impact-icon">🎯</span><span class="impact-text"><strong>Transformed</strong> global AR operations across all regions</span></div></div></div>
+                    <div class="project-card reveal" onclick="openProject(0)"><div class="project-img-wrap"><img class="project-img" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&h=300&fit=crop" alt="Atlas"><span class="project-badge badge-ai">AI / ML</span></div><div class="project-body"><div class="project-title">Atlas — ML-Driven AR Intelligence</div><div class="project-sub">Amazon Web Services · OP2 Strategic FinOps Investment</div><div class="project-desc">Architected a deterministic scoring pipeline transforming ~150 raw attributes through 4 progressive stages into 320+ columns, producing multi-dimensional health scores (1–10) across 8 strategic dimensions with historical lever effectiveness tracking and AI-constrained collection recommendations.</div><div class="project-tags"><span class="ptag">Machine Learning</span><span class="ptag">Deterministic Pipeline</span><span class="ptag">SQL</span><span class="ptag">AI Integration</span><span class="ptag">Redshift</span></div><div class="project-impact"><span class="impact-icon">🎯</span><span class="impact-text"><strong>$193MM FCF</strong> strategic investment · 25,800+ accounts scored · 2,200+ calculations per account</span></div></div></div>
                     <div class="project-card reveal" onclick="openProject(1)"><div class="project-img-wrap"><img class="project-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop" alt="Forecasting"><span class="project-badge badge-finance">Finance</span></div><div class="project-body"><div class="project-title">Revenue & Receivables Forecasting</div><div class="project-sub">Amazon Web Services</div><div class="project-desc">Built predictive models for free cash flow projections, headcount planning, and project ROI calculations across global finance operations.</div><div class="project-tags"><span class="ptag">Forecasting</span><span class="ptag">Power BI</span><span class="ptag">Financial Modeling</span></div><div class="project-impact"><span class="impact-icon">📈</span><span class="impact-text"><strong>Enabled</strong> data-driven headcount and cash flow planning</span></div></div></div>
                     <div class="project-card reveal" onclick="openProject(2)"><div class="project-img-wrap"><img class="project-img" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=500&h=300&fit=crop" alt="Late Fee"><span class="project-badge badge-finance">Finance</span></div><div class="project-body"><div class="project-title">Global Late Fee Program</div><div class="project-sub">Amazon Web Services</div><div class="project-desc">Delivered end-to-end implementation of the Global Late Fee program across multiple regions, coordinating cross-functional teams worldwide.</div><div class="project-tags"><span class="ptag">Program Management</span><span class="ptag">Global Rollout</span><span class="ptag">Billing</span></div><div class="project-impact"><span class="impact-icon">🌍</span><span class="impact-text"><strong>Deployed</strong> across all AWS billing regions</span></div></div></div>
                     <div class="project-card reveal" onclick="openProject(3)"><div class="project-img-wrap"><img class="project-img" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=500&h=300&fit=crop" alt="Dashboard"><span class="project-badge badge-ops">Operations</span></div><div class="project-body"><div class="project-title">Global KPI Performance Dashboard</div><div class="project-sub">DELL Technologies</div><div class="project-desc">Created one-screen end-to-end KPI dashboards providing unified performance visibility across internal sites and outsourcing partners.</div><div class="project-tags"><span class="ptag">C# / .NET</span><span class="ptag">SQL Server</span><span class="ptag">Dashboard Design</span></div><div class="project-impact"><span class="impact-icon">📊</span><span class="impact-text"><strong>Unified</strong> performance visibility across all global sites</span></div></div></div>
@@ -505,7 +505,7 @@ body {
 /* ===== TESTIMONIALS FULL ===== */
 .carousel-wrap { position:relative; overflow:hidden; }
 .carousel-track { display:flex; transition:transform .6s cubic-bezier(.23,1,.32,1); }
-.test-card { min-width:100%; padding:0 20px; }
+.test-card { min-width:100%; flex:0 0 100%; box-sizing:border-box; padding:0 12px; }dth:100%; padding:0 20px; }
 .test-card-inner { background:var(--bg-card); border-radius:12px; padding:36px 32px; box-shadow:0 4px 24px var(--shadow); text-align:center; transition:all .5s; }
 .test-quote-mark { font-family:'Playfair Display',serif; font-size:72px; color:var(--border-light); line-height:1; margin-bottom:-10px; }
 .test-stars { margin-bottom:16px; }
@@ -616,10 +616,78 @@ body {
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:768px){
-    .hero-name{font-size:26px;letter-spacing:3px} .hero-dark{padding:36px 20px 30px} .hero-contact{padding:20px;grid-template-columns:1fr}
-    .page{padding:68px 16px 100px} .nav-links{gap:10px} .nav-link{font-size:8px;letter-spacing:1px}
-    .sp-grid{grid-template-columns:1fr} .skills-split{grid-template-columns:1fr} .stats-grid{grid-template-columns:repeat(3,1fr)}
-    .projects-grid{grid-template-columns:1fr} .modal-box{height:75vh} .scene{padding:30px 24px}
+    .hero-name{font-size:24px;letter-spacing:2px}
+    .hero-subtitle{font-size:11px;letter-spacing:2px}
+    .hero-dark{padding:32px 18px 28px}
+    .hero-bio{font-size:13px;line-height:1.7}
+    .hero-contact{padding:18px 16px;grid-template-columns:1fr;gap:12px}
+    .hc-item{font-size:12px}
+    .page{padding:68px 14px 110px}
+    .nav-links{gap:8px}
+    .nav-link{font-size:8px;letter-spacing:1px}
+    .sp-grid{grid-template-columns:1fr}
+    .skills-split{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:10px;margin-top:20px}
+    .stat-card{padding:16px 10px}
+    .stat-number{font-size:28px}
+    .stat-label{font-size:8px;letter-spacing:1px}
+    .projects-grid{grid-template-columns:1fr}
+    .modal-box{height:80vh;max-width:96vw}
+    .scene{padding:24px 18px}
+    .narration{font-size:12px;line-height:1.7}
+    .modal-controls{right:18px;bottom:24px}
+    .journey-wrap{margin-top:28px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .journey-svg{min-width:600px}
+    .journey-title{font-size:15px;letter-spacing:2px;margin-bottom:16px}
+    .mini-test{margin-top:28px}
+    .mini-test-title{font-size:14px;letter-spacing:2px;margin-bottom:14px}
+    .mini-test-card{min-width:240px;padding:16px}
+    .mtt{font-size:11px}
+    .sec-heading{font-size:18px;letter-spacing:2px;margin-bottom:24px}
+    .tl-head{padding:14px 16px;flex-wrap:wrap;gap:8px}
+    .tl-role{font-size:14px}
+    .tl-body.open{padding:0 16px 14px}
+    .tl-body li{font-size:12px;line-height:1.6}
+    .tl-cat h4{font-size:11px}
+    .skills-panel{padding:20px 18px;margin-bottom:18px}
+    .sp-title{font-size:14px}
+    .stag{padding:6px 12px;font-size:11px}
+    .lang-row{grid-template-columns:60px 1fr 55px}
+    .project-body{padding:16px}
+    .project-title{font-size:14px}
+    .project-desc{font-size:11px;line-height:1.6}
+    .project-impact{flex-wrap:wrap}
+    .impact-text{font-size:10px}
+    .project-modal{max-width:96vw}
+    .pm-body{padding:20px 16px}
+    .pm-title{font-size:18px}
+    .pm-text{font-size:12px;line-height:1.7}
+    .test-card-inner{padding:24px 18px}
+    .test-text{font-size:13px;line-height:1.7}
+    .test-quote-mark{font-size:48px}
+    .carousel-wrap{margin:0 -6px}
+    .chat-window{width:calc(100vw - 24px);right:12px;bottom:88px}
+    .chat-body{height:260px}
+    .page-nav{bottom:16px;padding:8px 16px;gap:12px}
+    .game-header{padding:12px 16px;flex-wrap:wrap;gap:10px}
+    .game-title{font-size:13px}
+    .game-stats{gap:16px}
+    .game-stat-val{font-size:22px}
+    .game-start-title{font-size:26px}
+    .game-start-sub{font-size:12px}
+    .desk-wrap{width:85vw}
+    .desk-name h2{font-size:20px;letter-spacing:3px}
+    .desk-name p{font-size:10px;letter-spacing:2px}
+    .container{padding:0 4px}
+    .explainer-link{font-size:9px}
+}
+@media(max-width:400px){
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .hero-name{font-size:20px;letter-spacing:1px}
+    .hero-photo{width:90px;height:90px}
+    .stat-number{font-size:24px}
+    .nav-links{gap:6px}
+    .nav-link{font-size:7px}
 }
 </style>
 
@@ -727,7 +795,7 @@ var qaTree={
     achievement:{bot:"Building Atlas — the Advanced Tiering & Learning Analysis System at AWS. It transformed how global AR operations work, moving from manual channel-based processes to intelligent ML-driven workflows. It's where data science meets real business impact at scale.",options:[{text:"Tell me more about Atlas",next:'atlas'},{text:"What tools do you use?",next:'tools'},{text:"Back to start",next:'start'}]},
     tools:{bot:"Day-to-day it's a mix: SQL is the backbone. Power BI for visualization. Excel/VBA for rapid prototyping. C#/.NET for system development. And increasingly Python for ML model work. The tool matters less than the thinking behind it.",options:[{text:"What about AI/ML?",next:'atlas'},{text:"Why should I hire you?",next:'hire'},{text:"Back to start",next:'start'}]},
     hire:{bot:"20+ years of progressive experience across two global companies. I bring a rare combination: deep technical skills in data and systems, plus the leadership ability to drive cross-functional programs at global scale. I don't just analyze data — I build the systems and teams that turn data into business outcomes.",options:[{text:"What's your biggest achievement?",next:'achievement'},{text:"Leadership style?",next:'leadership'},{text:"Back to start",next:'start'}]},
-    atlas:{bot:"Atlas stands for Advanced Tiering & Learning Analysis System. It's an ML-powered platform I architected at AWS that scores customers, assigns risk cohorts, and recommends optimal collection strategies. It continuously learns from outcomes through feedback loops.",options:[{text:"What tools power it?",next:'tools'},{text:"Why should I hire you?",next:'hire'},{text:"Back to start",next:'start'}]},
+    atlas:{bot:"Atlas is a deterministic scoring pipeline that transforms ~150 raw attributes into 320+ columns across a 7-stage pipeline. It scores ~25,800 accounts on a 1–10 scale across 8 strategic dimensions, evaluates historical collection lever effectiveness, and produces AI-constrained recommendations. ML defines peer-group segmentation, and partner AI systems like Payment Lens and Claire consume Atlas outputs as inputs. Business-defined boundaries prevent reward optimization bias in ML models.",options:[{text:"What tools power it?",next:'tools'},{text:"Why should I hire you?",next:'hire'},{text:"Back to start",next:'start'}]},
     leadership:{bot:"I lead through clarity and empowerment. I set the vision and guardrails, then trust the team. I'm big on mentorship — I've run SQL training workshops across business units. The best leaders make themselves less needed over time by building capability in others.",options:[{text:"Biggest achievement?",next:'achievement'},{text:"Tell me about Atlas",next:'atlas'},{text:"Back to start",next:'start'}]}
 };
 function toggleChat(){chatOpen=!chatOpen;document.getElementById('chatWindow').classList.toggle('open',chatOpen);if(chatOpen&&chatBody.children.length===0)showNode('start');}
@@ -735,7 +803,7 @@ function showNode(key){var node=qaTree[key];if(!node)return;var typing=document.
 
 /* ===== PROJECTS ===== */
 var projects=[
-    {img:'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&h=300&fit=crop',title:'Atlas — ML-Driven AR System',sub:'Amazon Web Services · 2021–Present',text:'Atlas is the Advanced Tiering & Learning Analysis System — a comprehensive ML platform that fundamentally changed how AWS handles Accounts Receivable operations globally.\n\nThe system uses machine learning models to score customers, assign risk-based cohorts, and recommend optimal collection strategies. Instead of relying on static channel-based rules, Atlas makes intelligent decisions based on customer behavior patterns, payment history, and predictive signals.\n\nKey components include a unified recommendation engine, continuous feedback loops, and a business logic layer that translates ML scores into actionable workflows.'},
+    {img:'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&h=300&fit=crop',title:'Atlas — ML-Driven AR Intelligence',sub:'Amazon Web Services · OP2 Strategic FinOps Investment · FCF: $193MM',text:'Atlas (Advanced Tiering & Learning Analysis System) is a deterministic scoring pipeline that transforms ~150 raw attributes through 4 progressive stages, generating 320+ final columns that distill complex account behavior into actionable health scores.\n\n<strong>AI & ML Integration:</strong> Atlas is designed to complement existing ML initiatives (Payment Lens, Claire/Sheldon, GDA Data Science). ML was used to define peer-group segmentation by identifying accounts with similar behavioral patterns. Partner AI systems consume Atlas outputs — health scores, behavioral categorizations, lever effectiveness history — as inputs into their own recommendation models.\n\n<strong>Why Business-Defined Boundaries Matter for AI:</strong> Pure ML models optimize toward reward signals, which introduces bias — e.g., weighting total AR balance over aging composition. Atlas solves this by constraining the solution space with business-defined boundaries before any model optimizes, ensuring recommendations align with collection priorities and policy.\n\n<strong>7-Stage Pipeline:</strong> Data Foundation (27 tables, 11 schemas, 25-month history) → Trajectory Analysis → Scoring Engine (1–10 scale) → Dimensional Profiling (8 strategic dimensions) → Lever Effectiveness Evaluation → Boundary Validation → Recommendation Output.\n\n<strong>Scale:</strong> 200+ data points per account, 2,200+ calculations, 61 individual scores aggregated to 32, feeding 8 dimensions into 1 overall health score plus collection lever effectiveness ratings. Covers ~25,800 accounts with automation eligibility classification from full automation to critical daily monitoring.'},
     {img:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=300&fit=crop',title:'Revenue & Receivables Forecasting',sub:'Amazon Web Services · 2021–Present',text:'A suite of predictive models powering financial planning across AWS AR operations.\n\nCovers free cash flow projections, headcount planning models, and project ROI calculators. Each model combines historical patterns with forward-looking indicators, feeding directly into executive decision-making.'},
     {img:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=300&fit=crop',title:'Global Late Fee Program',sub:'Amazon Web Services · 2019–2021',text:'A major cross-functional initiative coordinating implementation across multiple AWS billing regions simultaneously.\n\nInvolved designing fee calculation logic, building billing system integrations, establishing regional compliance frameworks, and managing stakeholder alignment across Finance, Legal, and Engineering.'},
     {img:'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=300&fit=crop',title:'Global KPI Performance Dashboard',sub:'DELL Technologies · 2014–2017',text:'A one-screen end-to-end KPI performance dashboard giving leadership unified visibility across all internal sites and outsourcing partners.\n\nBuilt using C# and .NET with database backends spanning Oracle, SQL Server, and MySQL. Became the primary tool for daily governance and strategic decision-making.'}
