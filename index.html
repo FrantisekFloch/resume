@@ -13,16 +13,16 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
 /* ===== CSS VARIABLES (light/dark) ===== */
 :root {
-    --bg: #faf8f5; --bg-card: #fff; --text: #3d3632; --text-heading: #1e2a38;
-    --text-muted: #9a918a; --accent: #c8956c; --border: #ddd5cc; --border-light: #ede8e3;
-    --shadow: rgba(0,0,0,0.05); --shadow-md: rgba(0,0,0,0.08);
-    --nav-bg: rgba(30,42,56,0.97); --hero-dark: #1e2a38; --hero-darker: #141e28;
+    --bg: #f4f5f7; --bg-card: #fff; --text: #3a3f4a; --text-heading: #2b2f38;
+    --text-muted: #8a8f9a; --accent: #6f83ab; --border: #cdd2de; --border-light: #e5e7ee;
+    --shadow: rgba(43,47,56,0.06); --shadow-md: rgba(43,47,56,0.10);
+    --nav-bg: rgba(43,54,79,0.97); --hero-dark: #3b4664; --hero-darker: #262f45;
 }
 [data-theme="dark"] {
-    --bg: #0f1419; --bg-card: #1a2332; --text: #c5bdb5; --text-heading: #e8e2db;
-    --text-muted: #6b7280; --accent: #c8956c; --border: #2a3544; --border-light: #1e2a38;
+    --bg: #10141d; --bg-card: #1a2130; --text: #c3c8d4; --text-heading: #e8eaf0;
+    --text-muted: #6b7280; --accent: #8ba0cf; --border: #2a3346; --border-light: #1e2536;
     --shadow: rgba(0,0,0,0.3); --shadow-md: rgba(0,0,0,0.4);
-    --nav-bg: rgba(15,20,25,0.97); --hero-dark: #0a0f14; --hero-darker: #060a0e;
+    --nav-bg: rgba(10,13,20,0.97); --hero-dark: #0c1018; --hero-darker: #06080d;
 }
 
 body {
@@ -43,10 +43,14 @@ body {
 .desk-wrap:hover .desk-img { transform: scale(1.12); }
 .desk-overlay { position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transition:opacity .5s; }
 .desk-wrap:hover .desk-overlay { opacity:1; }
-.desk-overlay-bg { position:absolute; inset:0; background:rgba(30,42,56,0.45); backdrop-filter:blur(2px); border-radius:12px; }
-.desk-cta { position:relative; z-index:3; background:#fff; color:#1e2a38; padding:14px 36px; border-radius:30px; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:600; letter-spacing:2px; text-transform:uppercase; box-shadow:0 8px 30px rgba(0,0,0,0.2); transition:transform .3s,box-shadow .3s; }
-.desk-wrap:hover .desk-cta { transform:scale(1.05); }
-.desk-subtitle { position:relative; z-index:3; color:rgba(255,255,255,0.9); font-size:12px; font-weight:300; letter-spacing:1.5px; margin-top:12px; }
+.desk-overlay-bg { position:absolute; inset:0; background:rgba(43,47,56,0.55); backdrop-filter:blur(2px); border-radius:12px; }
+.desk-cta-group { position:relative; z-index:3; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.desk-cta { position:relative; background:#fff; color:#2b2f38; padding:13px 32px; border-radius:30px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; box-shadow:0 8px 30px rgba(0,0,0,0.2); transition:transform .3s,box-shadow .3s; border:none; cursor:pointer; }
+.desk-cta:hover { transform:scale(1.05); }
+.desk-cta-journey { background:linear-gradient(135deg,#3b4664,#2b3350); color:#fff; }
+.desk-cta-hint { font-size:10.5px; font-weight:400; letter-spacing:1px; color:rgba(255,255,255,0.75); text-transform:none; font-style:italic; margin:-2px 0 2px; }
+.desk-or { font-size:9px; letter-spacing:2px; color:rgba(255,255,255,0.4); text-transform:uppercase; margin:2px 0; }
+.desk-subtitle { position:relative; z-index:3; color:rgba(255,255,255,0.9); font-size:12px; font-weight:300; letter-spacing:1.5px; margin-top:14px; }
 .desk-name { text-align:center; margin-top:28px; opacity:0; animation:deskNameIn .8s ease .5s forwards; }
 .desk-name h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; letter-spacing:5px; color:var(--text-heading); }
 .desk-name p { font-size:11px; font-weight:400; letter-spacing:3px; color:var(--text-muted); text-transform:uppercase; margin-top:6px; }
@@ -66,6 +70,10 @@ body {
 .nav-link { color:rgba(255,255,255,0.55); text-decoration:none; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 0; border-bottom:2px solid transparent; transition:all .3s; }
 .nav-link:hover,.nav-link.active { color:#fff; border-bottom-color:var(--accent); }
 .nav-right { display:flex; align-items:center; gap:16px; }
+
+.journey-nav-btn { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.85); padding:7px 14px; border-radius:20px; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:all .3s; }
+.journey-nav-btn:hover { background:var(--accent); border-color:var(--accent); color:#fff; }
+.journey-nav-btn svg { flex-shrink:0; opacity:0.85; }
 
 /* Theme toggle */
 .theme-toggle { position:relative; width:48px; height:26px; background:#2a3544; border-radius:13px; cursor:pointer; border:none; transition:background .3s; }
@@ -92,7 +100,7 @@ body {
 /* ===== REVEAL ===== */
 .reveal { opacity:0; transform:translateY(25px); transition:opacity .7s ease,transform .7s ease; }
 .reveal.show { opacity:1; transform:translateY(0); }
-.float-tip { position:fixed; z-index:200; background:rgba(30,42,56,0.92); color:#fff; padding:7px 16px; border-radius:18px; font-size:11px; font-weight:400; letter-spacing:1px; pointer-events:none; opacity:0; transform:translateY(4px); transition:opacity .4s,transform .4s; }
+.float-tip { position:fixed; z-index:200; background:rgba(43,47,56,0.92); color:#fff; padding:7px 16px; border-radius:18px; font-size:11px; font-weight:400; letter-spacing:1px; pointer-events:none; opacity:0; transform:translateY(4px); transition:opacity .4s,transform .4s; }
 .float-tip.on { opacity:1; transform:translateY(0); }
 
 /* ===== CURSOR TRAIL ===== */
@@ -107,7 +115,12 @@ body {
                 <img src="desk.jpg" alt="Resume on desk" class="desk-img">
                 <div class="desk-overlay">
                     <div class="desk-overlay-bg"></div>
-                    <div class="desk-cta">Click to View My Resume</div>
+                    <div class="desk-cta-group">
+                        <button class="desk-cta desk-cta-journey" id="deskJourneyBtn" type="button">Click for Interactive Journey</button>
+                        <div class="desk-cta-hint">Sit back, put your headphones on, and relax</div>
+                        <div class="desk-or">or</div>
+                        <button class="desk-cta" id="deskResumeBtn" type="button">Click to View My Resume</button>
+                    </div>
                     <div class="desk-subtitle">Frantisek Floch — AWS AR Global Data Lead</div>
                 </div>
             </div>
@@ -130,6 +143,10 @@ body {
                     <a href="#" class="nav-link" data-page="5">Testimonials</a>
                 </div>
                 <div class="nav-right">
+                    <button class="journey-nav-btn" onclick="openJourney()" aria-label="Play interactive journey">
+                        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/></svg>
+                        Interactive Journey
+                    </button>
                     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode"><div class="toggle-knob"></div></button>
                 </div>
             </div>
@@ -140,92 +157,305 @@ body {
             <button class="pg-btn" id="nextBtn" aria-label="Next page">&#10095;</button>
         </div>
 
-        <!-- ==================== PAGE 1: PROFILE ==================== -->
+        <!-- ==================== PAGE 1: PROFILE (3-page print resume) ==================== -->
         <section class="page active" data-page="1">
-            <!-- Hero with parallax photo -->
-            <div class="hero-section">
-                <div class="hero-dark">
-                    <div class="hero-inner reveal" data-tip="Welcome to my resume">
-                        <div class="hero-line"></div>
-                        <img src="photo.jpg" alt="" class="hero-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                        <div class="hero-photo-fb" style="display:none;">FF</div>
-                        <h1 class="hero-name">FRANTISEK FLOCH</h1>
-                        <p class="hero-subtitle">AWS AR Global Data Lead</p>
-                        <div class="hero-sep"></div>
-                        <p class="hero-bio">
-                            Data Research &amp; Analytics Leader driving optimization, predictive modeling,
-                            and strategic forecasting solutions across global finance operations. Combining
-                            systematic thinking with deep data expertise to transform complex challenges
-                            into actionable insights and scalable solutions.
+            <button class="export-pdf-btn no-print" onclick="exportResumePdf()">
+                <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 2h14v2H5v-2z"/></svg>
+                Export as PDF
+            </button>
+            <div class="print-resume-wrap reveal">
+
+                <!-- ===== PRINT PAGE 1 ===== -->
+                <div class="sheet">
+                    <aside class="sidebar">
+                        <div class="sb-photo-wrap"><img src="photo.jpg" alt="Frantisek Floch" class="sb-photo"></div>
+
+                        <div class="sb-bar">Contact</div>
+                        <div class="sb-content">
+                            <div class="sb-item"><span class="ic">📍</span><span>Bratislava, Slovakia</span></div>
+                            <div class="sb-item"><span class="ic">📧</span><a href="mailto:frantisekfloch82@gmail.com">frantisekfloch82@gmail.com</a></div>
+                            <div class="sb-item"><span class="ic">📱</span><span>+421 948 960 600</span></div>
+                            <div class="sb-item"><span class="ic">🔗</span><a href="https://www.linkedin.com/in/frantisek-floch-6927818/" target="_blank" rel="noopener">linkedin.com/in/frantisek-floch</a></div>
+                        </div>
+
+                        <div class="sb-bar">Certifications</div>
+                        <div class="sb-content">
+                            <div class="sb-edu-item"><div class="sb-edu-name">AWS Certified Cloud Practitioner</div><div class="sb-edu-sub">Amazon Web Services</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">AWS Certified AI and Machine Learning</div><div class="sb-edu-sub">Amazon Web Services</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">Lean Six Sigma — Green Belt</div><div class="sb-edu-sub">5× Certified</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">Lean Six Sigma — Yellow Belt</div><div class="sb-edu-sub">2× Certified</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">Certified Soft Skills Trainer</div><div class="sb-edu-sub">Professional Certification</div></div>
+                        </div>
+
+                        <div class="sb-bar">Skills</div>
+                        <div class="sb-content">
+                            <div class="sb-skill-group-title">// Technical</div>
+                            <div class="sb-skill">SQL (Redshift, MySQL, PostgreSQL)</div>
+                            <div class="sb-skill">Microsoft SQL Server Management</div>
+                            <div class="sb-skill">Python-based Machine Learning</div>
+                            <div class="sb-skill">Big Data / Large-Scale Datasets (Teradata)</div>
+                            <div class="sb-skill">C# / .NET</div>
+                            <div class="sb-skill">Excel / VBA</div>
+
+                            <div class="sb-skill-group-title">// Professional</div>
+                            <div class="sb-skill">Predictive Modeling</div>
+                            <div class="sb-skill">Strategic Forecasting</div>
+                            <div class="sb-skill">Data Governance</div>
+                            <div class="sb-skill">Program Management</div>
+                            <div class="sb-skill">Stakeholder Management</div>
+                        </div>
+
+                        <div class="sb-bar">Languages</div>
+                        <div class="sb-content">
+                            <div class="sb-lang-row"><span>Slovak</span><span>Native</span></div>
+                            <div class="sb-lang-row"><span>English</span><span>Fluent</span></div>
+                            <div class="sb-lang-row"><span>German</span><span>Proficient</span></div>
+                            <div class="sb-lang-row"><span>Spanish</span><span>Learning</span></div>
+                        </div>
+                    </aside>
+
+                    <main class="main-col">
+                        <div class="header-block">
+                            <div class="h-name">FRANTISEK <b>FLOCH</b></div>
+                            <div class="h-title">AWS AR Global Data Lead</div>
+                        </div>
+
+                        <div class="m-bar">Professional Summary</div>
+                        <p class="summary-text">
+                            Data Research &amp; Analytics Leader with 20+ years of experience driving optimization, predictive
+                            modeling, and strategic forecasting solutions across global finance operations. Combines systematic
+                            process thinking with deep data expertise to transform complex challenges into actionable insights
+                            and scalable solutions. Currently leads AI/ML development and data architecture for Amazon Web
+                            Services' global AR organization.
                         </p>
-                    </div>
-                </div>
-                <div class="hero-contact reveal" data-tip="Navigate with arrows below">
-                    <div class="hc-item"><span class="hc-icon">📍</span><span>Bratislava, Slovakia</span></div>
-                    <div class="hc-item"><span class="hc-icon">📧</span><a href="mailto:frantisekfloch82@gmail.com">frantisekfloch82@gmail.com</a></div>
-                    <div class="hc-item"><span class="hc-icon">📱</span><span>+421 948 960 600</span></div>
-                    <div class="hc-item"><span class="hc-icon">🏢</span><span>Amazon Web Services</span></div>
-                    <div class="hc-item"><span class="hc-icon">📅</span><span>Since Feb 2019</span></div>
-                    <div class="hc-item"><span class="hc-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span><a href="https://www.linkedin.com/in/frantisek-floch-6927818/" target="_blank" rel="noopener">LinkedIn Profile</a></div>
-                </div>
-            </div>
 
-            <!-- LIVE STATS -->
-            <div class="stats-grid reveal" id="statsGrid">
-                <div class="stat-card" data-target="20" data-suffix="+">
-                    <span class="stat-icon">📅</span>
-                    <div class="stat-number"><span class="stat-val">0</span><span class="stat-suffix">+</span></div>
-                    <div class="stat-label">Years Experience</div>
-                </div>
-                <div class="stat-card" data-target="9">
-                    <span class="stat-icon">💼</span>
-                    <div class="stat-number"><span class="stat-val">0</span><span class="stat-suffix"></span></div>
-                    <div class="stat-label">Roles Held</div>
-                </div>
-                <div class="stat-card" data-target="7" data-suffix="×">
-                    <span class="stat-icon">🏅</span>
-                    <div class="stat-number"><span class="stat-val">0</span><span class="stat-suffix">×</span></div>
-                    <div class="stat-label">Six Sigma Certified</div>
-                </div>
-                <div class="stat-card" data-target="4">
-                    <span class="stat-icon">🌍</span>
-                    <div class="stat-number"><span class="stat-val">0</span><span class="stat-suffix"></span></div>
-                    <div class="stat-label">Languages Spoken</div>
-                </div>
-                <div class="stat-card" data-target="2">
-                    <span class="stat-icon">🏢</span>
-                    <div class="stat-number"><span class="stat-val">0</span><span class="stat-suffix"></span></div>
-                    <div class="stat-label">Global Companies</div>
-                </div>
-            </div>
+                        <div class="m-bar">Professional Experience</div>
 
-            <!-- CAREER JOURNEY -->
-            <div class="journey-wrap reveal">
-                <div class="journey-title">CAREER <span>JOURNEY</span></div>
-                <svg class="journey-svg" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg">
-                    <path class="river-path" d="M 50,260 C 150,260 150,80 250,80 C 350,80 350,220 450,220 C 550,220 550,60 650,60 C 750,60 800,160 850,100" fill="none" stroke="var(--border)" stroke-width="4" stroke-linecap="round"/>
-                    <path class="river-path rp2" d="M 50,260 C 150,260 150,80 250,80 C 350,80 350,220 450,220 C 550,220 550,60 650,60 C 750,60 800,160 850,100" fill="none" stroke="var(--text-heading)" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,8"/>
-                    <g class="jnode" data-idx="0" onmouseenter="showJTip(event,0)" onmouseleave="hideJTip()"><circle class="node-bg" cx="50" cy="260" r="16"/><text class="node-year" x="50" y="264">2005</text></g>
-                    <g class="jnode" data-idx="1" onmouseenter="showJTip(event,1)" onmouseleave="hideJTip()"><circle class="node-bg" cx="140" cy="170" r="16"/><text class="node-year" x="140" y="174">2007</text></g>
-                    <g class="jnode" data-idx="2" onmouseenter="showJTip(event,2)" onmouseleave="hideJTip()"><circle class="node-bg" cx="210" cy="100" r="16"/><text class="node-year" x="210" y="104">2009</text></g>
-                    <g class="jnode" data-idx="3" onmouseenter="showJTip(event,3)" onmouseleave="hideJTip()"><circle class="node-bg" cx="290" cy="100" r="16"/><text class="node-year" x="290" y="104">2011</text></g>
-                    <g class="jnode" data-idx="4" onmouseenter="showJTip(event,4)" onmouseleave="hideJTip()"><circle class="node-bg" cx="370" cy="170" r="16"/><text class="node-year" x="370" y="174">2012</text></g>
-                    <g class="jnode" data-idx="5" onmouseenter="showJTip(event,5)" onmouseleave="hideJTip()"><circle class="node-bg" cx="450" cy="220" r="16"/><text class="node-year" x="450" y="224">2014</text></g>
-                    <g class="jnode" data-idx="6" onmouseenter="showJTip(event,6)" onmouseleave="hideJTip()"><circle class="node-bg" cx="560" cy="130" r="16"/><text class="node-year" x="560" y="134">2017</text></g>
-                    <g class="jnode" data-idx="7" onmouseenter="showJTip(event,7)" onmouseleave="hideJTip()"><circle class="node-bg" cx="660" cy="60" r="16"/><text class="node-year" x="660" y="64">2019</text></g>
-                    <g class="jnode" data-idx="8" onmouseenter="showJTip(event,8)" onmouseleave="hideJTip()"><circle class="node-bg" cx="850" cy="100" r="20"/><text class="node-year" x="850" y="104" style="font-size:10px;font-weight:700">NOW</text></g>
-                </svg>
-            </div>
-            <div class="journey-tip" id="jTip"><div class="tip-role" id="tipRole"></div><div class="tip-co" id="tipCo"></div><div class="tip-desc" id="tipDesc"></div></div>
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">AWS AR Global Data Lead</span><span class="job-date">Jan 2021 – Present</span></div>
+                            <div class="job-co">Amazon Web Services</div>
+                            <div class="job-cat">AI/ML Development &amp; Leadership</div>
+                            <ul>
+                                <li>Lead AI development teams building predictive and analytical models for FinOps, Billing, Customer Service, Finance and Sales</li>
+                                <li>Establish continuous improvement cycles evaluating model outputs against real-world results through feedback loops</li>
+                                <li>Architect unified recommendation engine consolidating all AI efforts into a single cohesive output</li>
+                            </ul>
+                            <div class="job-cat">Data Architecture &amp; Systems</div>
+                            <ul>
+                                <li>Architect the Advanced Tiering &amp; Learning Analysis System (Atlas), transforming AR operations from channel-based to ML-driven workflows</li>
+                                <li>Design business logic governing ML models for customer scorecards and risk-based cohorts</li>
+                            </ul>
+                            <div class="job-cat">Forecasting &amp; Governance</div>
+                            <ul>
+                                <li>Develop Revenue and Receivables forecast models: free cash flow, headcount planning, project ROI</li>
+                                <li>Establish data governance guardrails and strategic partnerships across Finance functions</li>
+                            </ul>
+                        </div>
 
-            <!-- MINI TESTIMONIALS -->
-            <div class="mini-test reveal">
-                <div class="mini-test-title">WHAT PEOPLE SAY</div>
-                <div class="mini-test-track" id="miniTestTrack">
-                    <div class="mini-test-card"><div class="mtq">"</div><div class="mtt">Frantisek has an exceptional ability to translate complex data challenges into clear, actionable strategies.</div><div class="mta">Senior Finance Director — AWS</div></div>
-                    <div class="mini-test-card"><div class="mtq">"</div><div class="mtt">One of the most technically skilled people I've worked with, and he makes everyone around him better at working with data.</div><div class="mta">Program Manager — AWS</div></div>
-                    <div class="mini-test-card"><div class="mtq">"</div><div class="mtt">His SQL training workshops were transformative. He teaches you how to think about data problems.</div><div class="mta">Business Analyst — AWS</div></div>
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">AWS Finance Program Manager</span><span class="job-date">Feb 2019 – Jan 2021</span></div>
+                            <div class="job-co">Amazon Web Services</div>
+                            <ul>
+                                <li>Delivered Global Late Fee program implementation across regions</li>
+                                <li>Redesigned global AWS invoice count logic as work driver for variable cost per invoice</li>
+                                <li>Drove proactive Bad Debt and Fraud identification to prevent P&amp;L impact</li>
+                                <li>Expanded Sales Engagement programs toward Free Cash Flow improvement</li>
+                                <li>Delivered cross-business unit SQL mentorship and technical training workshops</li>
+                            </ul>
+                        </div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">Global Process Optimization Advisor</span><span class="job-date">Jan 2017 – Feb 2019</span></div>
+                            <div class="job-co">DELL Technologies</div>
+                            <ul>
+                                <li>Led global process innovation initiatives and sustained governance frameworks</li>
+                                <li>Optimized global reporting structures and delivery models</li>
+                                <li>Established global reporting quality governance standards</li>
+                            </ul>
+                        </div>
+                    </main>
+                    <div class="page-num">1</div>
                 </div>
+
+                <!-- ===== PRINT PAGE 2 ===== -->
+                <div class="sheet">
+                    <aside class="sidebar">
+                        <div class="sb-bar" style="margin-top:26px;">Early Career</div>
+                        <div class="sb-content">
+                            <div class="sb-edu-item"><div class="sb-edu-name">Listening Post Site Operations Manager</div><div class="sb-edu-sub">DELL Technologies · 2014 – 2017</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">CSMB Revenue Lead, Outsourcing Partners</div><div class="sb-edu-sub">DELL Technologies · 2012 – 2014</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">CER PON Revenue Analyst</div><div class="sb-edu-sub">DELL Technologies · 2011 – 2012</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">Revenue Learning Coordinator</div><div class="sb-edu-sub">DELL Technologies · 2009 – 2011</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">Services Soft Skills Coach</div><div class="sb-edu-sub">DELL Technologies · 2007 – 2009</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">XPS Premium Support Specialist</div><div class="sb-edu-sub">DELL Technologies · 2005 – 2007</div></div>
+                        </div>
+
+                        <div class="sb-bar">Tools &amp; Platforms</div>
+                        <div class="sb-content">
+                            <div class="sb-skill">Microsoft &amp; Microsoft 365</div>
+                            <div class="sb-skill">DataGrip</div>
+                            <div class="sb-skill">SQL Workbench</div>
+                            <div class="sb-skill">Kiro / Cursor</div>
+                        </div>
+
+                        <div class="sb-bar">Recognition</div>
+                        <div class="sb-content">
+                            <div class="sb-edu-item"><div class="sb-edu-name">Problem Resolver ×3</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">Accolades ×34</div></div>
+                            <div class="sb-edu-item"><div class="sb-edu-name">154 Total Awards</div><div class="sb-edu-sub">Helping Hand · People Champion · Extra Mile</div></div>
+                        </div>
+                    </aside>
+
+                    <main class="main-col">
+                        <div class="m-bar" style="margin-top:0;">Professional Experience (Continued)</div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">Listening Post Site Operations Manager</span><span class="job-date">May 2014 – Jan 2017</span></div>
+                            <div class="job-co">DELL Technologies — Global Operation Excellence</div>
+                            <ul>
+                                <li>Managed Global GLP pillars with KPI interlock across internal and OSP sites</li>
+                                <li>Led global innovation project implementation and governance</li>
+                                <li>Delivered one-screen end-to-end KPI performance dashboards</li>
+                                <li>System development using C# and .NET; DBA across Oracle, MSSQL, MySQL</li>
+                            </ul>
+                        </div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">CSMB Revenue Lead for Outsourcing Partners</span><span class="job-date">Nov 2012 – May 2014</span></div>
+                            <div class="job-co">DELL Technologies</div>
+                            <ul>
+                                <li>Primary revenue and quality contact for OSPs across EMEA</li>
+                                <li>Transformation and transition consultant; co-designed System Renewal Global Project</li>
+                                <li>Led EMEA Point of Need Revenue Quality Control Governance</li>
+                            </ul>
+                        </div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">CER PON Revenue Analyst</span><span class="job-date">Dec 2011 – Nov 2012</span></div>
+                            <div class="job-co">DELL Technologies</div>
+                            <ul>
+                                <li>Drove EMEA services strategy development and daily governance</li>
+                                <li>Developed services revenue roadmap with cost-benefit analysis</li>
+                                <li>Implemented ORL global compliance model across EMEA and OSPs</li>
+                            </ul>
+                        </div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">Revenue Learning Coordinator</span><span class="job-date">Nov 2009 – Jan 2012</span></div>
+                            <div class="job-co">DELL Technologies</div>
+                            <ul>
+                                <li>Coordinated EMEA trainers and coaches across revenue and new hire projects</li>
+                                <li>EMEA subject matter expert for revenue compliance and processes</li>
+                            </ul>
+                        </div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">Services Soft Skills Coach</span><span class="job-date">Dec 2007 – Nov 2009</span></div>
+                            <div class="job-co">DELL Technologies</div>
+                            <ul>
+                                <li>Quality and performance responsibility for desktop support teams</li>
+                                <li>Developed productivity training and process improvement pilots</li>
+                            </ul>
+                        </div>
+
+                        <div class="job">
+                            <div class="job-row"><span class="job-title">XPS Premium Support Specialist</span><span class="job-date">Jun 2005 – Dec 2007</span></div>
+                            <div class="job-co">DELL Technologies</div>
+                            <ul>
+                                <li>Premium technical support and team coordination</li>
+                                <li>Process improvement pilots and project rollouts</li>
+                            </ul>
+                        </div>
+
+                        <div class="m-bar">Selected Award Categories</div>
+                        <div class="badge-wrap">
+                            <span class="badge-pill-print">IDE Inferno</span>
+                            <span class="badge-pill-print">CLI Spark</span>
+                            <span class="badge-pill-print">ASA 2025 Contributor</span>
+                            <span class="badge-pill-print">RSA 2024</span>
+                            <span class="badge-pill-print">Data Analytics &amp; Machine Learning</span>
+                            <span class="badge-pill-print">AWS Contributor</span>
+                            <span class="badge-pill-print">PEAK 2019–2022</span>
+                            <span class="badge-pill-print">Global Standard Work Tenets</span>
+                            <span class="badge-pill-print">Customer Obsession</span>
+                            <span class="badge-pill-print">LASER — On-the-Spot Award</span>
+                            <span class="badge-pill-print">Migration Champion</span>
+                            <span class="badge-pill-print">Global Adjustment Summit</span>
+                        </div>
+                    </main>
+                    <div class="page-num">2</div>
+                </div>
+
+                <!-- ===== PRINT PAGE 3 ===== -->
+                <div class="sheet">
+                    <aside class="sidebar">
+                        <div class="sb-bar" style="margin-top:26px;">Key Projects</div>
+                        <div class="sb-content">
+                            <div class="sb-skill">Atlas — ML AR Intelligence</div>
+                            <div class="sb-skill">ML Behavior Categorization</div>
+                            <div class="sb-skill">Headcount Forecast Calculator</div>
+                            <div class="sb-skill">AI Documentation Tools</div>
+                            <div class="sb-skill">Revenue Forecast Model</div>
+                            <div class="sb-skill">Adjustment Reconciliation Engine</div>
+                            <div class="sb-skill">Spike &amp; Anomaly Detection</div>
+                        </div>
+                    </aside>
+
+                    <main class="main-col">
+                        <div class="m-bar" style="margin-top:0;">Key Projects</div>
+
+                        <div class="proj">
+                            <div class="proj-title">Atlas — ML-Driven AR Intelligence</div>
+                            <div class="proj-sub">Amazon Web Services · OP2 Strategic FinOps Investment</div>
+                            <div class="proj-desc">Architected a deterministic scoring pipeline transforming ~150 raw attributes through 4 progressive stages into 320+ columns, producing multi-dimensional health scores (1–10) across 8 strategic dimensions with historical lever effectiveness tracking and AI-constrained collection recommendations.</div>
+                            <div class="proj-impact">$193MM FCF strategic investment · 25,800+ accounts scored · 2,200+ calculations per account</div>
+                        </div>
+
+                        <div class="proj">
+                            <div class="proj-title">ML Customer Behavior Categorization</div>
+                            <div class="proj-sub">Amazon Web Services · Atlas Extension</div>
+                            <div class="proj-desc">Designed a machine learning–driven customer segmentation engine classifying 25,800+ accounts into behavioral cohorts using multi-signal analysis across payment patterns, aging trajectories, and risk indicators.</div>
+                            <div class="proj-impact">14 behavioral cohorts identified · Automated strategy recommendations</div>
+                        </div>
+
+                        <div class="proj">
+                            <div class="proj-title">Headcount Forecast &amp; FTE Savings Calculator</div>
+                            <div class="proj-sub">Amazon Web Services</div>
+                            <div class="proj-desc">Self-contained calculator modeling FTE headcount impact of collection initiatives, translating time savings, past-due reduction, and effectiveness gains into projected FTE and dollar savings.</div>
+                            <div class="proj-impact">4 input modes · Real-time validation</div>
+                        </div>
+
+                        <div class="proj">
+                            <div class="proj-title">Revenue &amp; Receivables Forecast Model</div>
+                            <div class="proj-sub">Amazon Web Services</div>
+                            <div class="proj-desc">Built a hybrid weighted forecasting engine combining DSO-based, dual-seasonality, and turnover-ratio methods, backtested across 4 regions, 8 sub-channels, and 3 aging buckets.</div>
+                            <div class="proj-impact">26-segment forecast grid · MAPE-based method selection · 60-month history</div>
+                        </div>
+
+                        <div class="proj">
+                            <div class="proj-title">Adjustment &amp; Credit Memo Reconciliation Engine</div>
+                            <div class="proj-sub">Amazon Web Services</div>
+                            <div class="proj-desc">A Python reconciliation engine classifying adjustments across the full AR portfolio (~12M records) into effective, reversed, or reversal categories, plus credit memo offset/write-off/reversal classification by service center.</div>
+                            <div class="proj-impact">~12M adjustment records classified · 3-pass reversal matching</div>
+                        </div>
+
+                        <div class="proj">
+                            <div class="proj-title">Top 400 Account Behavioral Analysis</div>
+                            <div class="proj-sub">Amazon Web Services</div>
+                            <div class="proj-desc">A Python/ML analysis of the top 400 highest-risk accounts normalizing blocker taxonomies, clustering accounts by behavior (KMeans + PCA), and flagging anomalies (Isolation Forest).</div>
+                            <div class="proj-impact">Replaced ~3 weeks of 4-person manual review</div>
+                        </div>
+
+                        <div class="proj">
+                            <div class="proj-title">One-Click Reconciliation Tool &amp; Global Late Fee Program</div>
+                            <div class="proj-sub">Amazon Web Services</div>
+                            <div class="proj-desc">Engineered an automated reconciliation engine matching credit notes to invoices and tracking disputes; also delivered the Global Late Fee program across all AWS billing regions.</div>
+                            <div class="proj-impact">Hours of manual work reduced to a single command execution</div>
+                        </div>
+                    </main>
+                    <div class="page-num">3</div>
+                </div>
+
             </div>
         </section>
 
@@ -259,10 +489,10 @@ body {
         <section class="page" data-page="3">
             <div class="container">
                 <h2 class="sec-heading reveal"><span>SKILLS & EXPERTISE</span><span class="heading-line"></span></h2>
-                <div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">⚙️</span><h3 class="sp-title">Technical Skills</h3></div><div class="sp-grid"><div class="sp-bar-item"><div class="sp-bar-label"><span>SQL</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:95%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>C# / .NET</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:85%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Power BI</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:88%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Excel / VBA</span><span class="sp-level">Expert</span></div><div class="sp-bar"><div class="sp-fill" style="width:95%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Visio / Draw.io</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:80%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>IT Infrastructure</span><span class="sp-level">Proficient</span></div><div class="sp-bar"><div class="sp-fill" style="width:70%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Python</span><span class="sp-level">Learning</span></div><div class="sp-bar"><div class="sp-fill sp-fill-learn" style="width:30%"></div></div></div></div></div>
+                <div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">⚙️</span><h3 class="sp-title">Technical Skills</h3></div><div class="sp-grid"><div class="sp-bar-item"><div class="sp-bar-label"><span>SQL</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:95%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Big Data (Teradata & Large-Scale Datasets)</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:88%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>C# / .NET</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:85%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Power BI</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:88%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Excel / VBA</span><span class="sp-level">Expert</span></div><div class="sp-bar"><div class="sp-fill" style="width:95%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Visio / Draw.io</span><span class="sp-level">Advanced</span></div><div class="sp-bar"><div class="sp-fill" style="width:80%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>IT Infrastructure</span><span class="sp-level">Proficient</span></div><div class="sp-bar"><div class="sp-fill" style="width:70%"></div></div></div><div class="sp-bar-item"><div class="sp-bar-label"><span>Python</span><span class="sp-level">Learning</span></div><div class="sp-bar"><div class="sp-fill sp-fill-learn" style="width:30%"></div></div></div></div></div>
                 <div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">📊</span><h3 class="sp-title">Analytics & Data Science</h3></div><div class="sp-tags"><span class="stag"><span class="stag-dot"></span>Predictive Modeling</span><span class="stag"><span class="stag-dot"></span>Strategic Forecasting</span><span class="stag"><span class="stag-dot"></span>Process Automation</span><span class="stag"><span class="stag-dot"></span>Free Cash Flow Planning</span><span class="stag"><span class="stag-dot"></span>Headcount Planning</span><span class="stag"><span class="stag-dot"></span>ML Integration</span><span class="stag"><span class="stag-dot"></span>Data Governance</span><span class="stag"><span class="stag-dot"></span>Risk Assessment</span><span class="stag"><span class="stag-dot"></span>Cash Reconciliation</span><span class="stag"><span class="stag-dot"></span>ROI Analysis</span></div></div>
                 <div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">🎯</span><h3 class="sp-title">Leadership & Management</h3></div><div class="sp-tags"><span class="stag"><span class="stag-dot"></span>Cross-Functional Collaboration</span><span class="stag"><span class="stag-dot"></span>Stakeholder Communication</span><span class="stag"><span class="stag-dot"></span>Executive Presentations</span><span class="stag"><span class="stag-dot"></span>Technical Mentorship</span><span class="stag"><span class="stag-dot"></span>Virtual Team Management</span><span class="stag"><span class="stag-dot"></span>Program Management</span><span class="stag"><span class="stag-dot"></span>Change Management</span><span class="stag"><span class="stag-dot"></span>Process Governance</span></div></div>
-                <div class="skills-split"><div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">🌍</span><h3 class="sp-title">Languages</h3></div><div class="lang-rows"><div class="lang-row"><span class="lang-name">Slovak</span><div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div><span class="lang-lbl">Native</span></div><div class="lang-row"><span class="lang-name">English</span><div class="lang-bar"><div class="lang-fill" style="width:95%"></div></div><span class="lang-lbl">Fluent</span></div><div class="lang-row"><span class="lang-name">German</span><div class="lang-bar"><div class="lang-fill" style="width:70%"></div></div><span class="lang-lbl">Proficient</span></div><div class="lang-row"><span class="lang-name">Spanish</span><div class="lang-bar"><div class="lang-fill" style="width:30%"></div></div><span class="lang-lbl">Learning</span></div></div></div><div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">🏅</span><h3 class="sp-title">Certifications</h3></div><div class="cert-rows"><div class="cert-row"><div class="cert-badge yb">YB</div><div><div class="cert-name">Lean Six Sigma — Yellow Belt</div><div class="cert-sub">2× Certified</div></div></div><div class="cert-row"><div class="cert-badge gb">GB</div><div><div class="cert-name">Lean Six Sigma — Green Belt</div><div class="cert-sub">5× Certified</div></div></div><div class="cert-row"><div class="cert-badge tr">ST</div><div><div class="cert-name">Certified Soft Skills Trainer</div><div class="cert-sub">Professional Certification</div></div></div></div></div></div>
+                <div class="skills-split"><div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">🌍</span><h3 class="sp-title">Languages</h3></div><div class="lang-rows"><div class="lang-row"><span class="lang-name">Slovak</span><div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div><span class="lang-lbl">Native</span></div><div class="lang-row"><span class="lang-name">English</span><div class="lang-bar"><div class="lang-fill" style="width:95%"></div></div><span class="lang-lbl">Fluent</span></div><div class="lang-row"><span class="lang-name">German</span><div class="lang-bar"><div class="lang-fill" style="width:70%"></div></div><span class="lang-lbl">Proficient</span></div><div class="lang-row"><span class="lang-name">Spanish</span><div class="lang-bar"><div class="lang-fill" style="width:30%"></div></div><span class="lang-lbl">Learning</span></div></div></div><div class="skills-panel reveal"><div class="sp-header"><span class="sp-icon">🏅</span><h3 class="sp-title">Certifications</h3></div><div class="cert-rows"><div class="cert-row"><div class="cert-badge aws1">☁</div><div><div class="cert-name">AWS Certified Cloud Practitioner</div><div class="cert-sub">Amazon Web Services</div></div></div><div class="cert-row"><div class="cert-badge aws2">AI</div><div><div class="cert-name">AWS Certified AI and Machine Learning</div><div class="cert-sub">Amazon Web Services</div></div></div><div class="cert-row"><div class="cert-badge yb">YB</div><div><div class="cert-name">Lean Six Sigma — Yellow Belt</div><div class="cert-sub">2× Certified</div></div></div><div class="cert-row"><div class="cert-badge gb">GB</div><div><div class="cert-name">Lean Six Sigma — Green Belt</div><div class="cert-sub">5× Certified</div></div></div><div class="cert-row"><div class="cert-badge tr">ST</div><div><div class="cert-name">Certified Soft Skills Trainer</div><div class="cert-sub">Professional Certification</div></div></div></div></div></div>
 
                 <!-- RECOGNITION & AWARDS -->
                 <h2 class="sec-heading reveal" style="margin-top:36px;"><span>RECOGNITION & AWARDS</span><span class="heading-line"></span></h2>
@@ -394,6 +624,62 @@ body {
     <!-- PROJECT MODAL -->
     <div class="project-modal-overlay" id="projModal" onclick="if(event.target===this)closeProject()"><div class="project-modal" style="position:relative;"><button class="pm-close" onclick="closeProject()">&times;</button><img class="pm-img" id="pmImg" src="" alt=""><div class="pm-body"><div class="pm-title" id="pmTitle"></div><div class="pm-sub" id="pmSub"></div><div class="pm-text" id="pmText"></div></div></div></div>
 
+    <!-- INTERACTIVE JOURNEY MODAL -->
+    <div class="journey-modal-overlay" id="journeyModal">
+        <div class="journey-modal-box">
+            <div class="jv-tablet-cam"></div>
+            <button class="modal-close" onclick="closeJourney()" aria-label="Close">&times;</button>
+            <div class="jv-screen">
+                <!-- INTRO / GET READY SCREEN -->
+                <div class="jv-intro-screen" id="jvIntroScreen">
+                    <div class="jv-intro-icon">🎧</div>
+                    <div class="jv-intro-title">Sit back, put your headphones on, and relax</div>
+                    <div class="jv-intro-sub">I'm about to walk you through my career story — a few minutes, narrated, with a bit of code running along the way.</div>
+                    <button class="jv-intro-start-btn" id="jvIntroStartBtn" onclick="startJourneyPlayback()">I have my headphones on, let's start!</button>
+                </div>
+
+                <div class="jv-titlebar">
+                    <span class="jv-ps-icon">&gt;_</span>
+                    <span class="jv-filename" id="jvFilename">PS career.build</span>
+                    <span class="jv-live-dot"></span>
+                    <span class="jv-logo-badge" id="jvLogoBadge"></span>
+                </div>
+                <div class="jv-split">
+                    <div class="jv-code-pane">
+                        <div class="jv-pane-label">PowerShell — running</div>
+                        <div class="jv-split-inner">
+                            <div class="jv-linenums" id="jvLinenums"></div>
+                            <pre class="jv-code" id="jvCode"></pre>
+                        </div>
+                    </div>
+                    <div class="jv-visual-pane">
+                        <div class="jv-pane-label">Visual Story — live</div>
+                        <div class="jv-photo-stage" id="jvPhotoStage">
+                            <img class="jv-photo" id="jvPhotoImg" src="" alt="">
+                            <div class="jv-photo-logo" id="jvPhotoLogo"></div>
+                        </div>
+                        <div class="jv-icon-caption" id="jvIconCaption"></div>
+                        <div class="jv-photo-dots" id="jvPhotoDots"></div>
+                    </div>
+                </div>
+                <div class="jv-caption-bar">
+                    <div class="journey-caption" id="journeyCaption"></div>
+                </div>
+                <div class="jv-chip-row" id="jvChipRow"></div>
+            </div>
+            <div class="jv-bezel-footer">
+                <button class="journey-goto-resume" id="journeyGotoResume" onclick="finishJourneyToResume()">View Full Resume →</button>
+                <div class="progress-track" id="journeyProgressTrack"><div class="progress-fill" id="journeyProgressFill"></div></div>
+                <div class="modal-controls">
+                    <button class="ctrl-btn" id="journeySoundBtn" onclick="toggleJourneySound()">🔊 SOUND ON</button>
+                    <button class="ctrl-btn" id="journeyPauseBtn" onclick="toggleJourneyPause()">PAUSE</button>
+                    <button class="ctrl-btn" onclick="closeJourney()">SKIP</button>
+                </div>
+                <div class="jv-tablet-home"></div>
+            </div>
+        </div>
+    </div>
+
     <style>
 /* ===== HERO ===== */
 .hero-section { max-width:880px; margin:0 auto; text-align:center; }
@@ -410,6 +696,78 @@ body {
 .hc-item a { color:var(--text-heading); text-decoration:none; transition:color .3s; }
 .hc-item a:hover { color:var(--accent); }
 .hc-icon { font-size:16px; }
+</style>
+
+<style>
+/* ===== PRINT RESUME (3-pager, replaces Profile tab) ===== */
+.print-resume-wrap { display:flex; flex-direction:column; align-items:center; gap:36px; padding:10px 0 20px; }
+.print-resume-wrap .sheet {
+    width:850px; max-width:100%; min-height:1100px;
+    background:#fff; display:flex; box-shadow:0 10px 40px rgba(0,0,0,0.18);
+    position:relative; border-radius:2px; flex-shrink:0;
+}
+.print-resume-wrap .sidebar { width:290px; flex-shrink:0; background:#3b4664; color:#cdd2de; padding:36px 0 30px; }
+.print-resume-wrap .sb-photo-wrap { width:165px; height:165px; margin:0 auto 26px; border-radius:50%; overflow:hidden; border:3px solid rgba(255,255,255,0.3); }
+.print-resume-wrap .sb-photo { width:100%; height:100%; object-fit:cover; display:block; }
+.print-resume-wrap .sb-bar { color:#fff; font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0 26px 8px; margin-top:26px; border-bottom:1px solid rgba(255,255,255,0.25); }
+.print-resume-wrap .sb-bar:first-of-type { margin-top:0; }
+.print-resume-wrap .sb-content { padding:14px 26px 2px; }
+.print-resume-wrap .sb-item { font-size:12.5px; line-height:1.55; color:#cdd2de; margin-bottom:9px; display:flex; gap:9px; align-items:flex-start; }
+.print-resume-wrap .sb-item .ic { color:#fff; flex-shrink:0; width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; font-size:10px; }
+.print-resume-wrap .sb-item a { color:#cdd2de; text-decoration:none; word-break:break-all; }
+.print-resume-wrap .sb-item a:hover { color:#fff; }
+.print-resume-wrap .sb-edu-item { margin-bottom:14px; }
+.print-resume-wrap .sb-edu-name { font-size:12.5px; font-weight:700; color:#fff; letter-spacing:.3px; }
+.print-resume-wrap .sb-edu-sub { font-size:11.5px; color:#a7adc0; margin-top:2px; }
+.print-resume-wrap .sb-skill-group-title { font-size:11px; font-weight:700; letter-spacing:1.5px; color:#fff; margin:14px 0 6px; text-transform:uppercase; }
+.print-resume-wrap .sb-skill-group-title:first-child { margin-top:0; }
+.print-resume-wrap .sb-skill { font-size:12.5px; color:#cdd2de; line-height:1.85; }
+.print-resume-wrap .sb-lang-row { display:flex; justify-content:space-between; font-size:12.5px; color:#cdd2de; line-height:1.85; }
+.print-resume-wrap .sb-lang-row span:last-child { color:#9aa0b4; font-size:11px; }
+
+.print-resume-wrap .main-col { flex:1; padding:44px 42px 30px; }
+.print-resume-wrap .header-block { margin-bottom:22px; }
+.print-resume-wrap .h-name { font-size:32px; font-weight:800; letter-spacing:1px; color:#2b2f38; text-transform:uppercase; }
+.print-resume-wrap .h-name b { font-weight:300; color:#2b2f38; }
+.print-resume-wrap .h-title { font-size:12.5px; font-weight:600; letter-spacing:3px; color:#8a8a8a; text-transform:uppercase; margin-top:6px; }
+.print-resume-wrap .m-bar { color:#2b2f38; font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0 0 8px; margin-top:28px; margin-bottom:16px; border-bottom:2px solid #3b4664; }
+.print-resume-wrap .m-bar:first-of-type { margin-top:0; }
+.print-resume-wrap .summary-text { font-size:12.5px; line-height:1.75; color:#4a4a4a; }
+.print-resume-wrap .job { margin-bottom:16px; padding-left:18px; border-left:2px solid #dde1ea; position:relative; }
+.print-resume-wrap .job::before { content:''; position:absolute; left:-5px; top:3px; width:8px; height:8px; border-radius:50%; background:#3b4664; }
+.print-resume-wrap .job-row { display:flex; justify-content:space-between; align-items:baseline; }
+.print-resume-wrap .job-title { font-size:13.5px; font-weight:700; color:#2b2f38; }
+.print-resume-wrap .job-date { font-size:11.5px; color:#8a8a8a; font-weight:600; }
+.print-resume-wrap .job-co { font-size:12px; color:#3b4664; font-weight:600; margin-top:1px; }
+.print-resume-wrap .job-cat { font-size:11.5px; font-weight:700; color:#2b2f38; margin-top:8px; letter-spacing:.3px; }
+.print-resume-wrap .job ul { margin:6px 0 0 18px; padding:0; }
+.print-resume-wrap .job li { font-size:11.8px; line-height:1.6; color:#4a4a4a; margin-bottom:4px; }
+.print-resume-wrap .page-num { position:absolute; bottom:16px; right:42px; font-size:10.5px; color:#b5b2af; letter-spacing:1px; }
+.print-resume-wrap .badge-wrap { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.print-resume-wrap .badge-pill-print { font-size:10.5px; background:#eef0f5; color:#3b4664; border:1px solid #dde1ea; padding:4px 10px; border-radius:12px; }
+.print-resume-wrap .proj { margin-bottom:13px; padding-left:18px; border-left:2px solid #dde1ea; position:relative; }
+.print-resume-wrap .proj::before { content:''; position:absolute; left:-5px; top:3px; width:8px; height:8px; border-radius:50%; background:#3b4664; }
+.print-resume-wrap .proj-title { font-size:12.5px; font-weight:700; color:#2b2f38; }
+.print-resume-wrap .proj-sub { font-size:11px; color:#3b4664; font-weight:600; margin:1px 0 3px; }
+.print-resume-wrap .proj-desc { font-size:11.5px; line-height:1.55; color:#4a4a4a; }
+.print-resume-wrap .proj-impact { font-size:11.3px; color:#5a5a5a; margin-top:3px; font-style:italic; }
+
+@media(max-width:900px){
+    .print-resume-wrap .sheet { width:100%; flex-direction:column; min-height:auto; }
+    .print-resume-wrap .sidebar { width:100%; }
+}
+
+.export-pdf-btn { display:flex; align-items:center; gap:8px; margin:0 auto 22px; padding:10px 22px; border-radius:22px; background:#3b4664; color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11.5px; font-weight:600; letter-spacing:1px; text-transform:uppercase; box-shadow:0 6px 20px rgba(59,70,100,0.25); transition:all .3s; }
+.export-pdf-btn:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(59,70,100,0.35); background:#2f3a56; }
+
+@media print {
+    body * { visibility:hidden; }
+    .print-resume-wrap, .print-resume-wrap * { visibility:visible; }
+    .print-resume-wrap { position:absolute; top:0; left:0; width:100%; gap:0; }
+    .print-resume-wrap .sheet { box-shadow:none; margin:0; page-break-after:always; width:100%; }
+    .no-print { display:none !important; }
+    .top-nav, .page-nav, .chat-toggle, .chat-window, .game-trigger-wrap { display:none !important; }
+}
 </style>
 
 <style>
@@ -438,7 +796,7 @@ body {
 .jnode:hover circle.node-bg { fill:var(--text-heading); stroke:var(--accent); stroke-width:3; }
 .jnode text.node-year { font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; fill:var(--text-heading); text-anchor:middle; transition:fill .3s; }
 .jnode:hover text.node-year { fill:#fff; }
-.journey-tip { position:fixed; z-index:200; background:var(--text-heading); color:#fff; padding:14px 20px; border-radius:10px; max-width:280px; pointer-events:none; opacity:0; transform:translateY(6px); transition:opacity .3s,transform .3s; box-shadow:0 8px 30px rgba(30,42,56,0.2); }
+.journey-tip { position:fixed; z-index:200; background:var(--text-heading); color:#fff; padding:14px 20px; border-radius:10px; max-width:280px; pointer-events:none; opacity:0; transform:translateY(6px); transition:opacity .3s,transform .3s; box-shadow:0 8px 30px rgba(43,47,56,0.2); }
 .journey-tip.show { opacity:1; transform:translateY(0); }
 .tip-role { font-size:13px; font-weight:600; margin-bottom:4px; }
 .tip-co { font-size:11px; color:var(--accent); letter-spacing:1px; margin-bottom:6px; }
@@ -501,7 +859,7 @@ body {
 .sp-bar-label span { font-size:12px; font-weight:500; color:var(--text-heading); transition:color .5s; }
 .sp-level { color:var(--text-muted)!important; font-weight:400!important; font-size:11px!important; }
 .sp-bar { height:7px; background:var(--border-light); border-radius:4px; overflow:hidden; transition:background .5s; }
-.sp-fill { height:100%; background:linear-gradient(90deg,var(--text-heading),#4a6274); border-radius:4px; transition:width 1.2s ease; }
+.sp-fill { height:100%; background:linear-gradient(90deg,var(--text-heading),#6f83ab); border-radius:4px; transition:width 1.2s ease; }
 .sp-fill-learn { background:linear-gradient(90deg,var(--text-muted),#c5bdb5); }
 .sp-tags { display:flex; flex-wrap:wrap; gap:10px; }
 .stag { display:flex; align-items:center; gap:8px; padding:8px 16px; background:var(--bg); border:1px solid var(--border-light); border-radius:6px; font-size:12px; color:var(--text-heading); font-weight:500; transition:all .3s; }
@@ -512,14 +870,16 @@ body {
 .lang-row { display:grid; grid-template-columns:72px 1fr 65px; align-items:center; gap:10px; padding:8px 0; }
 .lang-name { font-size:12px; font-weight:500; color:var(--text-heading); transition:color .5s; }
 .lang-bar { height:6px; background:var(--border-light); border-radius:3px; overflow:hidden; }
-.lang-fill { height:100%; background:linear-gradient(90deg,var(--text-heading),#4a6274); border-radius:3px; }
+.lang-fill { height:100%; background:linear-gradient(90deg,var(--text-heading),#6f83ab); border-radius:3px; }
 .lang-lbl { font-size:10px; color:var(--text-muted); text-align:right; }
 .cert-rows { display:flex; flex-direction:column; gap:14px; }
 .cert-row { display:flex; align-items:center; gap:14px; }
 .cert-badge { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#fff; flex-shrink:0; }
+.cert-badge.aws1 { background:linear-gradient(135deg,#232F3E,#37475A); }
+.cert-badge.aws2 { background:linear-gradient(135deg,#FF9900,#e07b00); }
 .cert-badge.yb { background:linear-gradient(135deg,#f1c40f,#e67e22); }
 .cert-badge.gb { background:linear-gradient(135deg,#27ae60,#2ecc71); }
-.cert-badge.tr { background:linear-gradient(135deg,#1e2a38,#4a6274); }
+.cert-badge.tr { background:linear-gradient(135deg,#2b2f38,#6f83ab); }
 .cert-name { font-size:13px; font-weight:600; color:var(--text-heading); transition:color .5s; }
 .cert-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
 </style>
@@ -532,9 +892,9 @@ body {
 .project-img-wrap { overflow:hidden; position:relative; }
 .project-img { width:100%; height:160px; object-fit:cover; transition:transform .6s; }
 .project-card:hover .project-img { transform:scale(1.05); }
-.project-img-wrap::after { content:''; position:absolute; bottom:0; left:0; right:0; height:60px; background:linear-gradient(transparent,rgba(30,42,56,0.6)); }
+.project-img-wrap::after { content:''; position:absolute; bottom:0; left:0; right:0; height:60px; background:linear-gradient(transparent,rgba(43,47,56,0.6)); }
 .project-badge { position:absolute; top:12px; right:12px; z-index:2; padding:4px 12px; border-radius:12px; font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:#fff; }
-.badge-ai { background:linear-gradient(135deg,#1e2a38,#4a6274); }
+.badge-ai { background:linear-gradient(135deg,#2b2f38,#6f83ab); }
 .badge-finance { background:linear-gradient(135deg,#c8956c,#a07850); }
 .badge-ops { background:linear-gradient(135deg,#27ae60,#2ecc71); }
 .badge-analytics { background:linear-gradient(135deg,#8e44ad,#9b59b6); }
@@ -588,7 +948,7 @@ body {
 .test-stars span { color:var(--accent); font-size:16px; letter-spacing:2px; }
 .test-text { font-size:15px; line-height:1.9; color:var(--text); font-style:italic; margin-bottom:24px; max-width:520px; margin-left:auto; margin-right:auto; }
 .test-author { display:flex; align-items:center; justify-content:center; gap:14px; }
-.test-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--text-heading),#4a6274); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:#fff; flex-shrink:0; }
+.test-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--text-heading),#6f83ab); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:#fff; flex-shrink:0; }
 .test-author-info { text-align:left; }
 .test-author-name { font-size:13px; font-weight:600; color:var(--text-heading); transition:color .5s; }
 .test-author-role { font-size:11px; color:var(--text-muted); margin-top:2px; }
@@ -602,13 +962,13 @@ body {
 
 <style>
 /* ===== CHAT ===== */
-.chat-toggle { position:fixed; bottom:28px; right:28px; z-index:9000; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--text-heading),#2a3a4a); border:none; cursor:pointer; box-shadow:0 6px 24px rgba(30,42,56,0.25); display:flex; align-items:center; justify-content:center; transition:all .3s; }
+.chat-toggle { position:fixed; bottom:28px; right:28px; z-index:9000; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--text-heading),#3b4664); border:none; cursor:pointer; box-shadow:0 6px 24px rgba(43,47,56,0.25); display:flex; align-items:center; justify-content:center; transition:all .3s; }
 .chat-toggle:hover { transform:scale(1.08); }
 .chat-pulse { position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--accent); opacity:0; animation:chatPulse 2s ease infinite; }
 @keyframes chatPulse { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(1.4);opacity:0} }
 .chat-window { position:fixed; bottom:96px; right:28px; z-index:9000; width:360px; max-width:calc(100vw - 40px); background:var(--bg-card); border-radius:16px; box-shadow:0 12px 48px var(--shadow-md); overflow:hidden; transform:scale(0.9) translateY(20px); opacity:0; transition:all .3s cubic-bezier(.23,1,.32,1); pointer-events:none; }
 .chat-window.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
-.chat-header { background:linear-gradient(135deg,var(--hero-dark),#2a3a4a); padding:18px 20px; color:#fff; }
+.chat-header { background:linear-gradient(135deg,var(--hero-dark),#3b4664); padding:18px 20px; color:#fff; }
 .chat-header-title { font-size:14px; font-weight:600; letter-spacing:1px; }
 .chat-header-sub { font-size:10px; color:rgba(255,255,255,0.6); margin-top:3px; letter-spacing:1px; }
 .chat-body { height:300px; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; }
@@ -630,7 +990,7 @@ body {
 .modal-overlay.active { display:flex; opacity:1; }
 .modal-box { position:relative; width:840px; max-width:94vw; height:540px; max-height:84vh; background:var(--bg); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 80px var(--shadow-md); }
 #matrixCanvas { position:absolute; inset:0; z-index:0; opacity:.10; }
-.scanlines { position:absolute; inset:0; z-index:1; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(30,42,56,0.012) 3px,rgba(30,42,56,0.012) 6px); }
+.scanlines { position:absolute; inset:0; z-index:1; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(43,47,56,0.012) 3px,rgba(43,47,56,0.012) 6px); }
 .modal-close { position:absolute; top:16px; right:16px; z-index:10; background:none; border:1px solid var(--border); color:var(--text-muted); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:all .3s; font-family:'Montserrat',sans-serif; }
 .modal-close:hover { border-color:var(--text-heading); color:var(--text-heading); }
 .scene { position:relative; z-index:2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 50px; }
@@ -647,15 +1007,118 @@ body {
 .ctrl-btn { background:none; border:1px solid var(--border); color:var(--text-muted); padding:5px 14px; border-radius:20px; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; transition:all .3s; }
 .ctrl-btn:hover { border-color:var(--text-heading); color:var(--text-heading); }
 
+/* ===== INTERACTIVE JOURNEY — the ENTIRE modal IS the tablet ===== */
+.journey-modal-overlay { position:fixed; inset:0; z-index:9999; background:linear-gradient(180deg,#ffffff 0%,#f4f5f7 45%,#e9eaed 100%); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; opacity:0; transition:opacity .5s; }
+.journey-modal-overlay.active { display:flex; opacity:1; }
+
+/* Tablet chrome (the whole modal box): dark silver bezel, top/left/right ~4mm, bottom 50% bigger, home button in bottom bezel */
+.journey-modal-box {
+    position:relative; width:1000px; max-width:95vw; height:700px; max-height:94vh;
+    background:linear-gradient(155deg,#5f6570,#3c4048);
+    border-radius:28px;
+    padding:15px 15px 34px;
+    box-shadow:0 30px 90px rgba(20,22,28,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    display:flex; flex-direction:column;
+    box-sizing:border-box;
+}
+.journey-modal-box .jv-tablet-cam { width:6px; height:6px; border-radius:50%; background:#20222a; margin:0 auto 10px; box-shadow:inset 0 0 0 1px #747982; flex-shrink:0; }
+.journey-modal-box .modal-close { position:absolute; top:14px; right:16px; z-index:10; border-color:rgba(255,255,255,0.25); color:rgba(255,255,255,0.7); background:rgba(0,0,0,0.15); }
+.journey-modal-box .modal-close:hover { border-color:#fff; color:#fff; }
+
+/* Screen fills essentially the whole tablet */
+.jv-screen { position:relative; flex:1; background:#fff; border-radius:10px; border:1px solid #22242a; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.4); display:flex; flex-direction:column; min-height:0; }
+
+/* Intro / get-ready overlay screen */
+.jv-intro-screen {
+    position:absolute; inset:0; z-index:20;
+    background:linear-gradient(180deg,#ffffff 0%,#f4f5f7 60%,#e9eaed 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:40px; gap:14px;
+    opacity:1; transition:opacity .5s ease;
+}
+.jv-intro-screen.hide { opacity:0; pointer-events:none; }
+.jv-intro-icon { font-size:52px; margin-bottom:6px; }
+.jv-intro-title { font-family:'Montserrat',sans-serif; font-size:20px; font-weight:700; color:#2b2f38; letter-spacing:.3px; max-width:460px; line-height:1.4; }
+.jv-intro-sub { font-family:'Montserrat',sans-serif; font-size:13.5px; color:#6a6f7a; max-width:420px; line-height:1.7; }
+.jv-intro-start-btn { margin-top:14px; padding:14px 34px; border-radius:26px; background:linear-gradient(135deg,#3b4664,#2b3350); color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; letter-spacing:.5px; box-shadow:0 10px 28px rgba(43,47,56,0.25); transition:all .3s; }
+.jv-intro-start-btn:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(43,47,56,0.35); }
+.jv-titlebar { display:flex; align-items:center; gap:8px; padding:10px 16px; background:#3b4664; border-bottom:1px solid #2f3a56; flex-shrink:0; }
+.jv-ps-icon { font-family:'Share Tech Mono',monospace; font-size:11px; font-weight:700; color:#cfd7ec; background:rgba(255,255,255,0.12); padding:2px 6px; border-radius:4px; }
+.jv-filename { font-family:'Share Tech Mono',monospace; font-size:11px; color:#cfd7ec; letter-spacing:.5px; flex:1; }
+.jv-live-dot { width:7px; height:7px; border-radius:50%; background:#5cb87a; box-shadow:0 0 0 0 rgba(92,184,122,0.6); animation:liveDotPulse 1.4s ease infinite; flex-shrink:0; }
+@keyframes liveDotPulse { 0%{box-shadow:0 0 0 0 rgba(92,184,122,0.5)} 70%{box-shadow:0 0 0 5px rgba(92,184,122,0)} 100%{box-shadow:0 0 0 0 rgba(92,184,122,0)} }
+.jv-logo-badge { width:22px; height:22px; border-radius:4px; background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; opacity:0; transition:opacity .3s; }
+.jv-logo-badge.show { opacity:1; }
+.jv-logo-badge img { width:16px; height:16px; object-fit:contain; }
+
+.jv-pane-label { font-size:9.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; padding:6px 12px; flex-shrink:0; }
+.jv-code-pane .jv-pane-label { color:#5a6482; background:#0e1322; border-bottom:1px solid #232b45; }
+.jv-visual-pane .jv-pane-label { color:#8a8f9a; background:#fafbfc; border-bottom:1px solid #eceef2; }
+
+.jv-split { display:flex; flex:1; min-height:0; overflow:hidden; }
+.jv-code-pane { width:42%; display:flex; flex-direction:column; overflow:hidden; background:#12172a; border-right:1px solid #232b45; }
+.jv-code-pane .jv-split-inner { display:flex; flex:1; overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth; }
+.jv-code-pane .jv-split-inner::-webkit-scrollbar { width:0; }
+.jv-linenums { padding:14px 10px; text-align:right; font-family:'Share Tech Mono',monospace; font-size:12px; line-height:1.9; color:#4a5578; user-select:none; }
+.jv-code { flex:1; margin:0; padding:14px 14px; font-family:'Share Tech Mono',monospace; font-size:12.5px; line-height:1.9; color:#dce3f5; white-space:pre-wrap; word-break:break-word; }
+.jv-code .kw { color:#7fa0e0; } .jv-code .fn { color:#e0b04a; } .jv-code .str { color:#6fcf97; } .jv-code .cm { color:#6b7699; font-style:italic; } .jv-code .num { color:#e0836f; }
+.jv-code .caret { display:inline-block; width:7px; height:14px; background:#7fa0e0; margin-left:1px; animation:curBlink .8s infinite; vertical-align:text-bottom; }
+
+.jv-visual-pane { width:58%; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 22px; position:relative; overflow:hidden; }
+.jv-photo-stage { width:100%; max-width:340px; height:180px; border-radius:12px; overflow:hidden; position:relative; background:#eef0f5; border:1px solid #dde1ea; box-shadow:0 8px 24px rgba(43,47,56,0.1); }
+.jv-photo { width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity .6s ease; }
+.jv-photo.show { opacity:1; }
+.jv-photo-logo { position:absolute; bottom:10px; right:10px; width:52px; height:52px; border-radius:10px; background:#fff; box-shadow:0 4px 14px rgba(43,47,56,0.25); display:flex; align-items:center; justify-content:center; padding:6px; opacity:0; transform:scale(0.8); transition:all .4s; }
+.jv-photo-logo.show { opacity:1; transform:scale(1); }
+.jv-photo-logo svg { width:100%; height:100%; }
+.jv-icon-caption { margin-top:14px; font-size:13px; font-weight:700; color:#2b2f38; text-align:center; letter-spacing:.3px; min-height:16px; opacity:0; transition:opacity .4s; }
+.jv-icon-caption.show { opacity:1; }
+.jv-photo-dots { display:flex; gap:6px; margin-top:12px; }
+.jv-photo-dot { width:6px; height:6px; border-radius:50%; background:#dde1ea; transition:background .3s,transform .3s; }
+.jv-photo-dot.active { background:#3b4664; transform:scale(1.3); }
+
+.jv-caption-bar { background:#fafbfc; border-top:1px solid #eceef2; padding:16px 26px; min-height:64px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.journey-caption { text-align:center; max-width:100%; font-family:'Montserrat',sans-serif; font-size:13.5px; line-height:1.75; color:#3a3f4a; }
+.journey-caption .cursor { display:inline-block; width:2px; height:14px; background:#3b4664; margin-left:2px; animation:curBlink .8s infinite; vertical-align:text-bottom; }
+
+.jv-chip-row { display:flex; flex-wrap:wrap; gap:8px; padding:12px 20px; min-height:20px; justify-content:center; background:#fafbfc; border-top:1px solid #eceef2; flex-shrink:0; }
+.jv-chip { padding:6px 14px; border-radius:14px; background:#eef0f5; border:1px solid #dde1ea; color:#3b4664; font-size:10.5px; font-weight:600; letter-spacing:.5px; opacity:0; transform:translateY(6px); animation:chipIn .5s ease forwards; }
+@keyframes chipIn { to{opacity:1;transform:translateY(0)} }
+
+/* Bottom bezel (50% bigger than top) holds the home button, progress bar, controls, and the resume CTA */
+.jv-bezel-footer { position:relative; flex-shrink:0; height:34px; margin-top:8px; display:flex; align-items:center; justify-content:center; }
+.jv-tablet-home { width:15px; height:15px; border-radius:50%; background:#2c2f36; box-shadow:inset 0 0 0 1px #747982, inset 0 1px 3px rgba(0,0,0,0.4); }
+.journey-goto-resume { position:absolute; left:50%; top:-58px; transform:translateX(-50%); padding:11px 28px; border-radius:24px; background:linear-gradient(135deg,#3b4664,#2b3350); color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; box-shadow:0 8px 24px rgba(43,47,56,0.35); opacity:0; pointer-events:none; transition:all .4s; white-space:nowrap; }
+.journey-goto-resume.show { opacity:1; transform:translateX(-50%) translateY(-6px); pointer-events:all; }
+.journey-goto-resume:hover { transform:translateX(-50%) translateY(-9px); box-shadow:0 10px 28px rgba(43,47,56,0.45); }
+#journeyProgressTrack { position:absolute; bottom:26px; left:16px; right:16px; height:2px; background:rgba(255,255,255,0.15); border-radius:1px; z-index:5; }
+#journeyProgressFill { height:100%; width:0%; background:linear-gradient(90deg,#a9b8de,#fff); border-radius:1px; transition:width .3s linear; }
+.journey-modal-box .modal-controls { position:absolute; bottom:2px; right:16px; z-index:5; display:flex; gap:8px; }
+.journey-modal-box .ctrl-btn { border-color:rgba(255,255,255,0.25); color:rgba(255,255,255,0.65); }
+.journey-modal-box .ctrl-btn:hover { border-color:#fff; color:#fff; }
+.journey-modal-box .modal-close { border-color:#dde1ea; color:#8a8f9a; }
+.journey-modal-box .modal-close:hover { border-color:#3b4664; color:#3b4664; }
+@media(max-width:768px){
+    .journey-modal-box{height:92vh;padding:12px 10px 30px}
+    .jv-split{flex-direction:column}
+    .jv-code-pane{width:100%;height:45%;border-right:none;border-bottom:1px solid #232b45}
+    .jv-visual-pane{width:100%;height:55%}
+    .jv-code{font-size:10.5px}
+    .journey-caption{font-size:12px}
+    #journeyProgressTrack{left:12px;right:12px}
+    .journey-modal-box .modal-controls{right:12px}
+    .journey-goto-resume{font-size:10.5px;padding:9px 20px}
+}
+
 /* ===== GAME ===== */
 .game-trigger-wrap { position:fixed; bottom:28px; left:28px; z-index:8000; }
-.game-trigger { display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:30px; background:linear-gradient(135deg,var(--text-heading),#2a3a4a); color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:600; letter-spacing:1px; box-shadow:0 6px 24px rgba(30,42,56,0.25); transition:all .3s; }
-.game-trigger:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(30,42,56,0.35); }
+.game-trigger { display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:30px; background:linear-gradient(135deg,var(--text-heading),#3b4664); color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:600; letter-spacing:1px; box-shadow:0 6px 24px rgba(43,47,56,0.25); transition:all .3s; }
+.game-trigger:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(43,47,56,0.35); }
 .gt-emoji { font-size:16px; }
 .game-overlay { position:fixed; inset:0; z-index:99999; background:rgba(250,248,245,0.97); display:none; flex-direction:column; cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><text y="30" font-size="30">🔨</text></svg>') 20 5,auto; }
 [data-theme="dark"] .game-overlay { background:rgba(15,20,25,0.97); }
 .game-overlay.active { display:flex; }
-.game-header { display:flex; align-items:center; justify-content:space-between; padding:16px 30px; background:linear-gradient(135deg,#1e2a38,#2a3a4a); color:#fff; }
+.game-header { display:flex; align-items:center; justify-content:space-between; padding:16px 30px; background:linear-gradient(135deg,#2b2f38,#3b4664); color:#fff; }
 .game-title { font-family:'Share Tech Mono',monospace; font-size:16px; letter-spacing:2px; }
 .game-stats { display:flex; gap:24px; }
 .game-stat { text-align:center; }
@@ -676,7 +1139,7 @@ body {
 .game-start-screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
 .game-start-title { font-family:'Playfair Display',serif; font-size:36px; color:var(--text-heading); letter-spacing:3px; }
 .game-start-sub { font-size:13px; color:var(--text-muted); max-width:400px; text-align:center; line-height:1.7; }
-.game-start-btn { padding:14px 36px; border-radius:30px; background:linear-gradient(135deg,#1e2a38,#2a3a4a); color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:600; letter-spacing:2px; text-transform:uppercase; box-shadow:0 8px 30px rgba(30,42,56,0.2); transition:all .3s; }
+.game-start-btn { padding:14px 36px; border-radius:30px; background:linear-gradient(135deg,#2b2f38,#3b4664); color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:600; letter-spacing:2px; text-transform:uppercase; box-shadow:0 8px 30px rgba(43,47,56,0.2); transition:all .3s; }
 .game-start-btn:hover { transform:scale(1.05); }
 .game-over-screen { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; gap:16px; background:rgba(250,248,245,0.95); }
 [data-theme="dark"] .game-over-screen { background:rgba(15,20,25,0.95); }
@@ -686,7 +1149,7 @@ body {
 .game-over-msg { font-size:13px; color:var(--text-muted); }
 .timer-bar-wrap { height:4px; background:var(--border-light); width:100%; }
 .timer-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--text-heading)); width:100%; transition:width .1s linear; }
-.combo-display { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Playfair Display',serif; font-size:64px; font-weight:700; color:var(--text-heading); opacity:0; pointer-events:none; z-index:100000; text-shadow:0 4px 20px rgba(30,42,56,0.15); }
+.combo-display { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Playfair Display',serif; font-size:64px; font-weight:700; color:var(--text-heading); opacity:0; pointer-events:none; z-index:100000; text-shadow:0 4px 20px rgba(43,47,56,0.15); }
 .combo-display.flash { animation:comboFlash .6s ease forwards; }
 @keyframes comboFlash { 0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)} 30%{opacity:1;transform:translate(-50%,-50%) scale(1.2)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5) translateY(-20px)} }
 
@@ -780,14 +1243,16 @@ var landing=document.getElementById('landing'), main=document.getElementById('re
 var nav=document.getElementById('topNav'), pnav=document.getElementById('pageNav');
 var prevB=document.getElementById('prevBtn'), nextB=document.getElementById('nextBtn'), pgNum=document.getElementById('pgNum');
 
-document.getElementById('deskWrap').addEventListener('click',function(){
+function enterResume(){
     landing.classList.add('fade-out');
     setTimeout(function(){
         landing.style.display='none'; document.body.style.overflow='auto';
         main.classList.remove('hidden'); main.classList.add('show');
         setTimeout(function(){ nav.classList.add('show'); pnav.classList.add('show'); document.getElementById('chatToggle').style.display='flex'; document.getElementById('gameTriggerWrap').style.display='block'; revealPage(); animateCounters(); },300);
     },900);
-});
+}
+document.getElementById('deskResumeBtn').addEventListener('click',function(e){ e.stopPropagation(); enterResume(); });
+document.getElementById('deskJourneyBtn').addEventListener('click',function(e){ e.stopPropagation(); enterResume(); setTimeout(openJourney,1300); });
 
 function revealPage(){
     var active=document.querySelector('.page.active'); if(!active)return;
@@ -920,7 +1385,7 @@ var roleData={
 var matrixCanvas,matrixCtx,matrixCols,matrixDrops,matrixAnim,matrixFrame=0;
 var matrixChars='01アイウエオカキクケコ∑∏∫∂λΩΔΘΠ';
 function initMatrix(){matrixCanvas=document.getElementById('matrixCanvas');var box=matrixCanvas.parentElement;matrixCanvas.width=box.offsetWidth;matrixCanvas.height=box.offsetHeight;matrixCtx=matrixCanvas.getContext('2d');matrixCtx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#faf8f5';matrixCtx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);var fs=24;matrixCols=Math.floor(matrixCanvas.width/fs);matrixDrops=[];for(var i=0;i<matrixCols;i++)matrixDrops[i]=Math.random()*-40;matrixFrame=0;drawMatrix(fs);}
-function drawMatrix(fs){matrixFrame++;var adv=(matrixFrame%4===0);matrixCtx.fillStyle='rgba(250,248,245,0.06)';if(document.documentElement.getAttribute('data-theme')==='dark')matrixCtx.fillStyle='rgba(15,20,25,0.06)';matrixCtx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);matrixCtx.font=fs+'px "Share Tech Mono",monospace';for(var i=0;i<matrixDrops.length;i++){var ch=matrixChars[Math.floor(Math.random()*matrixChars.length)];matrixCtx.fillStyle='rgba(30,42,56,'+(0.1+Math.random()*0.15)+')';if(document.documentElement.getAttribute('data-theme')==='dark')matrixCtx.fillStyle='rgba(200,200,200,'+(0.06+Math.random()*0.08)+')';matrixCtx.fillText(ch,i*fs,matrixDrops[i]*fs);if(adv){if(matrixDrops[i]*fs>matrixCanvas.height&&Math.random()>0.98)matrixDrops[i]=0;matrixDrops[i]+=0.4;}}matrixAnim=requestAnimationFrame(function(){drawMatrix(fs);});}
+function drawMatrix(fs){matrixFrame++;var adv=(matrixFrame%4===0);matrixCtx.fillStyle='rgba(250,248,245,0.06)';if(document.documentElement.getAttribute('data-theme')==='dark')matrixCtx.fillStyle='rgba(15,20,25,0.06)';matrixCtx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);matrixCtx.font=fs+'px "Share Tech Mono",monospace';for(var i=0;i<matrixDrops.length;i++){var ch=matrixChars[Math.floor(Math.random()*matrixChars.length)];matrixCtx.fillStyle='rgba(43,47,56,'+(0.1+Math.random()*0.15)+')';if(document.documentElement.getAttribute('data-theme')==='dark')matrixCtx.fillStyle='rgba(200,200,200,'+(0.06+Math.random()*0.08)+')';matrixCtx.fillText(ch,i*fs,matrixDrops[i]*fs);if(adv){if(matrixDrops[i]*fs>matrixCanvas.height&&Math.random()>0.98)matrixDrops[i]=0;matrixDrops[i]+=0.4;}}matrixAnim=requestAnimationFrame(function(){drawMatrix(fs);});}
 
 var soundEnabled=true,currentUtterance=null;
 function speak(text,onEnd){if(!soundEnabled){if(onEnd)onEnd();return;}window.speechSynthesis.cancel();currentUtterance=new SpeechSynthesisUtterance(text);currentUtterance.rate=0.9;currentUtterance.pitch=1.0;currentUtterance.volume=0.85;var voices=window.speechSynthesis.getVoices();var pref=voices.find(function(v){return v.lang.startsWith('en')&&v.name.toLowerCase().indexOf('google')>-1;})||voices.find(function(v){return v.lang.startsWith('en-US');})||voices.find(function(v){return v.lang.startsWith('en');});if(pref)currentUtterance.voice=pref;if(onEnd)currentUtterance.onend=onEnd;window.speechSynthesis.speak(currentUtterance);}
@@ -940,10 +1405,277 @@ function closeExplainer(){var m=document.getElementById('explainerModal');m.clas
 function togglePause(){isPaused=!isPaused;document.getElementById('pauseBtn').textContent=isPaused?'RESUME':'PAUSE';if(isPaused)window.speechSynthesis.pause();else window.speechSynthesis.resume();}
 document.getElementById('explainerModal').addEventListener('click',function(e){if(e.target===this)closeExplainer();});
 
+/* ===== INTERACTIVE JOURNEY (3-min narrated overview) ===== */
+var journeyScenes=[
+    {
+        file:'career.build.ps1', chips:['20+ yrs experience','2 global companies'], iconCaption:'The Starting Point', photos:['handshake','coding','strategy'],
+        code:['<span class="cm"># Two decades, one throughline</span>','<span class="kw">$career</span> = <span class="fn">Get-Career</span> -Started <span class="str">"2005"</span> -Company <span class="str">"DELL"</span>','<span class="kw">$career</span> | <span class="fn">Set-Company</span> -Now <span class="str">"Amazon Web Services"</span>','<span class="kw">$career</span>.Status'],
+        text:"Hi, I'm Frantisek. Let me walk you through my career in about a few minutes — sit back, put your headphones on, and relax while I take it from here. We're going to make a few stops along the way, starting with where it all began."
+    },
+    {
+        file:'foundations.build.ps1', chips:['DELL Technologies · 2005–2019','Support → Coaching → Revenue → Ops'], company:'dell', iconCaption:'DELL Technologies, 2005–2019', photos:['support','training','quality','process'],
+        code:['<span class="fn">Get-EarlyCareer</span> -Company <span class="str">"DELL Technologies"</span> |','  <span class="fn">Select-Object</span> Role','<span class="cm"># Technical Support</span>','<span class="cm"># Training &amp; Coaching</span>','<span class="cm"># Revenue Analysis</span>','<span class="cm"># Global Process Optimization</span>'],
+        text:"First stop, DELL Technologies, where it started in 2005 in technical support. Over the next fourteen years I moved through coaching, revenue analysis, and outsourcing partner management, eventually leading global process optimization across EMEA. Each step added a new layer: people skills first, then financial fluency, then systems thinking. By the time I left DELL, I had built dashboards in C# and .NET, run compliance programs across dozens of outsourcing partners, and trained hundreds of people. That foundation is really what made everything after it possible."
+    },
+    {
+        file:'aws_pm.build.ps1', chips:['AWS Finance Program Manager','2019 – 2021'], company:'aws', iconCaption:'SQL Mentorship Workshops', photos:['mentorship','training','finance','billing'],
+        code:['<span class="fn">New-ProgramManager</span> -Company <span class="str">"AWS"</span> |','  <span class="fn">Invoke-Deliverable</span> <span class="str">"Global Late Fee Program"</span> |','  <span class="fn">Invoke-Deliverable</span> <span class="str">"Cross-BU SQL Mentorship"</span>'],
+        text:"Next stop, Seattle, joining AWS in 2019 as a Finance Program Manager. I delivered the Global Late Fee program across every region, redesigned how AWS counts invoices globally as the driver for variable cost per invoice, and built proactive Bad Debt and Fraud identification to protect the P&amp;L before problems ever hit it. I also ran SQL mentorship workshops across business units — picture me standing in front of a room, whiteboard covered in joins and window functions, walking analysts through how to think about a data problem instead of just memorizing syntax. That's the role where I moved from analyzing finance to actively building the systems and the people behind it."
+    },
+    {
+        file:'atlas.build.ps1', chips:['331 Raw Columns','~25,800 Customers','128 Computed Scores','100 Behavioral Clusters'], company:'aws', iconCaption:'AWS AR Global Data Lead', photos:['ai_team','ml_abstract','datacenter','analytics'],
+        code:['<span class="kw">$Atlas</span> = <span class="fn">New-ScoringPipeline</span> `','  -RawColumns <span class="num">331</span> -DerivedMetrics <span class="num">550</span> `','  -Accounts <span class="num">25800</span> -Dimensions <span class="num">8</span> `','  -Mode <span class="str">"ML-driven, not manual"</span>'],
+        text:"Now we arrive at the role I've held since 2021: AWS AR Global Data Lead. I lead AI development teams building predictive and analytical models for FinOps, Billing, Customer Service, Finance and Sales. My biggest build here is Atlas — the Advanced Tiering and Learning Analysis System. Let me give you a sense of scale. Atlas starts from 331 raw columns and derives over 550 additional metrics on top of them, pulling from a source-of-truth base of more than 410,000 accounts, narrowed down to roughly 25,800 active customers scored across 24 months of payment history. From there, 5 machine learning models do the heavy lifting — and what comes out the other end is what actually matters: every account lands with a clear health score and a specific recommended action, so analysts stop guessing which accounts need attention and start working from a ranked, evidence-backed list every single day. It replaces channel-based guesswork with a deterministic, ML-informed way of scoring every single account."
+    },
+    {
+        file:'atlas_goal.build.ps1', chips:['Channel-based → ML-driven','New way of working'], company:'aws', iconCaption:'From Reactive to Proactive', photos:['strategy','ml_abstract','dashboard'],
+        code:['<span class="fn">Get-Atlas</span> | <span class="fn">Set-Goal</span> -Value <span class="str">"Stop treating every account the same"</span>','<span class="cm"># Every account gets its own strategy, automatically</span>','<span class="kw">$Atlas</span>.Mode = <span class="str">"Proactive"</span>  <span class="cm"># was "Reactive"</span>'],
+        text:"Here's why Atlas actually matters. The real goal is changing how Receivables works day to day. Instead of analysts working accounts by channel or by habit, every single account now gets a health score, a behavioral category, and a recommended strategy based on its own history. It's a genuine shift from reactive, one-size-fits-all collections to a proactive, data-led way of working — and it's become the foundation other AI systems in the org build on top of."
+    },
+    {
+        file:'fte_calculator.build.ps1', chips:['Headcount Forecast','FTE Savings Model'], company:'aws', iconCaption:'FTE Savings Calculator', photos:['dashboard','forecast','finance'],
+        code:['<span class="fn">Invoke-FteCalculator</span> `','  -Baseline <span class="str">"current analyst headcount"</span> `','  -PastDue <span class="str">"trailing-twelve-month baseline"</span> `','  -Inputs <span class="str">"time saved"</span>,<span class="str">"effectiveness"</span>'],
+        text:"One of my top four achievements is the Headcount Forecast and FTE Savings Calculator. It takes any collection initiative — time saved per analyst, past-due dollar reduction, an effectiveness improvement, or a straight workload reduction — and converts it into projected FTE headcount and dollar savings against our current staffing and past-due baseline. The impact is that leadership can finally compare very different kinds of initiatives — a process fix, an automation project, a policy change — on the exact same footing, in the same currency, instead of guessing which one matters more."
+    },
+    {
+        file:'wadl_watchlist.build.ps1', chips:['WADL: Weighted Avg Days Late','Legal & Private Pricing'], company:'aws', iconCaption:'Legal & Private Pricing Decisions', photos:['analytics','global','quality'],
+        code:['<span class="kw">$watchlist</span> = <span class="fn">Build-Watchlist</span> `','  -Metric <span class="str">"WADL (Weighted Avg Days Late)"</span> `','  -ConsumedBy <span class="str">"Legal"</span>,<span class="str">"Private Pricing"</span>'],
+        text:"Achievement number two is WADL — Weighted Average Days Late. It's an automated learning model that pairs a customer's actual payment behavior with their Salesforce deal data — reading correspondence and analyst inputs along the way — and it programmatically maintains the Payment Watchlist referenced directly in company guidance. The impact here is real: our Legal team and Private Pricing use that watchlist to decide the future of a customer relationship — whether to renew a deal, restructure payment terms, or walk away entirely. It replaced a manual, ad hoc watchlist process with something repeatable and defensible."
+    },
+    {
+        file:'top400.build.ps1', chips:['Top 400 Accounts','Emails · Notes · Payments · Disputes'], company:'aws', iconCaption:'One Story Per Account', photos:['analytics','ml_abstract','process'],
+        code:['<span class="fn">Get-Top400Accounts</span> |','  <span class="fn">Read-Source</span> <span class="str">"analyst notes"</span>,<span class="str">"emails"</span> |','  <span class="fn">Read-Source</span> <span class="str">"payments"</span>,<span class="str">"disputes"</span> |','  <span class="fn">Build-CustomerStory</span> <span class="cm"># one per account</span>'],
+        text:"Achievement number three, the Top 400 account analysis, is probably the one I'm proudest of. It automatically reads every email, every analyst note, every payment received, and every dispute raised for our four hundred most complex and impactful accounts, and assembles all of it into a single readable customer story per account. What used to take a four-person team roughly three weeks of manual review now runs as a repeatable analysis. And because these four hundred accounts carry a disproportionate share of our risk and our revenue, those stories are exactly what feed the next generation of predictive collection strategy — we finally have a consistent, data-backed narrative for the customers where getting it right matters most."
+    },
+    {
+        file:'reconciliation.build.ps1', chips:['12M records reconciled','3-pass reversal matching'], company:'aws', iconCaption:'Adjustment Reconciliation Engine', photos:['billing','dashboard','coding'],
+        code:['<span class="fn">Invoke-Reconciliation</span> -Records <span class="num">12000000</span> |','  <span class="fn">Classify-Adjustment</span> -As <span class="str">"Effective"</span>,<span class="str">"Reversed"</span>'],
+        text:"Achievement number four is the Adjustment and Credit Memo Reconciliation Engine, which classifies every adjustment across our full AR portfolio — roughly twelve million records — as effective, reversed, or a reversal, using a three-pass matching algorithm plus business rules like wire fees always settling and write-offs never settling. The impact is that we finally know, with confidence, what portion of our open AR balance has genuinely settled versus what only looks closed on paper — turning a judgment-heavy manual exercise into a repeatable, rule-based one."
+    },
+    {
+        file:'skills.build.ps1', chips:['SQL · Python · C#/.NET','Forecasting · Governance · Leadership'], iconCaption:'The Toolkit', photos:['coding','analytics','forecast'],
+        code:['<span class="fn">Get-Toolkit</span> | <span class="fn">Select-Object</span> Name','<span class="cm"># SQL (Redshift)   # Python ML</span>','<span class="cm"># C# / .NET        # Forecasting</span>','<span class="cm"># Data Governance  # Mentorship</span>'],
+        text:"Underneath everything you just heard is a consistent toolkit: SQL on Redshift as the daily backbone, Python for machine learning work, C# and .NET from the systems-building years, forecasting models for revenue and receivables, and a constant thread of data governance and team mentorship running through all of it."
+    },
+    {
+        file:'projects.build.ps1', chips:['Atlas','Reconciliation Engine','Forecast Model','ML Categorization'], iconCaption:'Shipped Projects', photos:['forecast','ml_abstract','dashboard'],
+        code:['<span class="fn">Get-ShippedProjects</span> | <span class="fn">Format-Table</span>','<span class="cm"># Atlas AR Intelligence</span>','<span class="cm"># 12M-record Reconciliation Engine</span>','<span class="cm"># 26-segment Forecast Model</span>','<span class="cm"># ML Behavior Categorization</span>'],
+        text:"Beyond the four highlights, I've also shipped a twenty-six-segment revenue and receivables forecast model backtested across four regions and eight sub-channels, and a machine learning system that automatically sorts accounts into fourteen behavioral cohorts for targeted collection strategy."
+    },
+    {
+        file:'summary.build.ps1', chips:['Data + Leadership','Global Scale'], iconCaption:'Journey Complete', photos:['strategy','ai_team','global'],
+        code:['<span class="fn">Export-Profile</span> -Name <span class="str">"Frantisek Floch"</span>','<span class="cm"># Thanks for watching — take a look around.</span>'],
+        text:"That's the tour: two decades of progressively deeper data and leadership work, from a support desk at DELL to leading AI-driven systems at global scale at AWS. Feel free to explore the full resume for all the detail behind each of these stops. Thanks for riding along."
+    }
+];
+var jySoundEnabled=true,jyPaused=false,jyUtterance=null,jyTypeTimer,jySceneTimer,jyProgressTimer,jyTotalDuration=0,jyElapsed=0,jyActive=false;
+
+function jySpeak(text,onEnd){
+    if(!jySoundEnabled){ if(onEnd) onEnd(); return; }
+    window.speechSynthesis.cancel();
+    jyUtterance=new SpeechSynthesisUtterance(text.replace(/<[^>]+>/g,''));
+    jyUtterance.rate=0.95; jyUtterance.pitch=1.0; jyUtterance.volume=0.85;
+    var voices=window.speechSynthesis.getVoices();
+    var pref=voices.find(function(v){return v.lang.startsWith('en')&&v.name.toLowerCase().indexOf('google')>-1;})||voices.find(function(v){return v.lang.startsWith('en-US');})||voices.find(function(v){return v.lang.startsWith('en');});
+    if(pref) jyUtterance.voice=pref;
+    if(onEnd) jyUtterance.onend=onEnd;
+    window.speechSynthesis.speak(jyUtterance);
+}
+function jyStopSpeech(){ window.speechSynthesis.cancel(); jyUtterance=null; }
+function toggleJourneySound(){ jySoundEnabled=!jySoundEnabled; document.getElementById('journeySoundBtn').textContent=jySoundEnabled?'🔊 SOUND ON':'🔇 SOUND OFF'; if(!jySoundEnabled) jyStopSpeech(); }
+function toggleJourneyPause(){ jyPaused=!jyPaused; document.getElementById('journeyPauseBtn').textContent=jyPaused?'RESUME':'PAUSE'; if(jyPaused) window.speechSynthesis.pause(); else window.speechSynthesis.resume(); }
+
+function jyTypeCaption(text,speed,cb){
+    var el=document.getElementById('journeyCaption'),i=0; el.innerHTML='';
+    function tick(){ if(jyPaused){ jyTypeTimer=setTimeout(tick,50); return; } if(i<text.length){ el.innerHTML=text.substring(0,i+1)+'<span class="cursor"></span>'; i++; jyTypeTimer=setTimeout(tick,speed); } else { el.innerHTML=text; if(cb) cb(); } }
+    tick();
+}
+var jyLogos={
+    aws:'<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><text x="50" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="26" fill="#232F3E">aws</text><path d="M15 42 Q50 55 85 42" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M82 38 L88 42 L82 47" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    dell:'<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><text x="50" y="38" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="26" fill="#007DB8" letter-spacing="1">DELL</text></svg>'
+};
+/* Titlebar badge + filename update only — the code stream itself runs continuously, independent of scenes */
+function jyRenderCode(scene){
+    document.getElementById('jvFilename').textContent='PS '+scene.file;
+    var badge=document.getElementById('jvLogoBadge');
+    badge.classList.remove('show');
+    if(scene.company&&jyLogos[scene.company]){ badge.innerHTML=jyLogos[scene.company]; setTimeout(function(){ badge.classList.add('show'); },250); }
+    else { badge.innerHTML=''; }
+    var chipRow=document.getElementById('jvChipRow'); chipRow.innerHTML='';
+    (scene.chips||[]).forEach(function(c,idx){ var chip=document.createElement('span'); chip.className='jv-chip'; chip.textContent=c; chip.style.animationDelay=(0.3+idx*0.15)+'s'; chipRow.appendChild(chip); });
+}
+
+/* ===== CONTINUOUS CODE STREAM — never stops while the journey is open ===== */
+var jyCodePool=[
+    '<span class="kw">$env</span>:PATH += <span class="str">";C:\\Tools"</span>',
+    '<span class="fn">Get-Process</span> | <span class="fn">Where-Object</span> {<span class="kw">$_</span>.CPU -gt <span class="num">10</span>}',
+    '<span class="fn">Import-Module</span> AWS.Tools.Common',
+    '<span class="kw">$creds</span> = <span class="fn">Get-Credential</span> -Message <span class="str">"Sign in"</span>',
+    '<span class="fn">Connect-AWSAccount</span> -Region <span class="str">"us-west-2"</span>',
+    '<span class="fn">Get-S3Bucket</span> | <span class="fn">Select-Object</span> BucketName',
+    '<span class="fn">Invoke-Sqlcmd</span> -Query <span class="str">"SELECT COUNT(*) FROM ar_invoices"</span>',
+    '<span class="kw">$rows</span> = <span class="fn">Import-Csv</span> .\\aging.csv',
+    '<span class="fn">Write-Host</span> <span class="str">"Processing batch"</span> <span class="kw">$i</span> <span class="cm"># status</span>',
+    '<span class="fn">ForEach-Object</span> { <span class="kw">$total</span> += <span class="kw">$_</span>.Amount }',
+    '<span class="fn">New-Item</span> -Path .\\output -ItemType Directory -Force',
+    '<span class="fn">Compress-Archive</span> -Path .\\reports -DestinationPath archive.zip',
+    '<span class="fn">Test-Connection</span> redshift-cluster.internal -Count <span class="num">2</span>',
+    '<span class="fn">Get-ChildItem</span> -Recurse -Filter *.sql | <span class="fn">Measure-Object</span>',
+    '<span class="kw">$score</span> = <span class="fn">Invoke-AtlasScoring</span> -AccountId <span class="kw">$acct</span>',
+    '<span class="fn">Export-Csv</span> -Path .\\scored_accounts.csv -NoTypeInformation',
+    '<span class="fn">Start-Job</span> -ScriptBlock { <span class="fn">Sync-Pipeline</span> }',
+    '<span class="fn">Get-Date</span> -Format <span class="str">"yyyy-MM-dd HH:mm:ss"</span>',
+    '<span class="fn">Set-Location</span> -Path C:\\Repos\\atlas-pipeline',
+    '<span class="fn">git</span> pull origin main <span class="cm"># latest changes</span>',
+    '<span class="fn">Invoke-RestMethod</span> -Uri <span class="str">"https://api.internal/health"</span>',
+    '<span class="kw">$json</span> = <span class="kw">$response</span> | <span class="fn">ConvertTo-Json</span> -Depth <span class="num">5</span>',
+    '<span class="fn">Sort-Object</span> -Property WADL -Descending | <span class="fn">Select-Object</span> -First <span class="num">50</span>',
+    '<span class="fn">Get-EventLog</span> -LogName Application -Newest <span class="num">20</span>',
+    '<span class="fn">Restart-Service</span> -Name AtlasScoringSvc -Force',
+    '<span class="kw">$watchlist</span> | <span class="fn">Where-Object</span> {<span class="kw">$_</span>.Flag -eq <span class="str">"Legal"</span>}',
+    '<span class="fn">Copy-Item</span> .\\template.pptx -Destination .\\mbr_draft.pptx',
+    '<span class="fn">Get-Content</span> .\\notes.log -Tail <span class="num">15</span>',
+    '<span class="fn">Measure-Command</span> { <span class="fn">Invoke-Reconciliation</span> }',
+    '<span class="fn">Get-Random</span> -Minimum <span class="num">1</span> -Maximum <span class="num">100</span>'
+];
+var jyCodeLoopTimer=null, jyCodeLineCounter=0;
+/* Fills a fresh batch of 15-20 lines per scene, paced across the scene's approximate speech duration,
+   then the pane is cleared before the next scene starts (see jyPlayScene). This keeps the pane readable
+   instead of scrolling faster than the eye can follow. */
+function jyStartCodeLoop(sceneDurationMs){
+    jyStopCodeLoop();
+    var codeEl=document.getElementById('jvCode'), lineEl=document.getElementById('jvLinenums');
+    var targetLines=15+Math.floor(Math.random()*6); // 15-20 lines
+    var interval=Math.max(350, Math.floor((sceneDurationMs||6000)/targetLines));
+    var linesWritten=0;
+    function tickLine(){
+        if(!jyActive) return;
+        if(!jyPaused){
+            if(linesWritten>=targetLines){ return; }
+            var line=jyCodePool[Math.floor(Math.random()*jyCodePool.length)];
+            jyCodeLineCounter++; linesWritten++;
+            var row=document.createElement('div'); row.innerHTML=line;
+            codeEl.appendChild(row);
+            var num=document.createElement('div'); num.textContent=jyCodeLineCounter;
+            lineEl.appendChild(num);
+            codeEl.parentElement.scrollTop=codeEl.parentElement.scrollHeight;
+            if(linesWritten>=targetLines) return;
+        }
+        jyCodeLoopTimer=setTimeout(tickLine, interval);
+    }
+    tickLine();
+}
+function jyClearCodePane(){
+    document.getElementById('jvCode').innerHTML='';
+    document.getElementById('jvLinenums').innerHTML='';
+}
+function jyStopCodeLoop(){ if(jyCodeLoopTimer){ clearTimeout(jyCodeLoopTimer); jyCodeLoopTimer=null; } }
+
+/* ===== VISUAL PANE: rotating photo carousel + big company logo, same photo style as the role explainer ===== */
+var jyPhotoTimer=null, jyPhotoIdx=0;
+function jyRenderVisual(scene){
+    clearInterval(jyPhotoTimer);
+    var photos=(scene.photos&&scene.photos.length)?scene.photos:['coding'];
+    var img=document.getElementById('jvPhotoImg'), cap=document.getElementById('jvIconCaption'), logo=document.getElementById('jvPhotoLogo'), dotsWrap=document.getElementById('jvPhotoDots');
+    cap.classList.remove('show'); logo.classList.remove('show');
+    setTimeout(function(){ cap.textContent=scene.iconCaption||''; cap.classList.add('show'); },150);
+    if(scene.company&&jyLogos[scene.company]){ logo.innerHTML=jyLogos[scene.company]; setTimeout(function(){ logo.classList.add('show'); },300); }
+    else { logo.innerHTML=''; }
+    dotsWrap.innerHTML='';
+    photos.forEach(function(p,i){ var d=document.createElement('div'); d.className='jv-photo-dot'+(i===0?' active':''); dotsWrap.appendChild(d); });
+    jyPhotoIdx=0;
+    function showPhoto(i){
+        img.classList.remove('show');
+        setTimeout(function(){
+            img.src=topicImages[photos[i]]||topicImages.coding;
+            img.onload=function(){ img.classList.add('show'); };
+            img.onerror=function(){ img.classList.add('show'); };
+            dotsWrap.querySelectorAll('.jv-photo-dot').forEach(function(d,di){ d.classList.toggle('active',di===i); });
+        },250);
+    }
+    showPhoto(0);
+    if(photos.length>1){
+        jyPhotoTimer=setInterval(function(){
+            if(jyPaused) return;
+            jyPhotoIdx=(jyPhotoIdx+1)%photos.length;
+            showPhoto(jyPhotoIdx);
+        },3200);
+    }
+}
+
+function jyPlayScene(idx){
+    if(!jyActive) return;
+    if(idx>=journeyScenes.length){
+        document.getElementById('journeyCaption').innerHTML='<span style="color:#8a93aa">That\'s the journey — thanks for watching.</span>';
+        document.getElementById('journeyGotoResume').classList.add('show');
+        jyStopCodeLoop();
+        return;
+    }
+    var s=journeyScenes[idx];
+    jyRenderCode(s);
+    jyRenderVisual(s);
+    jyClearCodePane();
+    var estDurationMs=Math.max(4000, s.text.length*65); // rough speech-length estimate, ~65ms/char
+    jyStartCodeLoop(estDurationMs);
+    jySpeak(s.text,function(){
+        jySceneTimer=setTimeout(function(){
+            if(!jyPaused) jyPlayScene(idx+1);
+            else { var w=setInterval(function(){ if(!jyPaused){ clearInterval(w); jyPlayScene(idx+1); } },100); }
+        },900);
+    });
+    jyTypeCaption(s.text,26,function(){
+        if(!jySoundEnabled){
+            jySceneTimer=setTimeout(function(){
+                if(!jyPaused) jyPlayScene(idx+1);
+                else { var w=setInterval(function(){ if(!jyPaused){ clearInterval(w); jyPlayScene(idx+1); } },100); }
+            },2200);
+        }
+    });
+}
+function jyStartProgress(){
+    jyTotalDuration=journeyScenes.length*15000; jyElapsed=0;
+    var f=document.getElementById('journeyProgressFill'); f.style.width='0%';
+    jyProgressTimer=setInterval(function(){ if(!jyPaused){ jyElapsed+=100; f.style.width=Math.min((jyElapsed/jyTotalDuration)*100,100)+'%'; } },100);
+}
+function openJourney(){
+    jyActive=false; jyPaused=false; jySoundEnabled=true;
+    document.getElementById('journeySoundBtn').textContent='🔊 SOUND ON';
+    document.getElementById('journeyPauseBtn').textContent='PAUSE';
+    document.getElementById('journeyProgressFill').style.width='0%';
+    document.getElementById('journeyCaption').innerHTML='';
+    document.getElementById('journeyGotoResume').classList.remove('show');
+    document.getElementById('jvCode').innerHTML=''; document.getElementById('jvLinenums').innerHTML=''; jyCodeLineCounter=0;
+    document.getElementById('jvIntroScreen').classList.remove('hide');
+    var m=document.getElementById('journeyModal'); m.style.display='flex';
+    requestAnimationFrame(function(){ m.classList.add('active'); });
+}
+function startJourneyPlayback(){
+    document.getElementById('jvIntroScreen').classList.add('hide');
+    jyActive=true; jyPaused=false;
+    setTimeout(function(){ jyPlayScene(0); jyStartProgress(); },400);
+}
+function closeJourney(){
+    var m=document.getElementById('journeyModal'); m.classList.remove('active');
+    setTimeout(function(){ m.style.display='none'; document.getElementById('jvIntroScreen').classList.remove('hide'); },500);
+    jyActive=false; jyPaused=false;
+    clearTimeout(jyTypeTimer); clearTimeout(jySceneTimer); clearInterval(jyProgressTimer); clearInterval(jyPhotoTimer);
+    jyStopCodeLoop();
+    jyStopSpeech();
+}
+function finishJourneyToResume(){
+    closeJourney();
+    setTimeout(function(){ goTo(1); },300);
+}
+function exportResumePdf(){
+    window.print();
+}
+document.getElementById('journeyModal').addEventListener('click',function(e){ if(e.target===this) closeJourney(); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeJourney(); });
+
 /* ===== KONAMI CODE ===== */
 var konamiSeq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'],konamiIdx=0;
 document.addEventListener('keydown',function(e){if(e.key===konamiSeq[konamiIdx]||e.key.toLowerCase()===konamiSeq[konamiIdx]){konamiIdx++;if(konamiIdx===konamiSeq.length){konamiIdx=0;showKonamiEgg();}}else konamiIdx=0;});
-function showKonamiEgg(){var colors=['#c8956c','#1e2a38','#27ae60','#f1c40f','#e74c3c','#3498db'];for(var i=0;i<50;i++){var c=document.createElement('div');c.style.cssText='position:fixed;top:-10px;width:'+(6+Math.random()*8)+'px;height:'+(6+Math.random()*8)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';z-index:100000;pointer-events:none;left:'+Math.random()*100+'vw;animation:confettiFall '+(2+Math.random()*3)+'s linear '+(Math.random())+'s forwards;';document.body.appendChild(c);setTimeout(function(el){el.remove();}.bind(null,c),5000);}}
+function showKonamiEgg(){var colors=['#c8956c','#2b2f38','#27ae60','#f1c40f','#e74c3c','#3498db'];for(var i=0;i<50;i++){var c=document.createElement('div');c.style.cssText='position:fixed;top:-10px;width:'+(6+Math.random()*8)+'px;height:'+(6+Math.random()*8)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';z-index:100000;pointer-events:none;left:'+Math.random()*100+'vw;animation:confettiFall '+(2+Math.random()*3)+'s linear '+(Math.random())+'s forwards;';document.body.appendChild(c);setTimeout(function(el){el.remove();}.bind(null,c),5000);}}
 </script>
 
 <script>
