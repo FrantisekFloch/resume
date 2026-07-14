@@ -204,14 +204,6 @@ body {
                             <div class="sb-skill">Program Management</div>
                             <div class="sb-skill">Stakeholder Management</div>
                         </div>
-
-                        <div class="sb-bar">Languages</div>
-                        <div class="sb-content">
-                            <div class="sb-lang-row"><span>Slovak</span><span>Native</span></div>
-                            <div class="sb-lang-row"><span>English</span><span>Fluent</span></div>
-                            <div class="sb-lang-row"><span>German</span><span>Proficient</span></div>
-                            <div class="sb-lang-row"><span>Spanish</span><span>Learning</span></div>
-                        </div>
                     </aside>
 
                     <main class="main-col">
@@ -280,16 +272,6 @@ body {
                 <!-- ===== PRINT PAGE 2 ===== -->
                 <div class="sheet">
                     <aside class="sidebar">
-                        <div class="sb-bar" style="margin-top:26px;">Early Career</div>
-                        <div class="sb-content">
-                            <div class="sb-edu-item"><div class="sb-edu-name">Listening Post Site Operations Manager</div><div class="sb-edu-sub">DELL Technologies · 2014 – 2017</div></div>
-                            <div class="sb-edu-item"><div class="sb-edu-name">CSMB Revenue Lead, Outsourcing Partners</div><div class="sb-edu-sub">DELL Technologies · 2012 – 2014</div></div>
-                            <div class="sb-edu-item"><div class="sb-edu-name">CER PON Revenue Analyst</div><div class="sb-edu-sub">DELL Technologies · 2011 – 2012</div></div>
-                            <div class="sb-edu-item"><div class="sb-edu-name">Revenue Learning Coordinator</div><div class="sb-edu-sub">DELL Technologies · 2009 – 2011</div></div>
-                            <div class="sb-edu-item"><div class="sb-edu-name">Services Soft Skills Coach</div><div class="sb-edu-sub">DELL Technologies · 2007 – 2009</div></div>
-                            <div class="sb-edu-item"><div class="sb-edu-name">XPS Premium Support Specialist</div><div class="sb-edu-sub">DELL Technologies · 2005 – 2007</div></div>
-                        </div>
-
                         <div class="sb-bar">Tools &amp; Platforms</div>
                         <div class="sb-content">
                             <div class="sb-skill">Microsoft &amp; Microsoft 365</div>
@@ -303,6 +285,14 @@ body {
                             <div class="sb-edu-item"><div class="sb-edu-name">Problem Resolver ×3</div></div>
                             <div class="sb-edu-item"><div class="sb-edu-name">Accolades ×34</div></div>
                             <div class="sb-edu-item"><div class="sb-edu-name">154 Total Awards</div><div class="sb-edu-sub">Helping Hand · People Champion · Extra Mile</div></div>
+                        </div>
+
+                        <div class="sb-bar">Languages</div>
+                        <div class="sb-content">
+                            <div class="sb-lang-row"><span>Slovak</span><span>Native</span></div>
+                            <div class="sb-lang-row"><span>English</span><span>Fluent</span></div>
+                            <div class="sb-lang-row"><span>German</span><span>Proficient</span></div>
+                            <div class="sb-lang-row"><span>Spanish</span><span>Learning</span></div>
                         </div>
                     </aside>
 
@@ -764,22 +754,44 @@ body {
     @page { size: A4; margin: 0; }
     html, body { width:auto; height:auto; margin:0; padding:0; background:#fff !important; }
     body * { visibility:hidden; }
-    .print-resume-wrap, .print-resume-wrap * { visibility:visible; }
+    .print-resume-wrap, .print-resume-wrap * { visibility:visible; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
     .print-resume-wrap {
         position:absolute; top:0; left:0; width:100%; gap:0;
         display:block !important;
     }
+    /* NOTE: no fixed height / no overflow:hidden here — those caused the sidebar to be torn
+       away from the main column onto its own blank page when a sheet's content ran slightly
+       taller than one physical page. min-height keeps short pages full-size; content that runs
+       long simply flows the whole row together onto the next page instead of splitting. */
     .print-resume-wrap .sheet {
         display:flex !important; flex-direction:row !important;
         box-shadow:none !important; margin:0 !important; border-radius:0 !important;
-        width:210mm !important; min-height:297mm !important; height:297mm !important;
+        width:210mm !important; min-height:290mm !important;
         page-break-after:always; break-after:page;
-        overflow:hidden;
+        page-break-inside:avoid; break-inside:avoid;
     }
+    /* min-height is a touch under the full 297mm A4 page (290mm) so the flex-stretched sidebar
+       ends a few mm above the physical page edge instead of touching it exactly — printing at
+       exactly full page height is what caused a sliver of the sidebar to spill onto its own
+       near-blank next page. */
     .print-resume-wrap .sidebar {
         display:block !important; width:74mm !important; flex-shrink:0 !important;
+        padding:26px 0 20px !important;
     }
-    .print-resume-wrap .main-col { flex:1 1 auto !important; }
+    .print-resume-wrap .sb-photo-wrap { width:145px !important; height:145px !important; margin:0 auto 18px !important; }
+    .print-resume-wrap .sb-bar { margin-top:18px !important; padding:0 22px 7px !important; }
+    .print-resume-wrap .sb-content { padding:11px 22px 2px !important; }
+    .print-resume-wrap .sb-item { margin-bottom:7px !important; }
+    .print-resume-wrap .sb-edu-item { margin-bottom:10px !important; }
+    .print-resume-wrap .sb-skill-group-title { margin:10px 0 5px !important; }
+    .print-resume-wrap .main-col { flex:1 1 auto !important; padding:24px 30px 18px !important; }
+    .print-resume-wrap .header-block { margin-bottom:14px !important; }
+    .print-resume-wrap .job { margin-bottom:8px !important; }
+    .print-resume-wrap .job li { margin-bottom:1px !important; line-height:1.45 !important; }
+    .print-resume-wrap .job-cat { margin-top:5px !important; }
+    .print-resume-wrap .job ul { margin-top:3px !important; }
+    .print-resume-wrap .summary-text { font-size:11.5px !important; line-height:1.5 !important; }
+    .print-resume-wrap .m-bar { margin-top:12px !important; margin-bottom:8px !important; }
     .no-print { display:none !important; }
     .top-nav, .page-nav, .chat-toggle, .chat-window, .game-trigger-wrap { display:none !important; }
 }
