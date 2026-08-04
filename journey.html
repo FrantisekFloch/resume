@@ -113,16 +113,39 @@ body { font-family:'Montserrat',sans-serif; }
 <div class="atlas-demo" id="forecastDemo" style="display:none;">
     <div class="ad-esc">Press <kbd>ESC</kbd> to exit</div>
     <div class="fc-phase active" id="fcPh1">
-        <div class="fc-split">
-            <div class="fc-half"><span class="fc-badge" style="background:#e3f2fd;color:#1565c0;">REVENUE FORECAST</span><div id="fcRevContent"></div><div id="fcRevSide" class="fc-side"></div></div>
-            <div class="fc-divider"></div>
-            <div class="fc-half"><span class="fc-badge" style="background:#e8f5e9;color:#2e7d32;">RECEIVABLES FORECAST</span><div id="fcRecContent"></div><div id="fcRecSide" class="fc-side"></div></div>
+        <div class="fc-big-num" id="fcBigNum">$4.2B</div>
+        <div class="fc-big-label" id="fcBigLabel">Annual Revenue Target</div>
+        <div class="fc-split-view" id="fcSplitView">
+            <div class="fc-split-half">
+                <div class="fc-split-badge" style="background:#e3f2fd;color:#1565c0;">REVENUE FORECAST</div>
+                <div class="fc-split-row">
+                    <div class="fc-split-text">Analyzing 48 months of history. Testing TTM Growth + Seasonal Index, Regression Trend, and Weighted Moving Average against actuals.</div>
+                    <div class="fc-split-models">
+                        <div class="fc-sm winner">✓ TTM Growth + Seasonal<br><span>MAPE: 2.1%</span></div>
+                        <div class="fc-sm">Regression Trend<br><span>MAPE: 4.8%</span></div>
+                        <div class="fc-sm">Weighted MA<br><span>MAPE: 5.2%</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="fc-split-divider"></div>
+            <div class="fc-split-half">
+                <div class="fc-split-badge" style="background:#e8f5e9;color:#2e7d32;">RECEIVABLES FORECAST</div>
+                <div class="fc-split-row">
+                    <div class="fc-split-text">Three methods blended for receivables. Predicting outstanding balances based on how customers actually pay across seasonal cycles.</div>
+                    <div class="fc-split-models">
+                        <div class="fc-sm winner-g">✓ Dual Seasonality (80%)<br><span>MAPE: 3.4%</span></div>
+                        <div class="fc-sm">DSO-Based (15%)<br><span>MAPE: 8.2%</span></div>
+                        <div class="fc-sm">Turnover Ratio (5%)<br><span>MAPE: 11.7%</span></div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:12px;"><button class="dash-continue" onclick="fcSkipTo(4)">Continue to Assumptions Dashboard →</button></div>
         </div>
-        <div style="position:absolute;bottom:12px;left:16px;"><button class="ph-btn" onclick="fcSkip(2)">Skip →</button></div>
+        <div style="position:absolute;bottom:12px;left:16px;"><button class="ph-btn" onclick="fcSkipTo(4)">Skip →</button></div>
     </div>
-    <div class="fc-phase" id="fcPh2"></div>
-    <div class="fc-phase" id="fcPh3"></div>
-    <div class="fc-phase" id="fcPh4"></div>
+    <div class="fc-phase" id="fcPh4">
+        <div class="fc-dash" id="fcDash"></div>
+    </div>
 </div>
 
 <style>
@@ -350,25 +373,24 @@ body { font-family:'Montserrat',sans-serif; }
 .tier-bar.active .tier-bar-val { opacity:1; }
 
 /* ===== FORECAST DEMO ===== */
-.fc-phase { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
+.fc-phase { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:24px; }
 .fc-phase.active { display:flex; }
-.fc-split { width:100%; max-width:1000px; display:flex; flex-direction:column; gap:0; height:auto; }
-.fc-half { padding:14px 20px; display:flex; gap:14px; align-items:flex-start; }
-.fc-half > div:first-child { flex:1; }
-.fc-divider { height:2px; background:linear-gradient(90deg,transparent,#1565c0,transparent); margin:4px 30px; }
-.fc-badge { font-size:9px; font-weight:700; letter-spacing:2px; padding:4px 12px; border-radius:12px; display:inline-block; margin-bottom:8px; }
-.fc-side { display:flex; flex-direction:column; gap:6px; min-width:180px; max-width:220px; }
-.fc-block { opacity:0; transform:translateY(5px); transition:opacity .4s,transform .4s; margin-bottom:6px; }
-.fc-block.show { opacity:1; transform:translateY(0); }
-.fc-num { display:inline-block; background:#fff; border:1px solid #e0e4ed; border-radius:8px; padding:8px 16px; font-size:20px; font-weight:800; color:#1565c0; }
-.fc-text { font-size:11px; color:#1a2744; line-height:1.6; }
-.fc-dim { font-size:10px; color:#6b7a94; }
-.fc-model { display:block; background:#fff; border:1px solid #e0e4ed; border-radius:8px; padding:8px 12px; margin:3px 0; }
-.fc-model-name { font-size:10px; font-weight:700; color:#1a2744; }
-.fc-model-detail { font-size:8px; color:#6b7a94; margin-top:2px; }
-.fc-model.winner { border-color:#1565c0; background:#e3f2fd; }
-.fc-model.winner-g { border-color:#2e7d32; background:#e8f5e9; }
-.fc-highlight { background:#fffde7; border-left:3px solid #f9a825; padding:8px 12px; border-radius:6px; font-size:10px; color:#1a2744; line-height:1.5; }
+.fc-big-num { font-size:56px; font-weight:800; color:#1565c0; opacity:0; transform:scale(0.8); transition:all .8s ease; }
+.fc-big-num.show { opacity:1; transform:scale(1); }
+.fc-big-label { font-size:11px; color:#6b7a94; letter-spacing:2px; text-transform:uppercase; margin-top:6px; opacity:0; transition:opacity .5s .4s; }
+.fc-big-label.show { opacity:1; }
+.fc-split-view { width:100%; max-width:900px; margin-top:20px; opacity:0; transform:translateY(12px); transition:all .6s ease; }
+.fc-split-view.show { opacity:1; transform:translateY(0); }
+.fc-split-half { padding:12px 18px; }
+.fc-split-badge { font-size:9px; font-weight:700; letter-spacing:2px; padding:4px 12px; border-radius:12px; display:inline-block; margin-bottom:8px; }
+.fc-split-row { display:flex; gap:16px; align-items:flex-start; }
+.fc-split-text { flex:1; font-size:10.5px; color:#1a2744; line-height:1.6; }
+.fc-split-models { display:flex; flex-direction:column; gap:4px; min-width:180px; }
+.fc-sm { background:#fff; border:1px solid #e0e4ed; border-radius:7px; padding:7px 11px; font-size:9px; font-weight:600; color:#1a2744; line-height:1.3; }
+.fc-sm span { font-size:8px; color:#6b7a94; font-weight:400; }
+.fc-sm.winner { border-color:#1565c0; background:#e3f2fd; }
+.fc-sm.winner-g { border-color:#2e7d32; background:#e8f5e9; }
+.fc-split-divider { height:1px; background:linear-gradient(90deg,transparent,#1565c0,transparent); margin:8px 20px; }
 .ph-btn { padding:6px 14px; border-radius:12px; background:#fff; border:1px solid #e0e4ed; color:#6b7a94; font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; cursor:pointer; }
 .ph-btn:hover { border-color:#1565c0; color:#1565c0; }
 </style>
@@ -648,14 +670,13 @@ function openDeliveryModal(idx){
     ];
     var subs=['Amazon Web Services · OP2 Strategic FinOps Investment · FCF: $193MM','Amazon Web Services · Hybrid Weighted Forecasting Engine','Amazon Web Services · Intelligent Account Automation','Amazon Web Services · Salesforce + AR Data Integration'];
     var tagHtml=tags[idx].map(function(t){return '<span style="display:inline-block;padding:4px 10px;border-radius:12px;background:#f0f1f4;color:#444;font-size:9px;font-weight:500;margin:2px;">'+t+'</span>';}).join('');
-    var demoBtn = idx===0 ? ' <button id="atlasHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#007DB8,#00a8e8);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,125,184,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : idx===1 ? ' <button id="forecastHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#1565c0,#42a5f5);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(21,101,192,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : idx===2 ? ' <button id="tieringHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#0097a7,#00bcd4);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,151,167,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : '';
+    var demoBtn = idx===0 ? ' <button id="atlasHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#007DB8,#00a8e8);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,125,184,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : idx===2 ? ' <button id="tieringHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#0097a7,#00bcd4);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,151,167,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : '';
     var m=document.createElement('div');
     m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
     m.innerHTML='<div style="background:#fff;border-radius:16px;max-width:680px;width:92%;max-height:88vh;overflow-y:auto;padding:0;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;"><button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.9);border:none;font-size:22px;cursor:pointer;color:#888;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,0.1);">&times;</button><img src="'+d.img+'" style="width:100%;height:180px;object-fit:cover;"><div style="padding:24px 28px 28px;"><div style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#FF9900;margin-bottom:6px;">'+d.badge+'</div><h3 style="font-size:18px;font-weight:700;color:#222;margin-bottom:4px;display:inline;">'+d.t+'</h3>'+demoBtn+'<div style="font-size:11px;color:#888;margin-top:8px;margin-bottom:16px;">'+subs[idx]+'</div><div style="font-size:13px;color:#444;line-height:1.75;margin-bottom:16px;">'+fullDesc[idx]+'</div><div style="margin-bottom:14px;">'+tagHtml+'</div><div style="font-size:11px;color:#666;padding-top:10px;border-top:1px solid #eee;">'+fullImpact[idx]+'</div></div></div>';
     document.body.appendChild(m);
     m.addEventListener('click',function(e){if(e.target===m)m.remove();});
     if(idx===0){setTimeout(function(){var hBtn=document.getElementById('atlasHowBtn');if(hBtn)hBtn.addEventListener('click',function(){m.remove();startAtlasDemo();});},50);}
-    if(idx===1){setTimeout(function(){var hBtn=document.getElementById('forecastHowBtn');if(hBtn)hBtn.addEventListener('click',function(){m.remove();startForecastDemo();});},50);}
     if(idx===2){setTimeout(function(){var hBtn=document.getElementById('tieringHowBtn');if(hBtn)hBtn.addEventListener('click',function(){m.remove();startTieringDemo();});},50);}
 }
 function togglePause(){
@@ -668,25 +689,62 @@ function togglePause(){
 function exitJourney(){if(window.speechSynthesis)speechSynthesis.cancel();window.location.href='index.html';}
 
 // ===== FORECAST DEMO =====
-function startForecastDemo(){var d=document.getElementById('forecastDemo');d.style.display='flex';setTimeout(fcStart,400);}
-function closeForecastDemo(){if(window.speechSynthesis)speechSynthesis.cancel();document.getElementById('forecastDemo').style.display='none';}
-function fcAddBlock(container,html){var el=document.createElement('div');el.className='fc-block';el.innerHTML=html;document.getElementById(container).appendChild(el);setTimeout(function(){el.classList.add('show');},50);}
-function fcSkip(n){if(window.speechSynthesis)speechSynthesis.cancel();document.querySelectorAll('.fc-phase').forEach(function(p){p.classList.remove('active');});document.getElementById('fcPh'+n).classList.add('active');if(n===2)fcPhase2();}
+var fcRegions=['North America','Europe','Asia Pacific','Latin America'];
+var fcSegments=['Enterprise Cloud','SMB Standard','Strategic Partners','Resellers','AI & Compute','Managed Services','Direct Sales'];
+var fcMonths=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var fcBaseline=[1680,1050,840,630];
+var fcSeasonal=[0.82,0.78,0.88,0.92,1.02,1.08,1.14,1.12,1.04,1.06,1.10,1.04];
+var fcMonthlyAss=[0,0,0,0,0,0,0,0,0,0,0,0];
+var fcTotalAss=150;
+var fcModel='dual';
 
-function fcStart(){
-    speak('The revenue and receivables forecast starts with only one absolute number — the annual revenue target. From this single input, the model determines the right method and projects twelve months across all segments.',function(){
-        fcAddBlock('fcRevContent','<div class="fc-num">$4.2B</div><div class="fc-dim">Annual Revenue Target</div>');
-        speak('Analyzing forty-eight months of history to identify seasonal patterns. The winning model is TTM Growth plus Seasonal Index — it captures quarter-end spikes and summer dips with only two point one percent error.',function(){
-            fcAddBlock('fcRevSide','<div class="fc-model winner"><div class="fc-model-name">✓ TTM Growth + Seasonal</div><div class="fc-model-detail">MAPE: 2.1%</div></div><div class="fc-model"><div class="fc-model-name">Regression Trend</div><div class="fc-model-detail">MAPE: 4.8%</div></div><div class="fc-model"><div class="fc-model-name">Weighted MA</div><div class="fc-model-detail">MAPE: 5.2%</div></div>');
-            speak('For receivables, three methods are blended. Dual Seasonality dominates at eighty percent weight — it captures payment cycles that DSO alone misses.',function(){
-                fcAddBlock('fcRecContent','<div class="fc-text">Predict outstanding receivables for each month based on how customers actually pay.</div>');
-                fcAddBlock('fcRecSide','<div class="fc-model winner-g"><div class="fc-model-name">✓ Dual Seasonality (80%)</div><div class="fc-model-detail">MAPE: 3.4%</div></div><div class="fc-model"><div class="fc-model-name">DSO-Based (15%)</div><div class="fc-model-detail">MAPE: 8.2%</div></div><div class="fc-model"><div class="fc-model-name">Turnover (5%)</div><div class="fc-model-detail">MAPE: 11.7%</div></div>');
-                fcAddBlock('fcRecContent','<div style="text-align:center;margin-top:10px;"><button class="dash-continue" onclick="fcSkip(2)">Continue →</button></div>');
-            });
-        });
+function startForecastDemo(){document.getElementById('forecastDemo').style.display='flex';setTimeout(fcPhase1,400);}
+function closeForecastDemo(){if(window.speechSynthesis)speechSynthesis.cancel();var d=document.getElementById('forecastDemo');d.style.display='none';document.querySelectorAll('.fc-phase').forEach(function(p){p.classList.remove('active');});document.getElementById('fcPh1').classList.add('active');document.getElementById('fcBigNum').classList.remove('show');document.getElementById('fcBigLabel').classList.remove('show');document.getElementById('fcSplitView').classList.remove('show');document.getElementById('fcDash').innerHTML='';}
+function fcShowPhase(n){document.querySelectorAll('.fc-phase').forEach(function(p){p.classList.remove('active');});document.getElementById('fcPh'+n).classList.add('active');}
+function fcSkipTo(n){if(window.speechSynthesis)speechSynthesis.cancel();fcShowPhase(n);if(n===4)fcPhase4();}
+
+function fcPhase1(){
+    setTimeout(function(){document.getElementById('fcBigNum').classList.add('show');},200);
+    setTimeout(function(){document.getElementById('fcBigLabel').classList.add('show');},600);
+    speak('The forecast starts with a single number — four point two billion dollars. From this one input, the model must select the right forecasting method and project twelve months of revenue and receivables across all segments.',function(){
+        document.getElementById('fcSplitView').classList.add('show');
+        speak('For revenue, the seasonal growth model wins with two point one percent error. For receivables, dual seasonality dominates at eighty percent weight, capturing payment cycles. When ready, press Continue.',function(){});
     });
 }
-function fcPhase2(){speak('The forecast demo is complete. Press ESC to return.',function(){});}
+function fcPhase4(){
+    var d=document.getElementById('fcDash');
+    var mSliders=fcMonths.map(function(m,i){return '<div style="text-align:center;"><div style="font-size:7px;color:#6b7a94;margin-bottom:3px;">'+m+'</div><input type="range" style="writing-mode:vertical-lr;direction:rtl;width:6px;height:60px;-webkit-appearance:none;background:linear-gradient(180deg,#1565c0,#bbdefb);border-radius:3px;cursor:pointer;" min="-20" max="40" value="12" data-m="'+i+'" class="fc-m-slider"><div style="font-size:7px;color:#1565c0;font-weight:700;margin-top:3px;" id="fcMV'+i+'">$12M</div></div>';}).join('');
+    d.innerHTML='<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6b7a94;margin-bottom:12px;">Assumptions & Adjustments Dashboard</div>'+
+        '<div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;"><div style="flex:1;min-width:120px;"><div style="font-size:8px;color:#6b7a94;margin-bottom:4px;font-weight:600;">REGION</div><select id="fcReg" style="width:100%;padding:6px 8px;border:1px solid #e0e4ed;border-radius:5px;font-size:9px;background:#f8f9fb;"><option>North America</option><option>Europe</option><option>Asia Pacific</option></select></div><div style="flex:1;min-width:120px;"><div style="font-size:8px;color:#6b7a94;margin-bottom:4px;font-weight:600;">SEGMENT</div><select id="fcSeg" style="width:100%;padding:6px 8px;border:1px solid #e0e4ed;border-radius:5px;font-size:9px;background:#f8f9fb;"><option>Enterprise Cloud</option><option>AI & Compute</option><option>Strategic Partners</option></select></div><div style="flex:1;min-width:160px;"><div style="font-size:8px;color:#6b7a94;margin-bottom:4px;font-weight:600;">TOTAL IMPACT ($M)</div><div style="display:flex;align-items:center;gap:8px;"><input type="range" id="fcImpact" min="0" max="400" value="150" style="flex:1;height:4px;-webkit-appearance:none;background:#e0e4ed;border-radius:2px;cursor:pointer;"><span id="fcImpV" style="font-size:11px;font-weight:700;color:#1565c0;">$150M</span></div></div></div>'+
+        '<div style="background:#e3f2fd;border:1px solid #bbdefb;border-radius:8px;padding:10px 14px;margin-bottom:10px;"><div style="font-size:8px;font-weight:700;color:#1565c0;letter-spacing:1px;">ACTIVE ASSUMPTION</div><div style="font-size:11px;font-weight:700;color:#1a2744;margin-top:4px;">Automation of Collection Levers</div><div style="font-size:9px;color:#1565c0;font-weight:600;">Estimated Impact: $150M annually</div></div>'+
+        '<div style="font-size:8px;color:#6b7a94;font-weight:600;margin-bottom:4px;">MONTHLY DISTRIBUTION (total stays at $150M)</div>'+
+        '<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:5px;margin-bottom:10px;">'+mSliders+'</div>'+
+        '<div style="width:100%;height:180px;background:#f8f9fb;border-radius:8px;border:1px solid #eef0f5;overflow:hidden;"><canvas id="fcCanvas" style="width:100%;height:100%;"></canvas></div>'+
+        '<div style="display:flex;gap:16px;justify-content:center;margin-top:8px;"><span style="font-size:10px;color:#1a2744;display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:12px;height:3px;background:#1565c0;border-radius:1px;"></span>Baseline</span><span style="font-size:10px;color:#1a2744;display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:12px;height:3px;background:#43a047;border-radius:1px;"></span>With Assumption</span><span style="font-size:10px;color:#1a2744;display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:12px;height:3px;background:#bbb;border-radius:1px;border:1px dashed #999;"></span>Prior Year</span></div>';
+    // Wire sliders
+    document.getElementById('fcImpact').addEventListener('input',function(){fcTotalAss=parseInt(this.value);document.getElementById('fcImpV').textContent='$'+this.value+'M';fcDistribute();fcDraw();});
+    document.querySelectorAll('.fc-m-slider').forEach(function(s){s.addEventListener('input',function(){var mi=parseInt(this.getAttribute('data-m'));fcMonthlyAss[mi]=parseInt(this.value);var used=fcMonthlyAss.reduce(function(a,b){return a+b;},0);var diff=fcTotalAss-used;for(var j=0;j<12;j++){if(j!==mi){fcMonthlyAss[j]+=Math.round(diff/11);var sl=document.querySelector('.fc-m-slider[data-m="'+j+'"]');if(sl)sl.value=fcMonthlyAss[j];}}for(var j=0;j<12;j++)document.getElementById('fcMV'+j).textContent='$'+fcMonthlyAss[j]+'M';fcDraw();});});
+    fcDistribute();fcDraw();
+    speak('The assumptions dashboard. Adjust total impact, distribute across months, and watch the forecast respond in real time.',function(){});
+}
+function fcDistribute(){var pm=Math.round(fcTotalAss/12);for(var i=0;i<12;i++){fcMonthlyAss[i]=pm;}document.querySelectorAll('.fc-m-slider').forEach(function(s,i){s.value=pm;document.getElementById('fcMV'+i).textContent='$'+pm+'M';});}
+function fcDraw(){
+    var canvas=document.getElementById('fcCanvas');if(!canvas)return;
+    var ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth*2;canvas.height=canvas.offsetHeight*2;
+    ctx.scale(2,2);var w=canvas.offsetWidth,h=canvas.offsetHeight;ctx.clearRect(0,0,w,h);
+    var base=140;var noise=[0.72,0.95,0.81,1.12,0.88,1.18,0.94,1.22,0.76,1.08,1.15,0.85];
+    var prior=noise.map(function(n,i){return fcSeasonal[i]*base*0.85*n;});
+    var baseline=fcSeasonal.map(function(s){return s*base;});
+    var adjusted=fcSeasonal.map(function(s,i){return s*base+fcMonthlyAss[i]*1.2;});
+    var all=prior.concat(baseline).concat(adjusted);var maxV=Math.max.apply(null,all)*1.15;var minV=Math.min.apply(null,all)*0.85;if(minV<0)minV*=1.1;
+    function yP(v){return h-14-((v-minV)/(maxV-minV))*(h-24);}
+    ctx.strokeStyle='#eef0f5';ctx.lineWidth=0.5;for(var i=0;i<12;i++){var x=20+i*(w-40)/11;ctx.beginPath();ctx.moveTo(x,6);ctx.lineTo(x,h-14);ctx.stroke();}
+    ctx.setLineDash([4,4]);ctx.strokeStyle='#bbb';ctx.lineWidth=1.5;ctx.beginPath();prior.forEach(function(v,i){var x=20+i*(w-40)/11;i===0?ctx.moveTo(x,yP(v)):ctx.lineTo(x,yP(v));});ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle='#1565c0';ctx.lineWidth=2;ctx.beginPath();baseline.forEach(function(v,i){var x=20+i*(w-40)/11;i===0?ctx.moveTo(x,yP(v)):ctx.lineTo(x,yP(v));});ctx.stroke();
+    ctx.strokeStyle='#43a047';ctx.lineWidth=2.5;ctx.beginPath();adjusted.forEach(function(v,i){var x=20+i*(w-40)/11;i===0?ctx.moveTo(x,yP(v)):ctx.lineTo(x,yP(v));});ctx.stroke();
+    ctx.beginPath();ctx.fillStyle='rgba(67,160,71,0.07)';baseline.forEach(function(v,i){ctx.lineTo(20+i*(w-40)/11,yP(v));});for(var i=11;i>=0;i--)ctx.lineTo(20+i*(w-40)/11,yP(adjusted[i]));ctx.closePath();ctx.fill();
+    ctx.fillStyle='#6b7a94';ctx.font='7px Montserrat';fcMonths.forEach(function(m,i){ctx.fillText(m,16+i*(w-40)/11,h-3);});
+}
 
 // ===== TIERING DEMO =====
 function startTieringDemo(){var d=document.getElementById('tieringDemo');d.style.display='flex';setTimeout(function(){tPhaseA(0);},400);}
