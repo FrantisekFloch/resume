@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Journey — v4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+body { font-family:'Montserrat',sans-serif; }
+
+/* ===== BACKGROUND ===== */
+.jbg { position:fixed; inset:0; z-index:0; background:url('office2.jpg') center/cover no-repeat; opacity:0.7; }
+.jbg-frost { position:fixed; inset:0; z-index:1; background:rgba(255,255,255,0.25); backdrop-filter:blur(2px); }
+
+/* ===== LAYOUT ===== */
+.j-wrap { position:relative; z-index:10; display:flex; align-items:center; justify-content:center; gap:22px; width:100%; height:100vh; padding:14px; }
+
+/* ===== TIMELINES ===== */
+.tl { display:flex; flex-direction:column; align-items:center; width:165px; height:72vh; max-height:640px; opacity:0; transform:translateY(10px); transition:opacity .8s,transform .8s; flex-shrink:0; padding-top:0; }
+.tl.vis { opacity:1; transform:translateY(0); }
+.tl-hdr { display:flex; flex-direction:column; align-items:center; gap:3px; margin-bottom:14px; padding:9px 16px; background:rgba(255,255,255,0.82); backdrop-filter:blur(10px); border-radius:9px; border:1px solid rgba(255,255,255,0.6); box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+.tl-hdr-logo { height:18px; width:auto; }
+.tl-hdr-period { font-size:8.5px; color:#666; letter-spacing:1.5px; }
+.tl-body { position:relative; flex:1; width:100%; }
+.tl-trk { position:absolute; left:50%; transform:translateX(-50%); width:4px; height:100%; background:rgba(0,0,0,0.08); border-radius:3px; }
+.tl-prog { position:absolute; left:50%; transform:translateX(-50%); top:0; width:4px; height:0%; border-radius:3px; transition:height .7s ease; }
+#dProg { background:linear-gradient(180deg,#007DB8,#00c4ff); }
+#aProg { background:linear-gradient(180deg,#FF9900,#ffcc66); }
+
+/* Center column — shifted down so top aligns with timeline body start */
+.ctr-col { display:flex; flex-direction:column; align-items:center; flex-shrink:0; position:relative; top:30px; }
+</style>
+</head>
+<body>
+<div class="jbg"></div>
+<div class="jbg-frost"></div>
+<div class="j-wrap">
+
+    <!-- LEFT: DELL -->
+    <div class="tl tl-l" id="tlL">
+        <div class="tl-hdr"><svg class="tl-hdr-logo" viewBox="0 0 60 16" height="18"><text x="0" y="13" font-family="Montserrat,sans-serif" font-size="14" font-weight="800" fill="#007DB8" letter-spacing="1">DELL</text></svg><span class="tl-hdr-period">2005 – 2019</span></div>
+        <div class="tl-body" id="tlLB"><div class="tl-trk"></div><div class="tl-prog" id="dProg"></div></div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="ctr-col">
+        <div class="ctr" id="ctr">
+            <!-- Loading/Intro phase -->
+            <div class="ctr-phase ctr-loading active" id="pLoading">
+                <div class="loading-ring" id="loadRing">
+                    <svg viewBox="0 0 100 100" width="120" height="120">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="5"/>
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="#007DB8" stroke-width="5" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" id="loadCircle"/>
+                    </svg>
+                    <div class="loading-pct" id="loadPct">0%</div>
+                </div>
+                <div class="loading-text">Preparing your journey...</div>
+            </div>
+            <div class="ctr-phase ctr-p1" id="p1">
+                <div class="ctr-badge" id="badge"></div>
+                <div class="ctr-img-wrap" id="imgWrap"><img class="ctr-img" id="cImg" src="" alt=""></div>
+                <div class="ctr-caption" id="caption"></div>
+                <button class="skip-btn" id="skipBtn" onclick="skipScene()">Skip →</button>
+            </div>
+            <div class="ctr-phase ctr-p2" id="p2">
+                <div class="ctr-p2-title">Key Deliveries</div>
+                <div class="ctr-grid" id="grid"></div>
+            </div>
+        </div>
+        <!-- Controls BELOW the container -->
+        <div class="ctr-ctrl-row">
+            <button class="ctrl-btn ctrl-pause" id="pauseBtn" onclick="togglePause()">
+                <svg id="icPause" viewBox="0 0 24 24" width="15" height="15"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+                <svg id="icPlay" viewBox="0 0 24 24" width="15" height="15" style="display:none"><polygon points="6,4 20,12 6,20" fill="currentColor"/></svg>
+            </button>
+            <div class="pwr-wrap">
+                <button class="ctrl-btn ctrl-pwr" id="pwrBtn" onclick="exitJourney()">
+                    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 2v10M5.6 5.6A9 9 0 1 0 18.4 5.6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+                </button>
+                <div class="ctr-exit" id="exitHint"><span class="exit-arr">↑</span>Exit here</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: AWS (positions + deliveries) -->
+    <div class="tl tl-r" id="tlR">
+        <div class="tl-hdr"><svg class="tl-hdr-logo" viewBox="0 0 80 20" height="18"><text x="0" y="12" font-family="Montserrat,sans-serif" font-size="10" font-weight="700" fill="#FF9900">amazon</text><text x="0" y="19" font-family="Montserrat,sans-serif" font-size="6" font-weight="500" fill="#232F3E">web services</text></svg><span class="tl-hdr-period">2019 – Present</span></div>
+        <div class="tl-body" id="tlRB"><div class="tl-trk"></div><div class="tl-prog" id="aProg"></div></div>
+    </div>
+</div>
+
+<!-- ATLAS DEMO OVERLAY -->
+<div class="atlas-demo" id="atlasDemo" style="display:none;">
+    <div class="ad-esc">Press <kbd>ESC</kbd> to exit</div>
+    <div class="ad-pipe-grid" id="adPipeGrid"></div>
+    <div class="ad-num-phase" id="adNumPhase"></div>
+    <div class="ad-walk-phase" id="adWalkPhase"></div>
+</div>
+
+<style>
+/* ===== TIMELINE STOPS ===== */
+.tl-stop { position:absolute; display:flex; align-items:center; gap:9px; opacity:0; transform:scale(0.92); transition:opacity .5s,transform .5s; }
+.tl-stop.vis { opacity:1; transform:scale(1); }
+.tl-l .tl-stop { right:calc(50% + 12px); flex-direction:row-reverse; text-align:right; }
+.tl-r .tl-stop { left:calc(50% + 12px); }
+
+.tl-dot { width:11px; height:11px; border-radius:50%; background:rgba(0,0,0,0.25); border:2px solid rgba(255,255,255,0.8); flex-shrink:0; transition:all .3s; box-shadow:0 1px 4px rgba(0,0,0,0.12); }
+.tl-stop.act .tl-dot { background:#fff; border-color:#fff; box-shadow:0 0 10px rgba(0,125,184,0.4); }
+.tl-r .tl-stop.act .tl-dot { box-shadow:0 0 10px rgba(255,153,0,0.4); }
+
+/* Cards stay visible with outline once shown — BLINKING */
+.tl-card { padding:8px 12px; background:rgba(255,255,255,0.75); backdrop-filter:blur(8px); border:2px solid transparent; border-radius:8px; min-width:108px; box-shadow:0 2px 10px rgba(0,0,0,0.06); transition:all .3s; cursor:pointer; }
+/* Dell positions: blue outline blinking */
+.tl-l .tl-stop.vis .tl-card { border-color:rgba(0,125,184,0.45); animation:blinkBlue 2.5s ease infinite; }
+.tl-l .tl-stop.act .tl-card { border-color:rgba(0,125,184,0.7); background:rgba(255,255,255,0.88); }
+@keyframes blinkBlue { 0%,100%{border-color:rgba(0,125,184,0.25);box-shadow:0 2px 10px rgba(0,0,0,0.06)} 50%{border-color:rgba(0,125,184,0.6);box-shadow:0 0 8px rgba(0,125,184,0.15)} }
+/* AWS positions: orange outline blinking */
+.tl-r .tl-stop.vis.is-pos .tl-card { border-color:rgba(255,153,0,0.45); animation:blinkOrange 2.5s ease infinite; }
+.tl-r .tl-stop.act.is-pos .tl-card { border-color:rgba(255,153,0,0.7); background:rgba(255,255,255,0.88); }
+@keyframes blinkOrange { 0%,100%{border-color:rgba(255,153,0,0.25);box-shadow:0 2px 10px rgba(0,0,0,0.06)} 50%{border-color:rgba(255,153,0,0.6);box-shadow:0 0 8px rgba(255,153,0,0.15)} }
+/* AWS deliveries: grey outline blinking */
+.tl-r .tl-stop.vis.is-del .tl-card { border-color:rgba(120,120,120,0.35); animation:blinkGrey 2.5s ease infinite; }
+.tl-r .tl-stop.act.is-del .tl-card { border-color:rgba(120,120,120,0.6); background:rgba(255,255,255,0.88); }
+@keyframes blinkGrey { 0%,100%{border-color:rgba(120,120,120,0.2);box-shadow:0 2px 10px rgba(0,0,0,0.06)} 50%{border-color:rgba(120,120,120,0.5);box-shadow:0 0 8px rgba(120,120,120,0.12)} }
+/* Hover lift for all clickable stops */
+.tl-stop.vis .tl-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+/* Separator line between positions and deliveries */
+.tl-sep { position:absolute; left:10%; right:10%; height:1px; background:rgba(0,0,0,0.08); }
+
+.tl-card-t { font-size:10.5px; font-weight:600; color:#222; line-height:1.3; }
+.tl-card-y { font-size:8px; color:#888; letter-spacing:1px; margin-top:2px; }
+
+/* Clickable state (delivery cards in center, after journey ends) */
+.d-card.clickable {
+    cursor:pointer;
+    animation:cardGlow 2s ease infinite;
+    border-color:rgba(255,153,0,0.3);
+}
+.d-card.clickable:hover {
+    border-color:rgba(255,153,0,0.6);
+    box-shadow:0 4px 16px rgba(255,153,0,0.15);
+    transform:translateY(-2px);
+}
+@keyframes cardGlow {
+    0%,100%{ box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+    50%{ box-shadow:0 2px 10px rgba(0,0,0,0.06), 0 0 12px rgba(255,153,0,0.2); }
+}
+
+/* ===== CENTER PANEL ===== */
+.ctr {
+    position:relative; width:680px; max-width:56vw; height:72vh; max-height:580px;
+    background:rgba(255,255,255,0.8); backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,0.7); border-radius:20px;
+    overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:0 16px 56px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.3);
+    flex-shrink:0;
+}
+.ctr-phase { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:30px; }
+.ctr-phase.active { display:flex; }
+
+.ctr-badge { font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#555; border:1px solid rgba(0,0,0,0.1); padding:6px 18px; border-radius:18px; margin-bottom:22px; opacity:0; transition:opacity .4s; background:rgba(255,255,255,0.6); }
+.ctr-badge.show { opacity:1; }
+.ctr-img-wrap { width:320px; max-width:78%; height:180px; border-radius:12px; overflow:hidden; box-shadow:0 6px 24px rgba(0,0,0,0.1); margin-bottom:24px; opacity:0; transform:scale(0.96); transition:opacity .5s,transform .5s; }
+.ctr-img-wrap.show { opacity:1; transform:scale(1); }
+.ctr-img { width:100%; height:100%; object-fit:cover; }
+.ctr-caption { text-align:center; max-width:500px; font-size:15px; line-height:1.8; color:#333; min-height:50px; }
+.ctr-caption .cur { display:inline-block; width:2px; height:14px; background:#007DB8; margin-left:1px; animation:cb .8s infinite; vertical-align:text-bottom; }
+@keyframes cb { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* Skip button */
+.skip-btn { position:absolute; bottom:16px; left:20px; padding:6px 16px; border-radius:16px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.1); color:#888; font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; letter-spacing:1px; cursor:pointer; transition:all .3s; }
+.skip-btn:hover { background:rgba(0,0,0,0.08); color:#444; border-color:rgba(0,0,0,0.2); }
+
+/* Loading animation */
+.ctr-loading { gap:16px; }
+.loading-ring { position:relative; display:flex; align-items:center; justify-content:center; }
+.loading-pct { position:absolute; font-size:18px; font-weight:700; color:#007DB8; }
+.loading-text { font-size:12px; color:#888; letter-spacing:1px; }
+#loadCircle { transition:stroke-dashoffset 0.3s ease; }
+
+/* Phase 2 */
+.ctr-p2 { padding:18px; }
+.ctr-p2-title { font-size:12px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#555; margin-bottom:14px; text-align:center; }
+.ctr-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; flex:1; min-height:0; }
+.d-card { background:rgba(255,255,255,0.88); backdrop-filter:blur(6px); border:1px solid rgba(0,0,0,0.06); border-radius:12px; overflow:hidden; opacity:0; transform:translateY(8px); transition:opacity .5s,transform .5s; display:flex; flex-direction:column; }
+.d-card.show { opacity:1; transform:translateY(0); }
+.d-card-img { width:100%; height:80px; object-fit:cover; }
+.d-card-body { padding:10px 12px; flex:1; display:flex; flex-direction:column; }
+.d-card-badge { font-size:8px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#FF9900; margin-bottom:4px; }
+.d-card-title { font-size:11.5px; font-weight:700; color:#222; line-height:1.3; margin-bottom:3px; }
+.d-card-sub { font-size:8px; color:#888; margin-bottom:5px; letter-spacing:0.3px; }
+.d-card-desc { font-size:9.5px; color:#555; line-height:1.5; flex:1; }
+.d-card-impact { font-size:8.5px; color:#888; margin-top:6px; padding-top:5px; border-top:1px solid rgba(0,0,0,0.05); }
+.d-card-impact strong { color:#222; }
+.d-skip { position:absolute; bottom:8px; right:8px; padding:4px 10px; border-radius:12px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.1); color:#888; font-family:'Montserrat',sans-serif; font-size:8px; font-weight:600; cursor:pointer; transition:all .2s; }
+.d-skip:hover { background:rgba(0,0,0,0.08); color:#444; }
+.d-card { position:relative; }
+
+/* ===== CONTROLS (below center panel) ===== */
+.ctr-ctrl-row { display:flex; gap:14px; align-items:flex-start; margin-top:12px; }
+.ctrl-btn { width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.75); backdrop-filter:blur(8px); border:1.5px solid rgba(0,0,0,0.08); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .3s; color:#444; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.ctrl-btn:hover { background:#fff; border-color:rgba(0,0,0,0.15); color:#222; }
+.ctrl-pause { animation:pPulse 2s ease infinite; }
+@keyframes pPulse { 0%,100%{border-color:rgba(100,180,255,0.2);box-shadow:0 2px 8px rgba(0,0,0,0.06)} 50%{border-color:rgba(100,180,255,0.6);box-shadow:0 0 12px rgba(100,180,255,0.2)} }
+.ctrl-pwr svg path { animation:pwrB 1.5s ease infinite; }
+@keyframes pwrB { 0%,100%{stroke:rgba(200,50,50,0.3)} 50%{stroke:rgba(220,40,40,1)} }
+
+/* Power button wrapper with exit hint below */
+.pwr-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.ctr-exit { display:flex; flex-direction:column; align-items:center; gap:1px; font-size:9px; color:#999; letter-spacing:1.5px; text-transform:uppercase; opacity:0; transition:opacity .4s; }
+.ctr-exit.show { opacity:1; animation:exB 1.2s ease infinite; }
+@keyframes exB { 0%,100%{opacity:.4} 50%{opacity:1} }
+.exit-arr { font-size:14px; animation:exBnc 1s ease infinite; }
+@keyframes exBnc { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+
+@media(max-width:1050px){.tl{width:130px}.ctr{max-width:60vw}}
+@media(max-width:800px){.j-wrap{flex-direction:column;gap:8px}.tl{flex-direction:row;height:auto;width:100%}.ctr{max-width:95vw;height:55vh}}
+
+/* ===== ATLAS DEMO OVERLAY ===== */
+.atlas-demo { position:fixed; inset:0; z-index:20000; background:rgba(248,249,251,0.97); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; }
+.ad-esc { position:absolute; top:14px; left:18px; font-size:9px; color:#666; letter-spacing:1.5px; text-transform:uppercase; }
+.ad-esc kbd { background:#e0e0e0; border:1px solid #ccc; padding:2px 5px; border-radius:3px; font-size:8px; color:#444; }
+.ad-pipe-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:860px; width:100%; }
+.ad-pipe-grid.shrink { transform:scale(0.3); opacity:0.12; position:absolute; pointer-events:none; transition:all 1s ease; }
+.ad-pipe-card { background:#fff; border-radius:10px; padding:14px 16px; border-left:4px solid #007DB8; box-shadow:0 2px 10px rgba(0,0,0,0.04); opacity:0; transform:translateY(8px); transition:opacity .4s,transform .4s; display:flex; gap:10px; align-items:flex-start; position:relative; }
+.ad-pipe-card.show { opacity:1; transform:translateY(0); }
+.ad-pipe-btn { position:absolute; top:8px; right:8px; padding:3px 8px; border-radius:10px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.1); color:#888; font-family:'Montserrat',sans-serif; font-size:7.5px; font-weight:600; cursor:pointer; transition:all .2s; letter-spacing:0.5px; }
+.ad-pipe-btn:hover { background:rgba(0,0,0,0.08); color:#444; }
+.ad-pn { width:26px; height:26px; border-radius:50%; background:#007DB8; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.ad-pl { font-size:10.5px; font-weight:700; color:#222; margin-bottom:3px; }
+.ad-pd { font-size:9px; color:#666; line-height:1.4; }
+.ad-pipe-card.as1 { border-left-color:#007DB8; } .ad-pipe-card.as1 .ad-pn { background:#007DB8; }
+.ad-pipe-card.as2 { border-left-color:#0097a7; } .ad-pipe-card.as2 .ad-pn { background:#0097a7; }
+.ad-pipe-card.as3 { border-left-color:#5c6bc0; } .ad-pipe-card.as3 .ad-pn { background:#5c6bc0; }
+.ad-pipe-card.as4 { border-left-color:#43a047; } .ad-pipe-card.as4 .ad-pn { background:#43a047; }
+.ad-pipe-card.as5 { border-left-color:#ef6c00; } .ad-pipe-card.as5 .ad-pn { background:#ef6c00; }
+.ad-pipe-card.as6 { border-left-color:#f9a825; } .ad-pipe-card.as6 .ad-pn { background:#f9a825; }
+.ad-pipe-card.as7 { border-left-color:#7b1fa2; } .ad-pipe-card.as7 .ad-pn { background:#7b1fa2; }
+.ad-pipe-card.as8 { border-left-color:#d81b60; } .ad-pipe-card.as8 .ad-pn { background:#d81b60; }
+.ad-pipe-card.as9 { border-left-color:#c62828; } .ad-pipe-card.as9 .ad-pn { background:#c62828; }
+.ad-num-phase { display:none; flex-direction:column; align-items:center; gap:16px; max-width:900px; width:100%; }
+.ad-num-phase.active { display:flex; }
+.ad-num-title { font-size:13px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#555; }
+.ad-num-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; width:100%; }
+.ad-nc { background:#fff; border-radius:8px; padding:12px 8px; text-align:center; box-shadow:0 1px 6px rgba(0,0,0,0.04); border:1px solid #f0f0f2; opacity:0; transform:scale(0.9); transition:opacity .3s,transform .3s; }
+.ad-nc.show { opacity:1; transform:scale(1); }
+.ad-nv { font-size:20px; font-weight:800; color:#007DB8; }
+.ad-nl { font-size:8px; color:#888; margin-top:3px; }
+.ad-walk-phase { display:none; flex-direction:column; align-items:center; gap:12px; max-width:700px; width:100%; }
+.ad-walk-phase.active { display:flex; }
+.ad-wt { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#555; margin-bottom:6px; }
+.ad-wc { width:100%; background:#fff; border-radius:10px; padding:14px 18px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border-left:4px solid #007DB8; opacity:0; transform:translateX(-8px); transition:opacity .4s,transform .4s; position:relative; }
+.ad-wc.show { opacity:1; transform:translateX(0); }
+.ad-wc-t { font-size:11px; font-weight:700; color:#222; margin-bottom:4px; }
+.ad-wc-txt { font-size:9.5px; color:#555; line-height:1.5; }
+.ad-wc-stats { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.ad-ws { background:#f4f6f9; padding:4px 10px; border-radius:5px; font-size:8.5px; color:#444; }
+.ad-wc-btn { position:absolute; top:10px; right:12px; padding:4px 10px; border-radius:12px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.1); color:#888; font-family:'Montserrat',sans-serif; font-size:8px; font-weight:600; cursor:pointer; transition:all .2s; letter-spacing:0.5px; }
+.ad-wc-btn:hover { background:rgba(0,0,0,0.08); color:#444; border-color:rgba(0,0,0,0.2); }
+.ad-result { width:100%; max-width:500px; background:#fff; border-radius:12px; padding:20px 24px; border:2px solid #007DB8; box-shadow:0 4px 16px rgba(0,125,184,0.1); opacity:0; transform:scale(0.95); transition:opacity .5s,transform .5s; }
+.ad-result.show { opacity:1; transform:scale(1); }
+.ad-rt { font-size:11px; font-weight:700; color:#007DB8; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+.ad-rr { display:flex; justify-content:space-between; font-size:10.5px; color:#333; padding:4px 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+.ad-rr:last-of-type { border-bottom:none; }
+.ad-rr span { color:#666; }
+.ad-rec { margin-top:12px; padding:10px 14px; background:rgba(0,125,184,0.04); border-radius:8px; border-left:3px solid #007DB8; }
+.ad-rec-t { font-size:9px; font-weight:700; color:#007DB8; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
+.ad-rec-i { font-size:9.5px; color:#444; line-height:1.6; }
+</style>
+
+<script>
+var dellData=[
+    {t:'XPS Premium Support',y:'2005–2007',img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=240&fit=crop'},
+    {t:'Soft Skills Coach',y:'2007–2009',img:'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=240&fit=crop'},
+    {t:'Revenue Learning Coord.',y:'2009–2012',img:'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=240&fit=crop'},
+    {t:'CER Revenue Analyst',y:'2011–2012',img:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=240&fit=crop'},
+    {t:'CSMB Revenue Lead',y:'2012–2014',img:'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=240&fit=crop'},
+    {t:'Site Operations Mgr.',y:'2014–2017',img:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=240&fit=crop'},
+    {t:'Global Process Advisor',y:'2017–2019',img:'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&h=240&fit=crop'}
+];
+// AWS: 2 positions + 4 deliveries on the RIGHT rail
+var awsPos=[
+    {t:'Finance Program Manager',y:'2019–2021',img:'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=400&h=240&fit=crop'},
+    {t:'AR Global Data Lead',y:'2021–Present',img:'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=240&fit=crop'}
+];
+var awsDel=[
+    {t:'Atlas — ML-Driven AR Intelligence',y:'Delivery',badge:'AI / ML',img:'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&h=280&fit=crop',sub:'Amazon Web Services · OP2 Strategic FinOps Investment',desc:'Architected a deterministic scoring pipeline transforming ~150 raw attributes through 4 progressive stages into 320+ columns, producing multi-dimensional health scores (1–10) across 8 strategic dimensions with historical lever effectiveness tracking and AI-constrained collection recommendations.',impact:'<strong>$193MM FCF</strong> · 25,800+ accounts scored · 2,200+ calculations/account'},
+    {t:'ML Customer Behavior Categorization',y:'Delivery',badge:'AI / ML',img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=280&fit=crop',sub:'Amazon Web Services · Atlas Extension',desc:'Designed a machine learning–driven customer segmentation engine classifying 25,800+ accounts into 14 distinct behavioral cohorts using multi-signal analysis across payment patterns, aging trajectories, and risk indicators.',impact:'<strong>14 behavioral cohorts</strong> · Multi-signal analysis · Automated strategy recommendations'},
+    {t:'Revenue & Receivables Forecast',y:'Delivery',badge:'AI / ML',img:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=280&fit=crop',sub:'Amazon Web Services · Hybrid Weighted Forecasting Engine',desc:'Built a hybrid weighted forecasting engine combining DSO-based, dual-seasonality, and turnover-ratio methods across 4 regions, 8 sub-channels, and 3 aging buckets — reproduced as a 26-segment forecast grid mirroring the enterprise global AR forecast model.',impact:'<strong>26-segment</strong> forecast grid · 60-month history · Daily burndown projections'},
+    {t:'WADL Payment Watchlist',y:'Delivery',badge:'Finance',img:'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=500&h=280&fit=crop',sub:'Amazon Web Services · Salesforce + AR Data Integration',desc:'Dashboard combining Salesforce (SFDC) opportunity/deal data with a customer\'s historical AR payment behavior into a single view, supporting private pricing renewal and onboarding decisions.',impact:'<strong>Referenced in company guidance</strong> · Payment risk visibility'}
+];
+
+var spch=[
+"Thank you for choosing the interactive journey. Please sit back, relax, and enjoy the show. I will walk you through over twenty years of career growth in just a few minutes.",
+"Let me start with Dell Technologies, where I spent fourteen years growing from technical support into global process leadership.",
+"I started in 2005 as an XPS Premium Support Specialist, providing premium technical support and coordinating team projects. This is where I discovered my passion for solving complex problems.",
+"By 2007, I became a Soft Skills Coach, taking responsibility for quality and performance across desktop support teams. I developed productivity training and led process improvement pilots.",
+"In 2009, I moved into learning coordination, managing trainers and coaches across the entire EMEA region. I became the subject matter expert for revenue compliance.",
+"As a CER Revenue Analyst, I drove the EMEA services strategy, built revenue roadmaps with cost-benefit analysis, and implemented compliance models across all partners.",
+"The CSMB Revenue Lead role made me the primary revenue and quality contact for outsourcing partners across EMEA. I co-designed Dell's System Renewal Global Project.",
+"From 2014, I managed site operations in Dell's Global Operation Excellence, building end-to-end KPI dashboards and developing systems in C sharp and dot NET.",
+"As Global Process Advisor, I led innovation initiatives and established governance frameworks that shaped Dell's global reporting standards.",
+"Then came Amazon Web Services — where data science meets global finance operations at scale.",
+"I joined in 2019 as Finance Program Manager. Beyond delivering the Global Late Fee program, I redesigned the global invoice count logic to optimize variable cost per invoice, drove proactive Bad Debt and Fraud identification to protect the bottom line, expanded Sales Engagement programs toward Free Cash Flow improvement, and delivered cross-business unit SQL mentorship and technical training workshops.",
+"Since 2021, I lead AI and machine learning development as the AR Global Data Lead. I architect systems that transform how we handle accounts — releasing manual touches so analysts focus where human judgment actually matters. The rest is handled by intelligent automation.",
+"Let me walk you through the most impactful deliveries — the ideas I built from scratch and shipped to production.",
+"Atlas transformed how we see accounts. Instead of treating every account the same, it scores each one across eight dimensions — highlighting where attention is needed and where automation can take over. It freed up hundreds of hours of manual work every month.",
+"The Behavior Categorization engine classifies every account into one of fourteen cohorts. From healthy automated accounts to those needing immediate intervention — each gets a tailored strategy. No more one-size-fits-all.",
+"The Revenue and Receivables Forecast Model predicts cash flow across twenty-six segments using a hybrid engine that combines three forecasting methods. It mirrors the structure of the enterprise global AR forecast workbook and generates daily burndown projections across all regions.",
+"The Payment Watchlist combines Salesforce deal data with real payment history. It is referenced in company guidance for private pricing decisions — when a customer wants special terms, this system tells you if they have earned them."
+];
+
+var isPaused=false,curScene=0;
+// Scene mapping: 0-1 intro, 2-8 Dell(0-6), 9 AWS intro, 10-11 AWS pos(0-1), 12 transition, 13-16 AWS deliveries(0-3)
+function getMap(i){
+    if(i>=2&&i<=8)return{s:'l',idx:i-2,type:'pos'};
+    if(i===10)return{s:'r',idx:0,type:'pos'};
+    if(i===11)return{s:'r',idx:1,type:'pos'};
+    if(i>=13&&i<=16)return{s:'r',idx:i-13+2,type:'del'}; // deliveries are items 2-5 on right rail
+    return null;
+}
+
+function init(){
+    buildTL('l',dellData,[]);
+    buildTL('r',awsPos,awsDel);
+    buildGrid();
+    // Start with loading animation
+    startLoading();
+}
+function startLoading(){
+    var circle=document.getElementById('loadCircle');
+    var pct=document.getElementById('loadPct');
+    var progress=0;
+    var speechDone=false;
+    function jumpProgress(){
+        if(speechDone&&progress>=100)return;
+        if(speechDone){progress=100;}
+        else{progress+=Math.floor(Math.random()*8)+2;if(progress>95)progress=95;}
+        var offset=264-(264*Math.min(progress,100)/100);
+        circle.setAttribute('stroke-dashoffset',offset);
+        pct.textContent=Math.min(progress,100)+'%';
+        if(progress<100)setTimeout(jumpProgress,300+Math.random()*500);
+    }
+    jumpProgress();
+    speak(spch[0],function(){
+        speechDone=true;progress=100;
+        circle.setAttribute('stroke-dashoffset','0');
+        pct.textContent='100%';
+        setTimeout(function(){
+            document.getElementById('pLoading').classList.remove('active');
+            document.getElementById('p1').classList.add('active');
+            play(1);
+        },500);
+    });
+}
+function buildTL(side,posData,delData){
+    var b=document.getElementById(side==='l'?'tlLB':'tlRB');
+    var totalItems=posData.length+delData.length;
+    // Positions
+    posData.forEach(function(d,i){
+        var pct=(i/(totalItems-1))*85+4;
+        var s=document.createElement('div');
+        s.className='tl-stop is-pos';s.style.top=pct+'%';
+        s.innerHTML='<div class="tl-dot"></div><div class="tl-card"><div class="tl-card-t">'+d.t+'</div><div class="tl-card-y">'+d.y+'</div></div>';
+        b.appendChild(s);
+    });
+    // Separator
+    if(delData.length>0){
+        var sepPct=((posData.length-0.5)/(totalItems-1))*85+4;
+        var sep=document.createElement('div');sep.className='tl-sep';sep.style.top=sepPct+'%';
+        b.appendChild(sep);
+    }
+    // Deliveries
+    delData.forEach(function(d,i){
+        var pct=((posData.length+i)/(totalItems-1))*85+4;
+        var s=document.createElement('div');
+        s.className='tl-stop is-del';s.style.top=pct+'%';
+        s.setAttribute('data-del-idx',i);
+        s.innerHTML='<div class="tl-dot"></div><div class="tl-card"><div class="tl-card-t">'+d.t+'</div><div class="tl-card-y">'+d.y+'</div></div>';
+        b.appendChild(s);
+    });
+}
+function buildGrid(){
+    var g=document.getElementById('grid');
+    awsDel.forEach(function(d,i){
+        var c=document.createElement('div');c.className='d-card';c.setAttribute('data-del-idx',i);
+        c.innerHTML='<img class="d-card-img" src="'+d.img+'" alt=""><div class="d-card-body"><div class="d-card-badge">'+d.badge+'</div><div class="d-card-title">'+d.t+'</div><div class="d-card-sub">'+d.sub+'</div><div class="d-card-desc">'+d.desc+'</div><div class="d-card-impact">'+d.impact+'</div></div><button class="d-skip" onclick="skipDelivery()" style="display:none;">Skip →</button>';
+        g.appendChild(c);
+    });
+}
+function showRail(s){document.getElementById(s==='l'?'tlL':'tlR').classList.add('vis');}
+function actStop(side,idx){
+    var b=document.getElementById(side==='l'?'tlLB':'tlRB');var ss=b.querySelectorAll('.tl-stop');
+    ss.forEach(function(x){x.classList.remove('act');});
+    if(ss[idx]){ss[idx].classList.add('vis');ss[idx].classList.add('act');}
+    // Progress: use idx relative to total stops
+    var total=ss.length;
+    document.getElementById(side==='l'?'dProg':'aProg').style.height=((idx+1)/total)*100+'%';
+}
+function showImg(url){var w=document.getElementById('imgWrap'),img=document.getElementById('cImg');img.src=url;img.onload=function(){w.classList.add('show');};}
+function hideImg(){document.getElementById('imgWrap').classList.remove('show');}
+function setBadge(t){var b=document.getElementById('badge');b.textContent=t;b.classList.add('show');}
+var typeTimer=null;
+function typeCap(t){
+    var el=document.getElementById('caption');
+    if(typeTimer){clearTimeout(typeTimer);typeTimer=null;}
+    el.innerHTML='';
+    var i=0;
+    function tk(){
+        if(i<t.length){
+            el.innerHTML=t.substring(0,i+1)+'<span class="cur"></span>';
+            i++;
+            typeTimer=setTimeout(tk,15+Math.random()*6);
+        } else {
+            el.innerHTML=t;
+            typeTimer=null;
+        }
+    }
+    tk();
+}
+function toP2(){document.getElementById('p1').classList.remove('active');document.getElementById('p2').classList.add('active');}
+function showCard(i){var cs=document.querySelectorAll('.d-card');if(cs[i]){cs[i].classList.add('show');cs[i].querySelector('.d-skip').style.display='inline-block';}}
+
+function skipDelivery(){
+    if(window.speechSynthesis)speechSynthesis.cancel();
+    setTimeout(function(){play(curScene+1);},100);
+}
+
+function speak(t,cb){
+    if(!window.speechSynthesis){setTimeout(cb,Math.max(3500,t.length*54));return;}
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.9;u.pitch=1;u.volume=0.85;
+    var v=speechSynthesis.getVoices();
+    var ev=v.find(function(x){return x.lang.startsWith('en')&&x.name.indexOf('Google')>-1;})||v.find(function(x){return x.lang.startsWith('en')&&!x.localService;})||v.find(function(x){return x.lang.startsWith('en');});
+    if(ev)u.voice=ev;u.onend=function(){if(cb)cb();};u.onerror=function(){if(cb)cb();};
+    speechSynthesis.speak(u);
+}
+function play(idx){
+    if(idx>=spch.length){endJourney();return;}
+    curScene=idx;var m=getMap(idx);
+    if(idx===1)showRail('l');if(idx===9)showRail('r');
+    if(m)actStop(m.s,m.idx);
+    // Phase 1
+    if(idx>=2&&idx<=8){var d=dellData[idx-2];setBadge(d.t+' · '+d.y);showImg(d.img);}
+    else if(idx===1){setBadge('DELL TECHNOLOGIES · 2005–2019');showImg('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=240&fit=crop');}
+    else if(idx===9){setBadge('AMAZON WEB SERVICES · 2019–Present');showImg('https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=400&h=240&fit=crop');}
+    else if(idx===10){setBadge('Finance Program Manager · 2019–2021');showImg(awsPos[0].img);}
+    else if(idx===11){setBadge('AR Global Data Lead · 2021–Present');showImg(awsPos[1].img);}
+    else if(idx===12){hideImg();document.getElementById('badge').classList.remove('show');}
+    // Phase 2
+    if(idx===12)toP2();
+    if(idx>=13&&idx<=16)showCard(idx-13);
+    // Caption — show full text, no truncation
+    if(idx<12){typeCap(spch[idx]);}
+    // Speech
+    speak(spch[idx],function(){
+        if(isPaused){var w=setInterval(function(){if(!isPaused){clearInterval(w);setTimeout(function(){play(idx+1);},400);}},100);}
+        else{setTimeout(function(){play(idx+1);},400);}
+    });
+}
+function skipScene(){
+    if(window.speechSynthesis)speechSynthesis.cancel();
+    setTimeout(function(){play(curScene+1);},100);
+}
+var journeyEnded=false;
+function endJourney(){
+    if(journeyEnded)return;
+    journeyEnded=true;
+    document.getElementById('exitHint').classList.add('show');
+    speak('If you want to know more about any of these deliveries, click on them and I will show you how it works.',function(){});
+    // Make center delivery cards clickable
+    document.querySelectorAll('.d-card').forEach(function(c){
+        c.classList.add('clickable');
+        c.addEventListener('click',function(){
+            var i=parseInt(c.getAttribute('data-del-idx'));
+            openDeliveryModal(i);
+        });
+    });
+    // Make ALL timeline stops clickable
+    document.querySelectorAll('.tl-l .tl-stop').forEach(function(s,i){
+        s.addEventListener('click',function(){ openPositionModal('dell',i); });
+    });
+    document.querySelectorAll('.tl-r .tl-stop.is-pos').forEach(function(s,i){
+        s.addEventListener('click',function(){ openPositionModal('aws',i); });
+    });
+    document.querySelectorAll('.tl-r .tl-stop.is-del').forEach(function(s){
+        s.addEventListener('click',function(){
+            var i=parseInt(s.getAttribute('data-del-idx'));
+            openDeliveryModal(i);
+        });
+    });
+}
+
+// Position details from resume
+var posDetails={
+    dell:[
+        {title:'XPS Premium Support Specialist',period:'Jun 2005 — Dec 2007',company:'DELL Technologies',bullets:['Premium technical support and team coordination','Process improvement pilots and project rollouts']},
+        {title:'Services Soft Skills Coach',period:'Dec 2007 — Nov 2009',company:'DELL Technologies',bullets:['Quality and performance responsibility for desktop support teams','Developed productivity training and process improvement pilots']},
+        {title:'Revenue Learning Coordinator',period:'Nov 2009 — Jan 2012',company:'DELL Technologies',bullets:['Coordinated EMEA trainers and coaches across revenue and new hire projects','EMEA subject matter expert for revenue compliance and processes']},
+        {title:'CER PON Revenue Analyst',period:'Dec 2011 — Nov 2012',company:'DELL Technologies',bullets:['Drove EMEA services strategy development and daily governance','Developed services revenue roadmap with cost-benefit analysis','Implemented ORL global compliance model across EMEA and OSPs']},
+        {title:'CSMB Revenue Lead for Outsourcing Partners',period:'Nov 2012 — May 2014',company:'DELL Technologies',bullets:['Primary revenue and quality contact for OSPs across EMEA','Transformation and transition consultant','Co-designed System Renewal Global Project','Led EMEA Point of Need Revenue Quality Control Governance']},
+        {title:'Listening Post Site Operations Manager',period:'May 2014 — Jan 2017',company:'DELL Technologies — Global Operation Excellence',bullets:['Managed Global GLP pillars with KPI interlock across internal and OSP sites','Led global innovation project implementation and governance','Delivered one-screen end-to-end KPI performance dashboards','System development using C# and .NET; DBA across Oracle, MSSQL, MySQL']},
+        {title:'Global Process Optimization Advisor',period:'Jan 2017 — Feb 2019',company:'DELL Technologies',bullets:['Led global process innovation initiatives and sustained governance frameworks','Optimized global reporting structures and delivery models','Established global reporting quality governance standards']}
+    ],
+    aws:[
+        {title:'AWS Finance Program Manager',period:'Feb 2019 — Jan 2021',company:'Amazon Web Services',bullets:['Delivered Global Late Fee program implementation across regions','Redesigned global AWS invoice count logic as work driver for variable cost per invoice','Drove proactive Bad Debt and Fraud identification to prevent P&L impact','Expanded Sales Engagement programs toward Free Cash Flow improvement','Delivered cross-business unit SQL mentorship and technical training workshops']},
+        {title:'AWS AR Global Data Lead',period:'Jan 2021 — Present',company:'Amazon Web Services',bullets:['Lead AI development teams building predictive and analytical models for FinOps, Billing, Customer Service, Finance and Sales','Architect unified recommendation engine consolidating all AI efforts','Establish continuous improvement cycles evaluating model outputs against real-world results','Develop Revenue and Receivables forecast models: free cash flow, headcount planning, project ROI','Establish data governance guardrails and strategic partnerships across Finance functions']}
+    ]
+};
+
+function openPositionModal(company,idx){
+    var p=posDetails[company][idx]; if(!p)return;
+    var bullets=p.bullets.map(function(b){return '<li style="font-size:13px;color:#444;line-height:1.7;margin-bottom:6px;">'+b+'</li>';}).join('');
+    var m=document.createElement('div');
+    m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    m.innerHTML='<div style="background:#fff;border-radius:16px;max-width:560px;width:90%;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;"><button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;">&times;</button><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:6px;">'+p.company+'</div><h3 style="font-size:18px;font-weight:700;color:#222;margin-bottom:4px;">'+p.title+'</h3><div style="font-size:12px;color:#007DB8;font-weight:600;margin-bottom:16px;">'+p.period+'</div><ul style="padding-left:18px;margin:0;">'+bullets+'</ul></div>';
+    document.body.appendChild(m);
+    m.addEventListener('click',function(e){if(e.target===m)m.remove();});
+}
+function openDeliveryModal(idx){
+    var d=awsDel[idx];
+    var fullDesc=[
+        'A 9-layer account health intelligence platform for Accounts Receivable. Atlas ingests raw data from 29 source tables covering ~410K+ accounts across ~25,800 customers, discovers behavioral patterns with 5 ML models, scores every dimension of behavior on a 1–10 scale (10 = best), rolls up to customer-level stories, and categorizes across 7 independent axes with 10 suggested action paths.<br><br><strong>What Atlas Provides:</strong><br>• Multi-dimensional health scoring (1–10 scale) across 8 grouped strategic dimensions<br>• Historical lever effectiveness tracking to prevent repeated ineffective actions<br>• Peer-relative benchmarking for account score positioning<br>• Automation eligibility classification from full automation to critical monitoring<br>• Business-constrained recommendations that comply with policy boundaries<br>• Available granularity: AWS Account ID, SPMS_ID &amp; SFDC_ID grouped statistics<br><br><strong>Per Account:</strong> 331 raw columns → 550+ derived metrics → 252 ML features → 100 clusters → 128 individual scores → 19 composites → 1 overall health score → 7-axis categorization → 10 action paths.',
+        'A machine learning–driven customer segmentation engine built on top of Atlas raw metrics, classifying 25,800+ accounts into 14 distinct behavioral cohorts using multi-signal analysis.<br><br><strong>Behavioral Cohorts:</strong> Chronic Delinquent (42%), Deep Aging Persistent (40%), Moderate Volatile (55%), High Value at Risk (10%), Stable Low Risk (6%), Healthy Automated, Unmanaged Risk, Suspension Cyclers, Dispute Heavy, Cash Application Complexity, Writeoff Recurrent, and more.<br><br><strong>Multi-Signal Analysis:</strong> Cross-group overlap detection identifies accounts flagged in 3+ groups (2,731 accounts), with the most complex accounts appearing in 5 simultaneous risk categories. Each cohort receives tailored collection strategy recommendations.<br><br><strong>Impact:</strong> Enabled targeted collection strategies per behavioral segment, automated strategy assignment, and executive-level risk dashboards with migration tracking.',
+        'A hybrid weighted forecasting engine combining three distinct methods — DSO-based, dual-seasonality, and turnover-ratio — to predict revenue and receivables across 4 regions, 8 sub-channels, and 3 aging buckets. Reproduced as a 26-segment forecast grid mirroring the enterprise global AR forecast workbook.<br><br><strong>Three-Method Ensemble:</strong><br>• DSO-Based (15% weight) — R/R ratio weighted 50/30/20 across trailing years<br>• Dual Seasonality (80% weight) — Blends receivables + revenue seasonal indices<br>• Turnover Ratio (5% weight) — Annual revenue ÷ weighted turnover, distributed by revenue share<br><br><strong>Backtesting:</strong> Node.js validation framework selecting best method by MAPE. Parameter sensitivity analysis on growth weights and seasonality blends.<br><br><strong>Burndown Modeling:</strong> Daily burndown curves from 60-month endpoint data with billing spike detection (days 1–3).<br><br><strong>Impact:</strong> 26-segment enterprise alignment with 15+/31+/91+ aging buckets. Daily projections across all regions.',
+        'A dashboard that combines Salesforce (SFDC) opportunity/deal data with a customer\'s historical AR payment behavior into a single view.<br><br><strong>Use Cases:</strong><br>• Supports the decision to grant, renew, or onboard a customer onto private pricing by pairing the deal context in Salesforce with their actual payment track record<br>• Feeds the recurring monthly ask from the business to help "programmatically update the Payment Watchlist" described in company guidance — replacing a manual watchlist maintenance process with a repeatable, data-driven one<br><br><strong>Impact:</strong> Gives private pricing and AR stakeholders a single combined signal — deal terms plus payment history — instead of having to cross-reference two separate systems manually.'
+    ];
+    var fullImpact=[
+        '<strong>$193MM FCF</strong> strategic investment · 25,800+ accounts scored · 2,200+ calculations per account',
+        '<strong>14 behavioral cohorts</strong> identified · Multi-signal overlap analysis · Automated strategy recommendations',
+        '<strong>26-segment</strong> forecast grid · MAPE-based method selection · 60-month history · Daily burndown projections',
+        '<strong>Salesforce + payment history</strong> combined view · Supports private pricing decisions · Programmatic Payment Watchlist maintenance'
+    ];
+    var tags=[
+        ['Machine Learning','Deterministic Pipeline','SQL','AI Integration','Redshift'],
+        ['Machine Learning','Clustering','Behavioral Analysis','Node.js','Redshift'],
+        ['Predictive Modeling','Backtesting','Node.js','Time Series','Seasonal Index'],
+        ['Python','Salesforce Data','Private Pricing','Payment Risk']
+    ];
+    var subs=['Amazon Web Services · OP2 Strategic FinOps Investment · FCF: $193MM','Amazon Web Services · Atlas Extension','Amazon Web Services · Hybrid Weighted Forecasting Engine','Amazon Web Services · Salesforce + AR Data Integration'];
+    var tagHtml=tags[idx].map(function(t){return '<span style="display:inline-block;padding:4px 10px;border-radius:12px;background:#f0f1f4;color:#444;font-size:9px;font-weight:500;margin:2px;">'+t+'</span>';}).join('');
+    var demoBtn = idx===0 ? ' <button id="atlasHowBtn" style="padding:6px 14px;border-radius:16px;background:linear-gradient(135deg,#007DB8,#00a8e8);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,125,184,0.2);vertical-align:middle;margin-left:10px;">See How It Works →</button>' : '';
+    var m=document.createElement('div');
+    m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    m.innerHTML='<div style="background:#fff;border-radius:16px;max-width:680px;width:92%;max-height:88vh;overflow-y:auto;padding:0;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;"><button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.9);border:none;font-size:22px;cursor:pointer;color:#888;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,0.1);">&times;</button><img src="'+d.img+'" style="width:100%;height:180px;object-fit:cover;"><div style="padding:24px 28px 28px;"><div style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#FF9900;margin-bottom:6px;">'+d.badge+'</div><h3 style="font-size:18px;font-weight:700;color:#222;margin-bottom:4px;display:inline;">'+d.t+'</h3>'+demoBtn+'<div style="font-size:11px;color:#888;margin-top:8px;margin-bottom:16px;">'+subs[idx]+'</div><div style="font-size:13px;color:#444;line-height:1.75;margin-bottom:16px;">'+fullDesc[idx]+'</div><div style="margin-bottom:14px;">'+tagHtml+'</div><div style="font-size:11px;color:#666;padding-top:10px;border-top:1px solid #eee;">'+fullImpact[idx]+'</div></div></div>';
+    document.body.appendChild(m);
+    m.addEventListener('click',function(e){if(e.target===m)m.remove();});
+    if(idx===0){setTimeout(function(){var hBtn=document.getElementById('atlasHowBtn');if(hBtn)hBtn.addEventListener('click',function(){m.remove();startAtlasDemo();});},50);}
+}
+function togglePause(){
+    isPaused=!isPaused;
+    document.getElementById('icPause').style.display=isPaused?'none':'block';
+    document.getElementById('icPlay').style.display=isPaused?'block':'none';
+    if(isPaused&&window.speechSynthesis)speechSynthesis.pause();
+    else if(window.speechSynthesis)speechSynthesis.resume();
+}
+function exitJourney(){if(window.speechSynthesis)speechSynthesis.cancel();window.location.href='index.html';}
+
+// ===== ATLAS DEMO =====
+function startAtlasDemo(){
+    var d=document.getElementById('atlasDemo');d.style.display='flex';
+    setTimeout(function(){atlasDemoPhaseA(0);},400);
+}
+function closeAtlasDemo(){
+    if(window.speechSynthesis)speechSynthesis.cancel();
+    var d=document.getElementById('atlasDemo');d.style.display='none';
+    d.querySelector('#adPipeGrid').innerHTML='';
+    d.querySelector('#adPipeGrid').className='ad-pipe-grid';
+    d.querySelector('#adNumPhase').innerHTML='';d.querySelector('#adNumPhase').className='ad-num-phase';
+    d.querySelector('#adWalkPhase').innerHTML='';d.querySelector('#adWalkPhase').className='ad-walk-phase';
+}
+var adSteps=[
+    {n:1,cls:'as1',label:'Raw Data Collection',desc:'29 source tables, 331 columns, across 5 Redshift schemas — aging, revenue, DSO, communication, billing, operational metrics.'},
+    {n:2,cls:'as2',label:'Account Grouping',desc:'410K+ accounts grouped into ~25,800 customers via SPMS, Salesforce, or standalone.'},
+    {n:3,cls:'as3',label:'Derived Metrics',desc:'11-stage pipeline creating 550+ derived metrics — trends, peer comparisons, volatility, frequencies.'},
+    {n:4,cls:'as4',label:'ML Pattern Discovery',desc:'5 ML models on 24 months of data. 252 features extracted, 100 behavioral clusters.'},
+    {n:5,cls:'as5',label:'Deterministic Scoring',desc:'128 scores per account on 1–10 scale. Fixed thresholds — no ML, no percentiles.'},
+    {n:6,cls:'as6',label:'Consolidation',desc:'19 composite scores, overall health, suspension analysis, behavior flags.'},
+    {n:7,cls:'as7',label:'Analysis & Presentation',desc:'CLE effectiveness, 12 health scores, 8 dimensions, peer percentiles, recommendations.'},
+    {n:8,cls:'as8',label:'Customer Story',desc:'~170 columns per customer: position, patterns, direction, lever history.'},
+    {n:9,cls:'as9',label:'7-Axis Categorization',desc:'7 independent axes with 10 action paths per customer.'}
+];
+var adPipeSpch=['Step one. Collecting raw data from all possible systems and preparing it for analysis.','Step two. Grouping accounts into customer-level dimensions to look at each customer as a single entity.','Step three. Creating derived metrics — trends, comparisons, and behavioral signals from every data point.','Step four. Applying machine learning to discover hidden behavioral patterns across the portfolio.','Step five. Scoring every dimension of behavior on a one to ten scale using fixed, transparent thresholds.','Step six. Consolidating everything into composite scores, health categories, and escalation flags.','Step seven. Analyzing collection lever effectiveness and building evidence-based recommendations.','Step eight. Rolling everything up into a complete customer story — who they are, where they stand, and what has been tried.','Step nine. Final categorization across seven independent axes with ten suggested action paths.'];
+var adNums=[{v:'29',l:'Source Tables'},{v:'331',l:'Raw Columns'},{v:'550+',l:'Derived Metrics'},{v:'410K+',l:'Accounts'},{v:'~25,800',l:'Customers'},{v:'24',l:'Months History'},{v:'5',l:'ML Models'},{v:'252',l:'Features'},{v:'100',l:'Clusters'},{v:'128',l:'Scores'},{v:'19',l:'Composites'},{v:'12',l:'Health Scores'},{v:'8',l:'Dimensions'},{v:'10',l:'CLE Scores'},{v:'7',l:'Axes'},{v:'10',l:'Action Paths'},{v:'14',l:'Pattern Flags'},{v:'~170',l:'Story Cols'},{v:'9',l:'Layers'},{v:'~20K',l:'Groups'}];
+var adWalkSteps=[
+    {t:'Step 1 — Data Collection',txt:'Collecting 3 years of data: aging, revenue, correspondence, penalties, contracts, collection levers, and service cases.',stats:['36 snapshots','331 attributes','29 tables']},
+    {t:'Step 2 — Dimensional Evaluation',txt:'Evaluating every signal per dimension. For aging: 7 buckets with trends, volatility, and peer comparisons.',stats:['7 aging buckets','42 calculations','12 volatility metrics']},
+    {t:'Step 3 — Full-Spectrum',txt:'Repeating across ALL sources: revenue, DSO, disputes, payments, billing complexity.',stats:['550+ metrics','19 dimensions','4 time horizons']},
+    {t:'Step 4 — Global Context',txt:'Running for all 25,800 customers globally — creating peer context.',stats:['25,800 customers','100 clusters','252 ML features']},
+    {t:'Step 5 — Behavioral Grouping',txt:'Grouping by similar behavior. Test Account clusters with aging-persistent accounts.',stats:['5 ML models','14 flags','Cluster: Aging-Persistent']},
+    {t:'Step 6 — Lever Effectiveness',txt:'Checking what worked. Interest charges made behavior worse — marked ineffective. Suspension shows 78% success in peer group.',stats:['10 CLE scores','Late fees: Ineffective','Suspension: 78% success']},
+    {t:'Step 7 — Final Result',txt:'Health score, category, and recommended next steps based on peer group evidence.',stats:['Score: 5.8/10','Category: PEER_OUTLIER','Track: Active Monitoring']}
+];
+var adWalkSpch=['First, we connect three years of data sitting across twenty-nine different sources, covering three hundred thirty-one attributes. The main challenge here is not analyzing the data — it is connecting the details correctly. Each system has its own structure, and there is no single unique identifier across all of them.','Next, we create dimensions and evaluations for every single input column. For example, receivables past due across all thirty-six months becomes a statistical dimension — trailing three, six, and twelve month averages, for every account. Then we examine acceleration, deceleration, and stability across months. We add recent and historical trends, check how peers of similar size and industry perform, and calculate the current momentum and its weight.','This evaluation is then repeated for all three hundred thirty-one attributes across all sources — revenue, DSO, disputes, payments, billing complexity. The result is over five hundred fifty metrics across nineteen dimensions, applied across all thirty-six months and all accounts in the portfolio.','Customers are grouped to be evaluated as a single entity, because many of them have accounts across multiple countries and regions. Some are resellers responsible for thousands of accounts. Grouping accounts into customers is crucial for correct strategy setting. For this, five machine learning models evaluate two hundred fifty-two behavioral features.','The behavioral grouping enables us to handle customers with similar patterns the same way — ensuring consistency and enabling predictive forecasting across the entire portfolio.','Using the behavioral, industry, and business grouping, we check how effective past collection strategies were. In simple terms — did implementing a particular lever change the payment behavior? From this analysis, we know what statistically works best for each customer group, and we can apply the same effective levers or remove the ones that did not help.','All evaluation steps result in a single score, category, and recommendation. The score from one to ten sets the collection focus — accounts scoring nine or ten are eligible for full automation and need no human touch at all. Accounts below five are flagged for focused attention, where responsible parties from all business units work together to remove obstacles blocking resolution.'];
+var adResultSpch='The result: health score five point eight out of ten, categorized as Peer Outlier Review with active monitoring. Historically, late fees were applied but the overdue aging did not improve. I would not recommend this step due to past ineffectiveness. However, peers with similar behavior showed that suspension onboarding was highly effective — response went seventy-eight percent higher. I recommend onboarding to the suspension process, notifying the sales team and the customer on the importance of clearing the outstanding balance.';
+
+var adPipeSkipped=false;
+function atlasDemoPhaseA(i){
+    if(i>=adSteps.length){setTimeout(atlasDemoPhaseB,700);return;}
+    adPipeSkipped=false;
+    var s=adSteps[i],g=document.getElementById('adPipeGrid');
+    // Change previous cards' buttons to Repeat
+    g.querySelectorAll('.ad-pipe-btn').forEach(function(btn){
+        btn.textContent='↺';
+        var si=parseInt(btn.getAttribute('data-step'));
+        btn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(adPipeSpch[si],function(){});};
+    });
+    var c=document.createElement('div');c.className='ad-pipe-card '+s.cls;
+    c.innerHTML='<div class="ad-pn">'+s.n+'</div><div><div class="ad-pl">'+s.label+'</div><div class="ad-pd">'+s.desc+'</div></div><button class="ad-pipe-btn" data-step="'+i+'">Skip</button>';
+    g.appendChild(c);setTimeout(function(){c.classList.add('show');},50);
+    var skipBtn=c.querySelector('.ad-pipe-btn');
+    skipBtn.onclick=function(){
+        adPipeSkipped=true;
+        if(window.speechSynthesis)speechSynthesis.cancel();
+        skipBtn.textContent='↺';
+        skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(adPipeSpch[i],function(){});};
+        setTimeout(function(){atlasDemoPhaseA(i+1);},100);
+    };
+    speak(adPipeSpch[i],function(){
+        if(adPipeSkipped)return;
+        skipBtn.textContent='↺';
+        skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(adPipeSpch[i],function(){});};
+        setTimeout(function(){atlasDemoPhaseA(i+1);},250);
+    });
+}
+function atlasDemoPhaseB(){
+    document.getElementById('adPipeGrid').classList.add('shrink');
+    var np=document.getElementById('adNumPhase');np.classList.add('active');
+    np.innerHTML='<div class="ad-num-title">The Numbers</div><div class="ad-num-grid" id="adNumGrid"></div>';
+    var g=document.getElementById('adNumGrid');
+    adNums.forEach(function(n,i){var c=document.createElement('div');c.className='ad-nc';c.innerHTML='<div class="ad-nv">'+n.v+'</div><div class="ad-nl">'+n.l+'</div>';g.appendChild(c);setTimeout(function(){c.classList.add('show');},i*60);});
+    speak('Here are the facts and figures.',function(){setTimeout(function(){speak('Now let me show you how it works on a simple account.',function(){setTimeout(atlasDemoPhaseC,500);});},400);});
+}
+function atlasDemoPhaseC(){
+    document.getElementById('adNumPhase').style.display='none';document.getElementById('adPipeGrid').style.display='none';
+    var wp=document.getElementById('adWalkPhase');wp.classList.add('active');wp.innerHTML='<div class="ad-wt">Live Demo — Test Account</div>';
+    adWalkStep(0);
+}
+var adWalkCurrent=0,adWalkSkipped=false;
+function adWalkStep(i){
+    if(i>=adWalkSteps.length){setTimeout(adShowResult,500);return;}
+    adWalkCurrent=i;adWalkSkipped=false;
+    var ws=adWalkSteps[i],wp=document.getElementById('adWalkPhase');
+    // Change previous cards' Skip to Repeat
+    wp.querySelectorAll('.ad-wc-btn').forEach(function(btn){
+        btn.textContent='↺ Repeat';
+        var si=parseInt(btn.getAttribute('data-step'));
+        btn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(adWalkSpch[si],function(){});};
+    });
+    var c=document.createElement('div');c.className='ad-wc';c.setAttribute('data-step',i);
+    c.innerHTML='<div class="ad-wc-t">'+ws.t+'</div><div class="ad-wc-txt">'+ws.txt+'</div><div class="ad-wc-stats">'+ws.stats.map(function(s){return '<span class="ad-ws">'+s+'</span>';}).join('')+'</div><button class="ad-wc-btn" data-step="'+i+'">Skip →</button>';
+    wp.appendChild(c);setTimeout(function(){c.classList.add('show');},50);
+    var skipBtn=c.querySelector('.ad-wc-btn');
+    skipBtn.onclick=function(){
+        adWalkSkipped=true;
+        if(window.speechSynthesis)speechSynthesis.cancel();
+        skipBtn.textContent='↺ Repeat';
+        skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(adWalkSpch[i],function(){});};
+        setTimeout(function(){adWalkStep(i+1);},150);
+    };
+    speak(adWalkSpch[i],function(){
+        if(adWalkSkipped)return;
+        skipBtn.textContent='↺ Repeat';
+        skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(adWalkSpch[i],function(){});};
+        setTimeout(function(){adWalkStep(i+1);},350);
+    });
+}
+function adShowResult(){
+    var wp=document.getElementById('adWalkPhase');wp.innerHTML='<div class="ad-wt">Final Assessment</div>';
+    var r=document.createElement('div');r.className='ad-result';
+    r.innerHTML='<div class="ad-rt">Test Account — Final Assessment</div><div class="ad-rr"><span>Health Score</span><strong style="color:#007DB8;font-size:16px;">5.8 / 10</strong></div><div class="ad-rr"><span>Category</span><strong>PEER_OUTLIER_REVIEW</strong></div><div class="ad-rr"><span>Profile</span><strong>Moderate Risk</strong></div><div class="ad-rr"><span>Track</span><strong>A — Active Monitoring</strong></div><div class="ad-rec"><div class="ad-rec-t">Recommended Actions</div><div class="ad-rec-i">• Skip late fees — historically applied but aging did not improve. Not recommended.</div><div class="ad-rec-i">• Onboard to suspension — peer accounts showed 78% better response. Notifies sales and customer.</div><div class="ad-rec-i">• Increase monitoring — weekly review given complexity and outlier status.</div><div class="ad-rec-i">• Direct outreach — this cluster responds significantly better to personal contact.</div></div>';
+    wp.appendChild(r);setTimeout(function(){r.classList.add('show');},100);
+    speak(adResultSpch,function(){});
+}
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){var d=document.getElementById('atlasDemo');if(d&&d.style.display==='flex'){closeAtlasDemo();if(new URLSearchParams(window.location.search).get('demo')==='atlas')window.location.href='index.html';}else{window.location.href='index.html';}}});
+
+if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}
+window.addEventListener('DOMContentLoaded',function(){
+    var params=new URLSearchParams(window.location.search);
+    if(params.get('demo')==='atlas'){
+        // Skip the journey, go straight to Atlas demo
+        setTimeout(startAtlasDemo,500);
+    } else {
+        setTimeout(init,400);
+    }
+});
+</script>
+</body>
+</html>
