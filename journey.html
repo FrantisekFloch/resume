@@ -525,6 +525,7 @@ function toP2(){document.getElementById('p1').classList.remove('active');documen
 function showCard(i){var cs=document.querySelectorAll('.d-card');if(cs[i]){cs[i].classList.add('show');cs[i].querySelector('.d-skip').style.display='inline-block';}}
 
 function skipDelivery(){
+    sceneSkipped=true;
     if(window.speechSynthesis)speechSynthesis.cancel();
     setTimeout(function(){play(curScene+1);},100);
 }
@@ -537,9 +538,10 @@ function speak(t,cb){
     if(ev)u.voice=ev;u.onend=function(){if(cb)cb();};u.onerror=function(){if(cb)cb();};
     speechSynthesis.speak(u);
 }
+var sceneSkipped=false;
 function play(idx){
     if(idx>=spch.length){endJourney();return;}
-    curScene=idx;var m=getMap(idx);
+    curScene=idx;sceneSkipped=false;var m=getMap(idx);
     if(idx===1)showRail('l');if(idx===9)showRail('r');
     if(m)actStop(m.s,m.idx);
     // Phase 1
@@ -556,11 +558,13 @@ function play(idx){
     if(idx<12){typeCap(spch[idx]);}
     // Speech
     speak(spch[idx],function(){
+        if(sceneSkipped)return;
         if(isPaused){var w=setInterval(function(){if(!isPaused){clearInterval(w);setTimeout(function(){play(idx+1);},400);}},100);}
         else{setTimeout(function(){play(idx+1);},400);}
     });
 }
 function skipScene(){
+    sceneSkipped=true;
     if(window.speechSynthesis)speechSynthesis.cancel();
     setTimeout(function(){play(curScene+1);},100);
 }
