@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Forecast Model — How It Works</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+body { font-family:'Montserrat',sans-serif; background:#f4f6f9; color:#1a2744; }
+
+.demo { position:fixed; inset:0; display:flex; flex-direction:column; }
+.demo-header { padding:12px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e0e4ed; background:#fff; }
+.demo-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#1a2744; }
+.demo-esc { font-size:10px; color:#555; font-weight:600; }
+.demo-esc kbd { background:#e8ecf2; border:1px solid #ccd2de; padding:2px 6px; border-radius:3px; font-size:9px; color:#333; font-weight:700; }
+.demo-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; position:relative; overflow:hidden; background:#f4f6f9; }
+.demo-footer { padding:10px 20px; text-align:center; background:#fff; border-top:1px solid #e0e4ed; }
+.disclaimer { font-size:14px; font-weight:800; color:#d32f2f; letter-spacing:1px; animation:disclaimerPulse 2s ease infinite; }
+@keyframes disclaimerPulse { 0%,100%{text-shadow:0 0 4px rgba(211,47,47,0.3);} 50%{text-shadow:0 0 12px rgba(211,47,47,0.6),0 0 20px rgba(211,47,47,0.2);} }
+
+/* Phases */
+.phase { position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:30px; }
+.phase.active { display:flex; }
+
+/* Phase 1 */
+.big-number { font-size:64px; font-weight:800; color:#1565c0; letter-spacing:-2px; opacity:0; transform:scale(0.8); transition:all .8s ease; position:relative; z-index:5; }
+.big-number.show { opacity:1; transform:scale(1); }
+.big-label { font-size:12px; color:#6b7a94; letter-spacing:3px; text-transform:uppercase; margin-top:8px; opacity:0; transition:opacity .5s .4s; }
+.big-label.show { opacity:1; }
+.explode-stage { display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; width:100%; height:100%; }
+.explode-stage.shrink { transform:scale(0.35); opacity:0; transition:all 1s ease; position:absolute; pointer-events:none; }
+.arrows-container { position:absolute; inset:0; pointer-events:none; }
+.arrow-line { position:absolute; top:50%; left:50%; width:0; height:2px; background:linear-gradient(90deg,#1565c0,#90caf9); transform-origin:left center; opacity:0; transition:width 0.7s ease, opacity 0.3s; border-radius:1px; }
+.arrow-line.show { opacity:1; }
+.segment-ring { position:absolute; inset:0; pointer-events:none; }
+.seg-label { position:absolute; font-size:8px; font-weight:600; color:#1565c0; background:#e3f2fd; padding:3px 8px; border-radius:10px; border:1px solid #bbdefb; opacity:0; transform:scale(0.7); transition:all .4s ease; white-space:nowrap; }
+.seg-label.show { opacity:1; transform:scale(1); }
+.info-stage { display:none; flex-direction:column; align-items:center; width:100%; max-width:900px; opacity:0; transform:translateY(12px); transition:all .6s ease; }
+.info-stage.show { display:flex; opacity:1; transform:translateY(0); }
+.info-row { display:flex; gap:20px; width:100%; margin-bottom:12px; }
+.info-half { flex:1; }
+.info-badge { font-size:9px; font-weight:700; letter-spacing:2px; padding:4px 12px; border-radius:12px; display:inline-block; margin-bottom:6px; }
+.info-text { font-size:10.5px; color:#1a2744; line-height:1.6; }
+.info-divider { width:2px; background:linear-gradient(180deg,transparent,#1565c0,transparent); }
+.info-models { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:8px; }
+.info-model { background:#fff; border:1px solid #e0e4ed; border-radius:8px; padding:8px 12px; text-align:center; min-width:120px; opacity:0; transform:translateY(6px); transition:all .4s ease; }
+.info-model.show { opacity:1; transform:translateY(0); }
+.info-model.winner { border-color:#1565c0; background:#e3f2fd; }
+.info-model.winner-g { border-color:#2e7d32; background:#e8f5e9; }
+.info-model-name { font-size:9px; font-weight:700; color:#1a2744; }
+.info-model-detail { font-size:8px; color:#6b7a94; margin-top:2px; }
+.fracture-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; max-width:620px; width:100%; margin-top:24px; opacity:0; transform:translateY(20px); transition:all .8s ease; }
+.fracture-grid.show { opacity:1; transform:translateY(0); }
+.frac-cell { background:#fff; border:1px solid #e0e4ed; border-radius:8px; padding:12px 10px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.frac-region { font-size:8px; font-weight:700; color:#6b7a94; letter-spacing:1.5px; margin-bottom:4px; }
+.frac-val { font-size:16px; font-weight:800; color:#1565c0; }
+.frac-seg { font-size:7px; color:#9aa5b8; margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="demo">
+    <div class="demo-header">
+        <div class="demo-title">Revenue & Receivables Forecast Model</div>
+    </div>
+    <div class="demo-body">
+        <div class="phase active" id="ph1">
+            <div class="phase-esc">Press <kbd>ESC</kbd> to exit</div>
+            <!-- Stage 1: Big number with exploding arrows -->
+            <div class="explode-stage" id="explodeStage">
+                <div class="big-number" id="bigNum">$4.2B</div>
+                <div class="big-label" id="bigLabel">Annual Revenue Target — One Number</div>
+                <div class="arrows-container" id="arrowsContainer"></div>
+                <div class="segment-ring" id="segmentRing"></div>
+            </div>
+            <!-- Stage 2: Split info (appears after explosion) -->
+            <div class="info-stage" id="infoStage">
+                <div class="info-row">
+                    <div class="info-half">
+                        <div class="info-badge" style="background:#e3f2fd;color:#1565c0;">REVENUE FORECAST</div>
+                        <div class="info-text" id="revInfo"></div>
+                    </div>
+                    <div class="info-divider"></div>
+                    <div class="info-half">
+                        <div class="info-badge" style="background:#e8f5e9;color:#2e7d32;">RECEIVABLES FORECAST</div>
+                        <div class="info-text" id="recInfo"></div>
+                    </div>
+                </div>
+                <div class="info-models" id="infoModels"></div>
+                <div style="text-align:center;margin-top:14px;"><button class="dash-continue" id="fcContinueBtn" onclick="skipToPhase(4)" style="display:none;">Continue to Assumptions Dashboard →</button></div>
+            </div>
+            <div class="phase-controls"><button class="ph-btn" id="ph1Pause" onclick="togglePause()">Pause</button><button class="ph-btn" onclick="skipToPhase(4)">Skip →</button></div>
+        </div>
+        <div class="phase" id="ph2"></div>
+        <div class="phase" id="ph3"></div>
+        <div class="phase" id="ph4"><div class="phase-esc">Press <kbd>ESC</kbd> to exit</div><div class="dashboard" id="dashboard"></div></div>
+        <div class="phase" id="ph5"><div class="phase-esc">Press <kbd>ESC</kbd> to exit</div><div class="calc-view" id="calcView"></div><div class="phase-controls"><button class="ph-btn" onclick="skipToPhase(6)">Skip →</button></div></div>
+        <div class="phase" id="ph6"><div class="phase-esc">Press <kbd>ESC</kbd> to exit</div><div class="result-dash" id="resultDash"></div></div>
+    </div>
+    <div class="demo-footer"><div class="disclaimer">⚠ Values, segments, and structure are modified for presentation purposes. Not actual business data.</div></div>
+</div>
+
+<style>
+/* Phase 2: Method Race */
+.method-race { width:100%; max-width:700px; }
+.race-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7a94; text-align:center; margin-bottom:20px; }
+.race-methods { display:flex; gap:16px; }
+.race-card { flex:1; background:#fff; border:1px solid #e0e4ed; border-radius:10px; padding:16px; text-align:center; transition:all .5s; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.race-card.winner { border-color:#43a047; background:#f1f8e9; box-shadow:0 4px 16px rgba(67,160,71,0.12); }
+.race-name { font-size:10px; font-weight:700; color:#1a2744; margin-bottom:10px; }
+.race-bar { height:6px; background:#eef0f5; border-radius:3px; overflow:hidden; margin-bottom:8px; }
+.race-fill { height:100%; border-radius:3px; width:0%; transition:width 2s ease; }
+.race-card:nth-child(1) .race-fill { background:#1565c0; }
+.race-card:nth-child(2) .race-fill { background:#43a047; }
+.race-card:nth-child(3) .race-fill { background:#ef6c00; }
+.race-mape { font-size:20px; font-weight:800; color:#1a2744; opacity:0; transition:opacity .5s; }
+.race-mape.show { opacity:1; }
+.race-label { font-size:8px; color:#9aa5b8; margin-top:2px; }
+.race-weight { font-size:9px; color:#6b7a94; margin-top:8px; font-weight:600; }
+
+/* Phase 3: Heatmap */
+.heatmap-wrap { width:100%; max-width:750px; }
+.heat-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7a94; text-align:center; margin-bottom:16px; }
+.heat-grid { display:grid; grid-template-columns:90px repeat(7,1fr); gap:2px; }
+.heat-header { font-size:7px; font-weight:700; color:#6b7a94; text-align:center; padding:6px 2px; }
+.heat-region { font-size:8px; font-weight:700; color:#1a2744; display:flex; align-items:center; padding:0 6px; }
+.heat-cell { border-radius:4px; padding:8px 4px; text-align:center; font-size:9px; font-weight:600; color:#fff; opacity:0; transform:scale(0.8); transition:all .3s; }
+.heat-cell.show { opacity:1; transform:scale(1); }
+
+/* Phase 4: Dashboard */
+.dashboard { width:100%; max-width:1100px; background:#fff; border:1px solid #e0e4ed; border-radius:14px; padding:20px 28px; box-shadow:0 4px 20px rgba(0,0,0,0.04); overflow-y:auto; max-height:82vh; }
+.dash-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7a94; margin-bottom:14px; }
+.dash-row { display:flex; gap:14px; margin-bottom:12px; flex-wrap:wrap; }
+.dash-input-group { flex:1; min-width:140px; }
+.dash-label { font-size:8px; color:#6b7a94; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; font-weight:600; }
+.dash-select { width:100%; padding:7px 10px; background:#f8f9fb; border:1px solid #e0e4ed; border-radius:6px; color:#1a2744; font-family:'Montserrat',sans-serif; font-size:10px; }
+.dash-slider-row { display:flex; align-items:center; gap:8px; }
+.dash-slider-row input[type=range] { flex:1; height:4px; -webkit-appearance:none; background:#e0e4ed; border-radius:2px; border:none; cursor:pointer; }
+.dash-slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:#1565c0; cursor:pointer; }
+.dash-val { font-size:11px; font-weight:700; color:#1565c0; min-width:50px; text-align:right; }
+.dash-chart { width:100%; height:220px; background:#f8f9fb; border-radius:8px; border:1px solid #eef0f5; position:relative; overflow:hidden; margin:12px 0; }
+.dash-chart canvas { width:100%; height:100%; }
+.dash-assumption { margin-top:12px; padding:12px 16px; background:#e3f2fd; border:1px solid #bbdefb; border-radius:8px; }
+.dash-assumption-title { font-size:9px; font-weight:700; color:#1565c0; letter-spacing:1px; margin-bottom:6px; }
+.dash-assumption-name { font-size:12px; font-weight:700; color:#1a2744; margin-bottom:4px; opacity:0; transition:opacity .5s; }
+.dash-assumption-name.show { opacity:1; }
+.dash-assumption-val { font-size:10px; color:#1565c0; font-weight:600; opacity:0; transition:opacity .5s; }
+.dash-assumption-val.show { opacity:1; }
+.dash-months { display:grid; grid-template-columns:repeat(12,1fr); gap:6px; margin-top:10px; }
+.dash-month-col { text-align:center; }
+.dash-month-lbl { font-size:8px; color:#6b7a94; margin-bottom:4px; font-weight:600; }
+.dash-month-slider { writing-mode:vertical-lr; direction:rtl; width:6px; height:70px; -webkit-appearance:none; background:linear-gradient(180deg,#1565c0,#bbdefb); border-radius:3px; cursor:pointer; margin:0 auto; display:block; }
+.dash-month-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:#1565c0; border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,0.2); }
+.dash-month-val { font-size:8px; color:#1565c0; font-weight:700; margin-top:4px; }
+.dash-continue { margin-top:14px; padding:10px 28px; border-radius:20px; background:#1565c0; color:#fff; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; box-shadow:0 4px 12px rgba(21,101,192,0.2); transition:all .3s; }
+.dash-continue:hover { background:#0d47a1; transform:translateY(-1px); }
+.dash-legend { display:flex; gap:20px; justify-content:center; margin-top:10px; }
+.dash-leg { font-size:11px; color:#1a2744; display:flex; align-items:center; gap:6px; font-weight:500; }
+.dash-leg-dot { width:14px; height:4px; border-radius:2px; }
+.dash-model-switch { display:flex; gap:6px; align-items:center; }
+.dash-model-btn { padding:5px 12px; border-radius:14px; border:1px solid #e0e4ed; background:#f8f9fb; font-size:9px; font-weight:600; color:#6b7a94; cursor:pointer; transition:all .2s; font-family:'Montserrat',sans-serif; }
+.dash-model-btn.active { background:#1565c0; color:#fff; border-color:#1565c0; }
+.dash-model-btn:hover:not(.active) { border-color:#1565c0; color:#1565c0; }
+</style>
+
+<style>
+/* Phase 5: Calculation - Table Grid */
+.calc-view { width:100%; max-width:800px; }
+.calc-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7a94; text-align:center; margin-bottom:16px; }
+.calc-table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
+.calc-table th { font-size:8px; font-weight:700; color:#6b7a94; letter-spacing:1px; text-transform:uppercase; padding:10px 12px; background:#f4f6f9; border-bottom:1px solid #e0e4ed; text-align:left; }
+.calc-table td { padding:8px 12px; border-bottom:1px solid #f0f2f5; font-size:10px; color:#1a2744; vertical-align:middle; }
+.calc-table tr { opacity:0; transform:translateX(-6px); transition:opacity .4s,transform .4s; }
+.calc-table tr.show { opacity:1; transform:translateX(0); }
+.calc-table tr.active { background:#e3f2fd; }
+.calc-table .col-step { font-weight:700; color:#1565c0; width:30px; }
+.calc-table .col-desc { width:200px; }
+.calc-table .col-formula { font-family:monospace; font-size:9px; color:#6b7a94; }
+.calc-table .col-input { font-weight:600; color:#1a2744; }
+.calc-table .col-result { font-weight:800; color:#1565c0; font-size:12px; text-align:right; opacity:0; transition:opacity .5s; }
+.calc-table .col-result.show { opacity:1; }
+.calc-table tr.final-row td { background:#e8f5e9; border-top:2px solid #43a047; font-weight:700; }
+.calc-table tr.final-row .col-result { color:#2e7d32; font-size:14px; }
+
+/* Phase 6: Executive Dashboard */
+.result-dash { width:100%; max-width:1100px; overflow-y:auto; max-height:78vh; }
+.rd-header { text-align:center; margin-bottom:16px; }
+.rd-header h2 { font-size:16px; font-weight:800; color:#1a2744; letter-spacing:1px; }
+.rd-header p { font-size:9px; color:#6b7a94; margin-top:4px; letter-spacing:1px; }
+.rd-charts-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px; }
+.rd-chart-card { background:#fff; border-radius:8px; padding:12px; border:1px solid #e0e4ed; box-shadow:0 1px 4px rgba(0,0,0,0.03); }
+.rd-chart-title { font-size:8px; font-weight:700; color:#6b7a94; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.rd-chart-canvas { width:100%; height:100px; }
+.rd-section { background:#fff; border-radius:8px; border:1px solid #e0e4ed; margin-bottom:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,0.03); }
+.rd-section-header { background:#1a3a5c; color:#fff; padding:6px 12px; font-size:9px; font-weight:700; letter-spacing:1px; }
+.rd-table { width:100%; border-collapse:collapse; font-size:9px; }
+.rd-table th { background:#f4f6f9; padding:5px 8px; text-align:center; font-weight:700; color:#6b7a94; font-size:8px; letter-spacing:0.5px; border-bottom:1px solid #e0e4ed; }
+.rd-table td { padding:4px 8px; text-align:right; border-bottom:1px solid #f4f6f9; color:#1a2744; font-size:9px; }
+.rd-table td:first-child { text-align:left; font-weight:600; color:#1a3a5c; font-size:8px; }
+.rd-table tr:last-child td { font-weight:700; border-top:1px solid #1a3a5c; background:#eef2f7; }
+.rd-table .negative { color:#c62828; }
+.rd-table .positive { color:#2e7d32; }
+.rd-table .pct { font-size:7px; color:#6b7a94; }
+.rd-kpi-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:14px; }
+.rd-kpi-card { background:#fff; border-radius:8px; padding:10px; text-align:center; border:1px solid #e0e4ed; border-top:3px solid #1565c0; }
+.rd-kpi-val { font-size:18px; font-weight:800; color:#1a2744; }
+.rd-kpi-lbl { font-size:7px; color:#6b7a94; margin-top:2px; letter-spacing:1px; text-transform:uppercase; }
+.rd-kpi-card:nth-child(4) { border-top-color:#43a047; }
+.rd-kpi-card:nth-child(5) { border-top-color:#ef6c00; }
+
+/* Skip / Phase nav */
+.phase-skip { position:absolute; bottom:16px; left:20px; padding:6px 14px; border-radius:12px; background:#fff; border:1px solid #e0e4ed; color:#6b7a94; font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+.phase-skip:hover { border-color:#1565c0; color:#1565c0; }
+.phase-controls { position:absolute; bottom:16px; left:20px; display:flex; gap:8px; }
+.phase-esc { position:absolute; top:12px; right:16px; font-size:9px; color:#888; font-weight:600; }
+.phase-esc kbd { background:#e8ecf2; border:1px solid #ccd2de; padding:2px 5px; border-radius:3px; font-size:8px; color:#333; font-weight:700; }
+.ph-btn { padding:6px 14px; border-radius:12px; background:#fff; border:1px solid #e0e4ed; color:#6b7a94; font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,0.04); transition:all .2s; }
+.ph-btn:hover { border-color:#1565c0; color:#1565c0; }
+.ph-btn.paused { background:#e3f2fd; border-color:#1565c0; color:#1565c0; }
+
+/* ===== SPLIT SCREEN (Revenue top / Receivables bottom) ===== */
+.split-screen { width:100%; max-width:1100px; height:100%; display:flex; flex-direction:column; gap:0; }
+.split-top, .split-bottom { flex:1; padding:12px 24px; overflow-y:auto; position:relative; display:flex; gap:16px; }
+.split-divider { height:2px; background:linear-gradient(90deg,transparent,#1565c0,transparent); margin:0 40px; flex-shrink:0; }
+.split-header { margin-bottom:8px; }
+.split-badge { font-size:9px; font-weight:700; letter-spacing:2px; padding:4px 12px; border-radius:12px; }
+.rev-badge { background:#e3f2fd; color:#1565c0; }
+.rec-badge { background:#e8f5e9; color:#2e7d32; }
+.split-content { display:flex; flex-direction:column; gap:6px; flex:1; }
+.split-side { display:flex; flex-direction:column; gap:6px; min-width:200px; max-width:240px; }
+
+/* Content blocks within split screen */
+.sc-block { opacity:0; transform:translateY(6px); transition:opacity .4s,transform .4s; }
+.sc-block.show { opacity:1; transform:translateY(0); }
+.sc-number { display:inline-block; background:#fff; border:1px solid #e0e4ed; border-radius:8px; padding:10px 20px; font-size:24px; font-weight:800; color:#1565c0; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.sc-number.green { color:#2e7d32; border-color:#c8e6c9; }
+.sc-text { font-size:12px; color:#1a2744; line-height:1.7; }
+.sc-dim { font-size:11px; color:#6b7a94; line-height:1.6; }
+.sc-model-card { display:inline-block; background:#fff; border:1px solid #e0e4ed; border-radius:8px; padding:12px 18px; margin:3px 6px 3px 0; min-height:54px; }
+.sc-model-name { font-size:11px; font-weight:700; color:#1a2744; }
+.sc-model-detail { font-size:9px; color:#6b7a94; margin-top:3px; }
+.sc-model-card.winner { border-color:#1565c0; background:#e3f2fd; }
+.sc-model-card.winner-green { border-color:#2e7d32; background:#e8f5e9; }
+.sc-label { font-size:9px; font-weight:700; color:#6b7a94; letter-spacing:1.5px; text-transform:uppercase; margin-top:4px; }
+.sc-list { font-size:11px; color:#1a2744; line-height:1.8; padding-left:16px; }
+.sc-highlight { background:#fffde7; border-left:3px solid #f9a825; padding:10px 14px; border-radius:6px; font-size:11px; color:#1a2744; line-height:1.6; }
+</style>
+
+<script>
+var regions=['North America','Europe','Asia Pacific','Latin America'];
+var segments=['Enterprise Cloud','SMB Standard','Strategic Partners','Resellers','AI & Compute','Managed Services','Direct Sales'];
+var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var baselineByRegion=[1680,1050,840,630];
+var seasonalIndex=[0.82,0.78,0.88,0.92,1.02,1.08,1.14,1.12,1.04,1.06,1.10,1.04];
+var monthlyAssumption=[0,0,0,0,0,0,0,0,0,0,0,0];
+var totalAssumption=150;
+
+function speak(t,cb){
+    if(!window.speechSynthesis){setTimeout(cb,Math.max(3000,t.length*52));return;}
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.9;u.pitch=1;u.volume=0.85;
+    var v=speechSynthesis.getVoices();var ev=v.find(function(x){return x.lang.startsWith('en')&&x.name.indexOf('Google')>-1;})||v.find(function(x){return x.lang.startsWith('en')&&!x.localService;})||v.find(function(x){return x.lang.startsWith('en');});
+    if(ev)u.voice=ev;u.onend=function(){if(cb)cb();};u.onerror=function(){if(cb)cb();};speechSynthesis.speak(u);
+}
+function showPhase(n){document.querySelectorAll('.phase').forEach(function(p){p.classList.remove('active');});document.getElementById('ph'+n).classList.add('active');}
+
+// ===== PHASE 1 =====
+function startPhase1(){
+    setTimeout(function(){document.getElementById('bigNum').classList.add('show');},300);
+    setTimeout(function(){document.getElementById('bigLabel').classList.add('show');},800);
+    speak('The task: take one single number — a four point two billion dollar annual revenue target — and predict how it flows month by month across twenty-six different segments.',function(){
+        setTimeout(buildFractureGrid,400);
+        speak('The model fractures this target across four regions and seven segment types, each with unique seasonality and growth behavior.',function(){
+            setTimeout(function(){showPhase(2);startPhase2();},1200);
+        });
+    });
+}
+function buildFractureGrid(){
+    var grid=document.getElementById('fracGrid');grid.innerHTML='';
+    regions.forEach(function(r,i){var c=document.createElement('div');c.className='frac-cell';c.innerHTML='<div class="frac-region">'+r.toUpperCase()+'</div><div class="frac-val">$'+baselineByRegion[i]+'M</div><div class="frac-seg">'+segments.length+' segments</div>';grid.appendChild(c);});
+    setTimeout(function(){grid.classList.add('show');},100);
+}
+
+// ===== PHASE 4: INTERACTIVE DASHBOARD =====
+var currentModel='dual';
+var phPaused=false;
+
+function togglePause(){phPaused=!phPaused;var btn=document.getElementById('ph1Pause');btn.textContent=phPaused?'Resume':'Pause';btn.classList.toggle('paused',phPaused);if(phPaused&&window.speechSynthesis)speechSynthesis.pause();else if(window.speechSynthesis)speechSynthesis.resume();}
+function skipToPhase(n){phPaused=false;if(window.speechSynthesis)speechSynthesis.cancel();showPhase(n);if(n===4)startPhase4();else if(n===5)startPhase5();else if(n===6)startPhase6();}
+
+// ===== PHASE 1: EXPLODING NUMBER + INFO =====
+var segLabels=['NAM·Cloud','NAM·AI','EUR·Cloud','EUR·Standard','APAC·Partners','APAC·Reseller','LATAM·SMB','LATAM·Direct','NAM·Strategic','EUR·Managed','APAC·Cloud','NAM·Direct'];
+
+function startPhase1(){
+    // Show big number immediately
+    setTimeout(function(){document.getElementById('bigNum').classList.add('show');},200);
+    setTimeout(function(){document.getElementById('bigLabel').classList.add('show');},700);
+    // Start speech and arrows simultaneously
+    speak('The forecast starts with a single number — four point two billion dollars. The whole twelve months of revenue has to be forecasted and distributed to all possible combinations of regions and segments.',function(){
+        // After first speech: trigger arrows during second speech
+        setTimeout(createArrows,500);
+        speak('This needs an evaluation of historical revenue figures as well as selecting the best model to project the correct growth. Of course it could be a simple distribution-based split, but not all businesses have the same revenue trajectory through the months — so the model has to be smart enough to figure it out.',function(){
+            // Show info stage with ALL content at once
+            document.getElementById('explodeStage').classList.add('shrink');
+            var info=document.getElementById('infoStage');info.style.display='flex';
+            setTimeout(function(){info.classList.add('show');},100);
+            // Fill BOTH sides immediately
+            document.getElementById('revInfo').innerHTML='Analyzing <strong>48 months</strong> of history. The seasonal growth model captures quarter-end spikes and summer dips with only 2.1% error — significantly better than regression or moving average approaches.';
+            document.getElementById('recInfo').innerHTML='Three methods blended: Dual Seasonality dominates at 80% weight because receivables are heavily seasonal — customers pay differently in different months. It captures both billing patterns and collection cycles simultaneously.';
+            showModels();
+            // Hide continue button initially
+            document.getElementById('fcContinueBtn').style.display='none';
+            speak('The next step is to forecast the receivables. This is more complex — many factors step into this forecasting: geographical differences, political climate, news and trends, even catastrophic events. The models are sophisticatedly combined and compared with historical trends to ensure the correct method is selected for each segment.',function(){
+                speak('For revenue, the seasonal growth model wins. For receivables, dual seasonality dominates. These are now the engines that will project every month across all twenty-six segments. When you are ready, press Continue and I will take you to the assumptions adjustment dashboard where you can manually adjust and impact the forecast.',function(){
+                    document.getElementById('fcContinueBtn').style.display='inline-block';
+                });
+            });
+        });
+    });
+}
+
+function createArrows(){
+    var container=document.getElementById('arrowsContainer');
+    var ring=document.getElementById('segmentRing');
+    segLabels.forEach(function(label,i){
+        var angle=(i/segLabels.length)*360;
+        var rad=angle*Math.PI/180;
+        var len=120+Math.random()*40;
+        // Arrow
+        var arrow=document.createElement('div');arrow.className='arrow-line';
+        arrow.style.transform='rotate('+angle+'deg)';
+        arrow.style.width='0px';
+        container.appendChild(arrow);
+        setTimeout(function(){arrow.classList.add('show');arrow.style.width=len+'px';},i*80);
+        // Segment label
+        var lbl=document.createElement('div');lbl.className='seg-label';
+        var x=Math.cos(rad)*(len+30);var y=Math.sin(rad)*(len+30);
+        lbl.style.left='calc(50% + '+x+'px)';lbl.style.top='calc(50% + '+y+'px)';
+        lbl.style.transform='translate(-50%,-50%) scale(0.7)';
+        lbl.textContent=label;
+        ring.appendChild(lbl);
+        setTimeout(function(){lbl.classList.add('show');},i*80+400);
+    });
+}
+
+function showModels(){
+    var mc=document.getElementById('infoModels');
+    var models=[
+        {name:'TTM Growth + Seasonal',detail:'Revenue · MAPE: 2.1%',cls:'winner'},
+        {name:'Regression Trend',detail:'Revenue · MAPE: 4.8%',cls:''},
+        {name:'Weighted MA',detail:'Revenue · MAPE: 5.2%',cls:''},
+        {name:'Dual Seasonality (80%)',detail:'Receivables · MAPE: 3.4%',cls:'winner-g'},
+        {name:'DSO-Based (15%)',detail:'Receivables · MAPE: 8.2%',cls:''},
+        {name:'Turnover Ratio (5%)',detail:'Receivables · MAPE: 11.7%',cls:''}
+    ];
+    models.forEach(function(m,i){
+        var el=document.createElement('div');el.className='info-model'+(m.cls?' '+m.cls:'');
+        el.innerHTML='<div class="info-model-name">'+m.name+'</div><div class="info-model-detail">'+m.detail+'</div>';
+        mc.appendChild(el);
+        setTimeout(function(){el.classList.add('show');},i*150);
+    });
+}
+
+function startPhase4(){
+    var dash=document.getElementById('dashboard');
+    var monthSliders=months.map(function(m,i){return '<div class="dash-month-col"><div class="dash-month-lbl">'+m+'</div><input type="range" class="dash-month-slider" min="-20" max="40" value="12" data-month="'+i+'"><div class="dash-month-val" id="mVal'+i+'">$12M</div></div>';}).join('');
+    dash.innerHTML='<div class="dash-title">Assumptions & Adjustments Dashboard</div>'+
+        '<div class="dash-row"><div class="dash-input-group"><div class="dash-label">Region</div><select class="dash-select" id="dReg"><option>North America</option><option>Europe</option><option>Asia Pacific</option></select></div>'+
+        '<div class="dash-input-group"><div class="dash-label">Segment</div><select class="dash-select" id="dSeg"><option>Enterprise Cloud</option><option>AI & Compute</option><option>Strategic Partners</option></select></div>'+
+        '<div class="dash-input-group"><div class="dash-label">Forecast Model</div><div class="dash-model-switch"><button class="dash-model-btn" data-model="dso" onclick="switchModel(\'dso\')">DSO</button><button class="dash-model-btn active" data-model="dual" onclick="switchModel(\'dual\')">Dual Season.</button><button class="dash-model-btn" data-model="turnover" onclick="switchModel(\'turnover\')">Turnover</button></div></div>'+
+        '<div class="dash-input-group"><div class="dash-label">Total Impact ($M)</div><div class="dash-slider-row"><input type="range" id="dImpact" min="0" max="400" value="150"><div class="dash-val" id="dImpactVal">$150M</div></div></div></div>'+
+        '<div class="dash-assumption" id="dashAssumption"><div class="dash-assumption-title">Active Assumption</div><div class="dash-assumption-name" id="assName"></div><div class="dash-assumption-val" id="assVal"></div></div>'+
+        '<div class="dash-label" style="margin-top:14px;">Monthly Distribution (drag to allocate — total stays at $'+totalAssumption+'M)</div>'+
+        '<div class="dash-months" id="dashMonths">'+monthSliders+'</div>'+
+        '<div class="dash-chart"><canvas id="dashCanvas"></canvas></div>'+
+        '<div class="dash-legend"><div class="dash-leg"><div class="dash-leg-dot" style="background:#1565c0;"></div>Baseline Forecast</div><div class="dash-leg"><div class="dash-leg-dot" style="background:#43a047;"></div>With Assumption</div><div class="dash-leg"><div class="dash-leg-dot" style="background:#bbb;border:1px dashed #999;"></div>Prior Year (Actual)</div></div>'+
+        '<div style="text-align:center;margin-top:14px;"><button class="dash-continue" id="dashContinue" style="display:none;" onclick="continueFromDash()">Continue →</button></div>';
+    // Add skip button
+    var skipDiv=document.createElement('div');skipDiv.style.cssText='position:absolute;bottom:16px;left:20px;';
+    skipDiv.innerHTML='<button class="ph-btn" onclick="skipToPhase(5)">Skip →</button>';
+    dash.appendChild(skipDiv);
+    // Wire impact slider
+    document.getElementById('dImpact').addEventListener('input',function(){
+        totalAssumption=parseInt(this.value);
+        document.getElementById('dImpactVal').textContent='$'+this.value+'M';
+        document.getElementById('assVal').textContent='Estimated Impact: $'+this.value+'M annually';
+        distributeMonthly();drawDashChart();
+    });
+    // Wire monthly sliders with redistribution
+    document.querySelectorAll('.dash-month-slider').forEach(function(s){
+        s.addEventListener('input',function(){
+            var mi=parseInt(this.getAttribute('data-month'));
+            var newVal=parseInt(this.value);
+            monthlyAssumption[mi]=newVal;
+            // Redistribute remaining across other months
+            var used=monthlyAssumption.reduce(function(a,b){return a+b;},0);
+            var diff=totalAssumption-used;
+            var others=11;
+            var perOther=Math.round(diff/others);
+            for(var j=0;j<12;j++){
+                if(j!==mi){
+                    monthlyAssumption[j]+=perOther;
+                    var slider=document.querySelector('.dash-month-slider[data-month="'+j+'"]');
+                    if(slider)slider.value=monthlyAssumption[j];
+                }
+            }
+            // Update all labels
+            for(var j=0;j<12;j++){document.getElementById('mVal'+j).textContent='$'+monthlyAssumption[j]+'M';}
+            drawDashChart();
+        });
+    });
+    document.getElementById('dReg').addEventListener('change',drawDashChart);
+    document.getElementById('dSeg').addEventListener('change',drawDashChart);
+    // Start assumption demo
+    speak('Now I will add a new assumption. The assumption is called Automation of Collection Levers.',function(){
+        var nameEl=document.getElementById('assName');nameEl.textContent='Automation of Collection Levers';nameEl.classList.add('show');
+        speak('Using a different project, we estimated that this automation will impact the selected region and segment with one hundred fifty million dollars in annual savings.',function(){
+            var valEl=document.getElementById('assVal');valEl.textContent='Estimated Impact: $150M annually';valEl.classList.add('show');
+            distributeMonthly();drawDashChart();
+            speak('You can adjust the total impact, change the forecast model, and distribute the savings across specific months. Moving one month automatically redistributes the rest to keep the total at one hundred fifty million. When you are ready, press Continue and I will take you to the live calculation and then the executive dashboard.',function(){
+                document.getElementById('dashContinue').style.display='inline-block';
+            });
+        });
+    });
+}
+
+function switchModel(m){
+    currentModel=m;
+    document.querySelectorAll('.dash-model-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-model')===m);});
+    drawDashChart();
+}
+
+function distributeMonthly(){
+    var perMonth=Math.round(totalAssumption/12);
+    for(var i=0;i<12;i++){monthlyAssumption[i]=perMonth;}
+    document.querySelectorAll('.dash-month-slider').forEach(function(s,i){
+        s.value=perMonth;document.getElementById('mVal'+i).textContent='$'+perMonth+'M';
+    });
+}
+
+function drawDashChart(){
+    var canvas=document.getElementById('dashCanvas');if(!canvas)return;
+    var ctx=canvas.getContext('2d');
+    canvas.width=canvas.offsetWidth*2;canvas.height=canvas.offsetHeight*2;
+    ctx.scale(2,2);var w=canvas.offsetWidth,h=canvas.offsetHeight;
+    ctx.clearRect(0,0,w,h);
+    var baseVal=140;
+    // Model affects the baseline shape
+    var modelMult=currentModel==='dso'?[1.1,0.95,1.05,0.98,1.02,1.08,1.12,1.06,0.97,1.03,1.09,1.01]:currentModel==='turnover'?[0.95,0.92,0.98,1.0,1.05,1.1,1.15,1.1,1.02,1.0,1.08,1.03]:seasonalIndex;
+    // Prior year: chaotic actual (jagged, unpredictable)
+    var priorNoise=[0.72,0.95,0.81,1.12,0.88,1.18,0.94,1.22,0.76,1.08,1.15,0.85];
+    var prior=priorNoise.map(function(n,i){return modelMult[i]*baseVal*0.85*n;});
+    var baseline=modelMult.map(function(s){return s*baseVal;});
+    var adjusted=modelMult.map(function(s,i){return s*baseVal+monthlyAssumption[i]*1.2;});
+    var allVals=prior.concat(baseline).concat(adjusted);
+    var maxV=Math.max.apply(null,allVals)*1.15;
+    var minV=Math.min.apply(null,allVals)*0.85;if(minV<0)minV=minV*1.1;
+    function yPos(v){return h-18-((v-minV)/(maxV-minV))*(h-30);}
+    // Grid lines
+    ctx.strokeStyle='#eef0f5';ctx.lineWidth=0.5;
+    for(var i=0;i<12;i++){var x=24+i*(w-48)/11;ctx.beginPath();ctx.moveTo(x,8);ctx.lineTo(x,h-18);ctx.stroke();}
+    // Prior year (dashed, chaotic)
+    ctx.setLineDash([4,4]);ctx.strokeStyle='#bbb';ctx.lineWidth=1.5;
+    ctx.beginPath();prior.forEach(function(v,i){var x=24+i*(w-48)/11;i===0?ctx.moveTo(x,yPos(v)):ctx.lineTo(x,yPos(v));});ctx.stroke();ctx.setLineDash([]);
+    // Baseline
+    ctx.strokeStyle='#1565c0';ctx.lineWidth=2;
+    ctx.beginPath();baseline.forEach(function(v,i){var x=24+i*(w-48)/11;i===0?ctx.moveTo(x,yPos(v)):ctx.lineTo(x,yPos(v));});ctx.stroke();
+    // Adjusted (with assumption)
+    ctx.strokeStyle='#43a047';ctx.lineWidth=2.5;
+    ctx.beginPath();adjusted.forEach(function(v,i){var x=24+i*(w-48)/11;i===0?ctx.moveTo(x,yPos(v)):ctx.lineTo(x,yPos(v));});ctx.stroke();
+    // Fill between
+    ctx.beginPath();ctx.fillStyle='rgba(67,160,71,0.08)';
+    baseline.forEach(function(v,i){ctx.lineTo(24+i*(w-48)/11,yPos(v));});
+    for(var i=11;i>=0;i--)ctx.lineTo(24+i*(w-48)/11,yPos(adjusted[i]));
+    ctx.closePath();ctx.fill();
+    // Labels
+    ctx.fillStyle='#6b7a94';ctx.font='8px Montserrat';
+    months.forEach(function(m,i){ctx.fillText(m,20+i*(w-48)/11,h-4);});
+}
+
+function continueFromDash(){showPhase(5);startPhase5();}
+
+// ===== PHASE 5: LIVE CALCULATION (TABLE GRID) =====
+function startPhase5(){
+    var cv=document.getElementById('calcView');
+    cv.innerHTML='<div class="calc-title">Live Calculation — North America · Enterprise Cloud · March 2026</div>'+
+        '<table class="calc-table"><thead><tr class="show"><th class="col-step">#</th><th class="col-desc">Step</th><th class="col-formula">Formula</th><th class="col-input">Input</th><th style="text-align:right">Result</th></tr></thead><tbody id="calcBody"></tbody></table>';
+    var rows=[
+        {step:1,desc:'TTM Revenue Base',formula:'Last 12M Revenue',input:'$1,707M',result:'$1,707M'},
+        {step:2,desc:'Apply Growth Rate',formula:'$1,707M × (1 + 0.12)',input:'×1.12',result:'$1,912M'},
+        {step:3,desc:'Monthly Share (Mar)',formula:'$1,912M ÷ 12 × Season[0.88]',input:'×0.88',result:'$140.2M'},
+        {step:4,desc:'DSO Component (15%)',formula:'$140.2M × R/R Ratio(0.131)',input:'×0.131',result:'$18.4M'},
+        {step:5,desc:'Dual Seasonality (80%)',formula:'AR_Base × Blend_Index(0.91)',input:'×0.91',result:'$102.1M'},
+        {step:6,desc:'Turnover Component (5%)',formula:'Annual ÷ Turnover × Share',input:'÷14.2',result:'$5.8M'},
+        {step:7,desc:'Hybrid Blend',formula:'(18.4×.15)+(102.1×.80)+(5.8×.05)',input:'Σ weighted',result:'$84.7M'},
+        {step:8,desc:'Assumption Adjustment',formula:'$84.7M − Collection Lever Impact',input:'−$'+monthlyAssumption[2]+'M',result:'$'+(84.7-monthlyAssumption[2]).toFixed(1)+'M',final:true}
+    ];
+    speak('Watch the calculation build row by row — like a live spreadsheet. Each step feeds the next, producing the final forecast for one segment, one month.',function(){
+        animateTableRows(rows,document.getElementById('calcBody'),0);
+    });
+}
+
+function animateTableRows(rows,tbody,idx){
+    if(idx>=rows.length){
+        speak('The final number for North America, Enterprise Cloud, March: computed from revenue base through seasonal adjustment, method blending, and assumption overlay. This runs for all twenty-six segments across twelve months — three hundred twelve calculations total.',function(){
+            var btnDiv=document.createElement('div');btnDiv.style.cssText='text-align:center;margin-top:14px;';
+            btnDiv.innerHTML='<button class="dash-continue" onclick="skipToPhase(6)">Continue to Executive Dashboard →</button>';
+            document.getElementById('calcView').appendChild(btnDiv);
+        });return;
+    }
+    var r=rows[idx];
+    var tr=document.createElement('tr');
+    if(r.final)tr.className='final-row';
+    tr.innerHTML='<td class="col-step">'+r.step+'</td><td class="col-desc">'+r.desc+'</td><td class="col-formula">'+r.formula+'</td><td class="col-input">'+r.input+'</td><td class="col-result">'+r.result+'</td>';
+    tbody.appendChild(tr);
+    setTimeout(function(){
+        tr.classList.add('show');
+        if(idx>0){var prev=tbody.children[idx-1];if(prev)prev.classList.remove('active');}
+        tr.classList.add('active');
+    },50);
+    setTimeout(function(){tr.querySelector('.col-result').classList.add('show');},600);
+    setTimeout(function(){animateTableRows(rows,tbody,idx+1);},1200);
+}
+
+// ===== PHASE 6: EXECUTIVE AR DASHBOARD =====
+function startPhase6(){
+    var rd=document.getElementById('resultDash');
+    var mths=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC','YEAR'];
+    // Sample data (modified for presentation)
+    var openAR=[77880,69532,69617,83848,81529,68137,53173,51412,45894,65350,55206,48930,77880];
+    var credSales=[64566,68225,65436,73852,63312,51854,52098,45630,45882,53852,59208,48930,762745];
+    var collections=[27654,88700,88224,82171,82344,88838,51578,45638,88004,53601,49480,0,175023];
+    var endAR=[69532,69617,63840,61529,68137,55173,51412,45894,65350,55206,48936,48930,65402];
+    var current=[42373,52538,0,45869,37152,38052,0,31968,35802,36862,0,45700,67096];
+    var pastDue=[19054,12695,15620,25280,23254,12260,15456,13904,20853,14785,18536,0,0];
+    var totalAR=[63532,69617,63840,61529,68137,55173,51412,45894,65350,55206,48936,48930,65402];
+    var dso=[37,37,33,33,33,33,33,30,30,30,30,30,0];
+
+    rd.innerHTML='<div class="rd-header"><h2>Accounts Receivable Forecast Dashboard</h2><p>Executive Summary View — All Regions Combined</p></div>'+
+    // KPI Strip
+    '<div class="rd-kpi-strip"><div class="rd-kpi-card"><div class="rd-kpi-val">$65.4M</div><div class="rd-kpi-lbl">Total AR (Dec)</div></div><div class="rd-kpi-card"><div class="rd-kpi-val">$762M</div><div class="rd-kpi-lbl">Annual Credit Sales</div></div><div class="rd-kpi-card"><div class="rd-kpi-val">30</div><div class="rd-kpi-lbl">Avg Collection Period</div></div><div class="rd-kpi-card"><div class="rd-kpi-val">96.6%</div><div class="rd-kpi-lbl">Model Accuracy</div></div><div class="rd-kpi-card"><div class="rd-kpi-val">11</div><div class="rd-kpi-lbl">AR Turnover</div></div></div>'+
+    // Charts Row
+    '<div class="rd-charts-row"><div class="rd-chart-card"><div class="rd-chart-title">Credit Sales vs. Collections</div><canvas class="rd-chart-canvas" id="rdChart1"></canvas></div><div class="rd-chart-card"><div class="rd-chart-title">Days Sales Outstanding (DSO)</div><canvas class="rd-chart-canvas" id="rdChart2"></canvas></div><div class="rd-chart-card"><div class="rd-chart-title">Past Due Aging Trend</div><canvas class="rd-chart-canvas" id="rdChart3"></canvas></div></div>'+
+    // Change in AR Table
+    '<div class="rd-section"><div class="rd-section-header">Change in Accounts Receivable</div><table class="rd-table"><thead><tr><th></th>'+mths.map(function(m){return '<th>'+m+'</th>';}).join('')+'</tr></thead><tbody>'+
+    '<tr><td>Opening AR</td>'+openAR.map(function(v){return '<td>$'+Math.round(v/1000)+'K</td>';}).join('')+'</tr>'+
+    '<tr><td>Credit Sales</td>'+credSales.map(function(v){return '<td>$'+Math.round(v/1000)+'K</td>';}).join('')+'</tr>'+
+    '<tr><td>Collections</td>'+collections.map(function(v){return '<td class="negative">($'+Math.round(v/1000)+'K)</td>';}).join('')+'</tr>'+
+    '<tr><td>Ending AR</td>'+endAR.map(function(v){return '<td>$'+Math.round(v/1000)+'K</td>';}).join('')+'</tr>'+
+    '</tbody></table></div>'+
+    // Aging Table
+    '<div class="rd-section"><div class="rd-section-header">Accounts Receivable Aging</div><table class="rd-table"><thead><tr><th></th>'+mths.slice(0,12).map(function(m){return '<th>'+m+'</th>';}).join('')+'</tr></thead><tbody>'+
+    '<tr><td>Current</td>'+current.slice(0,12).map(function(v){return '<td>$'+Math.round(v/1000)+'K</td>';}).join('')+'</tr>'+
+    '<tr><td>Past Due (30+)</td>'+pastDue.slice(0,12).map(function(v){return '<td>$'+Math.round(v/1000)+'K</td>';}).join('')+'</tr>'+
+    '<tr><td>Total AR</td>'+totalAR.slice(0,12).map(function(v){return '<td>$'+Math.round(v/1000)+'K</td>';}).join('')+'</tr>'+
+    '</tbody></table></div>'+
+    // Ratio Table
+    '<div class="rd-section"><div class="rd-section-header">AR Ratio Analysis</div><table class="rd-table"><thead><tr><th></th>'+mths.slice(0,12).map(function(m){return '<th>'+m+'</th>';}).join('')+'</tr></thead><tbody>'+
+    '<tr><td>DSO (Days)</td>'+dso.slice(0,12).map(function(v){return '<td>'+v+'</td>';}).join('')+'</tr>'+
+    '<tr><td>AR Turnover</td>'+dso.slice(0,12).map(function(v){return '<td>'+(v>0?Math.round(365/v):'-')+'</td>';}).join('')+'</tr>'+
+    '</tbody></table></div>';
+
+    // Draw charts
+    setTimeout(function(){
+        drawBarChart('rdChart1',credSales.slice(0,12),collections.slice(0,12));
+        drawLineChart('rdChart2',dso.slice(0,12),'#1565c0');
+        drawLineChart('rdChart3',pastDue.slice(0,12),'#ef6c00');
+    },200);
+    speak('The executive dashboard: the complete forecast output with monthly projections, aging analysis, collection performance, and key ratios. All recalculated in real time when any assumption changes.',function(){
+        var endMsg=document.createElement('div');endMsg.style.cssText='text-align:center;margin-top:16px;padding:10px;font-size:11px;font-weight:600;color:#6b7a94;letter-spacing:1.5px;';
+        endMsg.innerHTML='Press <kbd style="background:#e8ecf2;border:1px solid #ccd2de;padding:2px 6px;border-radius:3px;font-size:10px;color:#333;font-weight:700;">ESC</kbd> to exit';
+        rd.appendChild(endMsg);
+    });
+}
+
+function drawBarChart(id,data1,data2){
+    var canvas=document.getElementById(id);if(!canvas)return;
+    var ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth*2;canvas.height=canvas.offsetHeight*2;
+    ctx.scale(2,2);var w=canvas.offsetWidth,h=canvas.offsetHeight;
+    var max=Math.max.apply(null,data1.concat(data2))*1.2;
+    var barW=(w-30)/(12*2.5);
+    for(var i=0;i<12;i++){
+        var x=14+i*(w-28)/12;
+        var h1=(data1[i]/max)*(h-16);var h2=(data2[i]/max)*(h-16);
+        ctx.fillStyle='#1565c0';ctx.fillRect(x,h-8-h1,barW,h1);
+        ctx.fillStyle='#ef6c00';ctx.fillRect(x+barW+1,h-8-h2,barW,h2);
+    }
+}
+function drawLineChart(id,data,color){
+    var canvas=document.getElementById(id);if(!canvas)return;
+    var ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth*2;canvas.height=canvas.offsetHeight*2;
+    ctx.scale(2,2);var w=canvas.offsetWidth,h=canvas.offsetHeight;
+    var max=Math.max.apply(null,data)*1.3;var min=Math.min.apply(null,data.filter(function(v){return v>0;}))*0.7;
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
+    data.forEach(function(v,i){if(v===0)return;var x=14+i*(w-28)/11;var y=h-8-((v-min)/(max-min))*(h-16);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.stroke();
+    // Fill
+    ctx.lineTo(14+11*(w-28)/11,h-8);ctx.lineTo(14,h-8);ctx.closePath();
+    ctx.fillStyle=color==='#1565c0'?'rgba(21,101,192,0.08)':'rgba(239,108,0,0.08)';ctx.fill();
+}
+
+// ===== INIT =====
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(window.speechSynthesis)speechSynthesis.cancel();var from=new URLSearchParams(window.location.search).get('from');if(from==='projects')window.location.href='index.html#projects';else window.location.href='journey.html?state=end';}});
+if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}
+window.addEventListener('DOMContentLoaded',function(){setTimeout(startPhase1,500);});
+</script>
+</body>
+</html>

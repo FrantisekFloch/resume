@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Customer Tiering — How It Works</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+body { font-family:'Montserrat',sans-serif; background:#f8f9fb; }
+
+.demo-wrap {
+    position:fixed; inset:0; z-index:10000;
+    background:rgba(248,249,251,0.97); backdrop-filter:blur(4px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:30px; overflow-y:auto;
+}
+.esc-hint { position:fixed; top:14px; left:18px; font-size:10px; color:#333; letter-spacing:1.5px; text-transform:uppercase; z-index:10001; font-weight:600; }
+.esc-hint kbd { background:#ddd; border:1px solid #bbb; padding:2px 6px; border-radius:3px; font-size:9px; color:#222; font-weight:700; }
+
+/* Pipeline grid */
+.tp-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; max-width:920px; width:100%; }
+.tp-grid.shrink { transform:scale(0.28); opacity:0.12; position:absolute; pointer-events:none; transition:all 1s ease; }
+.tp-card { background:#fff; border-radius:10px; padding:14px 16px; border-left:4px solid #0097a7; box-shadow:0 2px 10px rgba(0,0,0,0.04); opacity:0; transform:translateY(8px); transition:opacity .4s,transform .4s; display:flex; gap:10px; align-items:flex-start; position:relative; }
+.tp-card.show { opacity:1; transform:translateY(0); }
+.tp-num { width:26px; height:26px; border-radius:50%; background:#0097a7; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.tp-label { font-size:10.5px; font-weight:700; color:#222; margin-bottom:3px; }
+.tp-desc { font-size:9px; color:#666; line-height:1.4; }
+.tp-skip { position:absolute; top:8px; right:8px; padding:3px 8px; border-radius:10px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.1); color:#888; font-family:'Montserrat',sans-serif; font-size:7.5px; font-weight:600; cursor:pointer; }
+.tp-skip:hover { background:rgba(0,0,0,0.08); color:#444; }
+
+/* Colors per step */
+.tp-card.ts1 { border-left-color:#0097a7; } .tp-card.ts1 .tp-num { background:#0097a7; }
+.tp-card.ts2 { border-left-color:#00796b; } .tp-card.ts2 .tp-num { background:#00796b; }
+.tp-card.ts3 { border-left-color:#5c6bc0; } .tp-card.ts3 .tp-num { background:#5c6bc0; }
+.tp-card.ts4 { border-left-color:#7b1fa2; } .tp-card.ts4 .tp-num { background:#7b1fa2; }
+.tp-card.ts5 { border-left-color:#ef6c00; } .tp-card.ts5 .tp-num { background:#ef6c00; }
+.tp-card.ts6 { border-left-color:#43a047; } .tp-card.ts6 .tp-num { background:#43a047; }
+.tp-card.ts7 { border-left-color:#1565c0; } .tp-card.ts7 .tp-num { background:#1565c0; }
+.tp-card.ts8 { border-left-color:#c62828; } .tp-card.ts8 .tp-num { background:#c62828; }
+
+/* Numbers phase */
+.tn-phase { display:none; flex-direction:column; align-items:center; gap:16px; max-width:800px; width:100%; }
+.tn-phase.active { display:flex; }
+.tn-title { font-size:13px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#555; }
+.tn-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%; }
+.tn-card { background:#fff; border-radius:8px; padding:14px 10px; text-align:center; box-shadow:0 1px 6px rgba(0,0,0,0.04); border:1px solid #f0f0f2; opacity:0; transform:scale(0.9); transition:opacity .3s,transform .3s; }
+.tn-card.show { opacity:1; transform:scale(1); }
+.tn-val { font-size:20px; font-weight:800; color:#0097a7; }
+.tn-lbl { font-size:8.5px; color:#888; margin-top:3px; }
+
+/* Walkthrough */
+.tw-phase { display:none; flex-direction:column; align-items:center; gap:12px; max-width:700px; width:100%; }
+.tw-phase.active { display:flex; }
+.tw-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#555; margin-bottom:6px; }
+.tw-card { width:100%; background:#fff; border-radius:10px; padding:14px 18px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border-left:4px solid #0097a7; opacity:0; transform:translateX(-8px); transition:opacity .4s,transform .4s; position:relative; }
+.tw-card.show { opacity:1; transform:translateX(0); }
+.tw-card-t { font-size:11px; font-weight:700; color:#222; margin-bottom:4px; }
+.tw-card-txt { font-size:9.5px; color:#555; line-height:1.5; }
+.tw-stats { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.tw-stat { background:#f4f6f9; padding:4px 10px; border-radius:5px; font-size:8.5px; color:#444; }
+.tw-btn { position:absolute; top:10px; right:12px; padding:4px 10px; border-radius:12px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.1); color:#888; font-family:'Montserrat',sans-serif; font-size:8px; font-weight:600; cursor:pointer; }
+.tw-btn:hover { background:rgba(0,0,0,0.08); color:#444; }
+
+/* Result */
+.tw-result { width:100%; max-width:540px; background:#fff; border-radius:12px; padding:20px 24px; border:2px solid #0097a7; box-shadow:0 4px 16px rgba(0,151,167,0.1); opacity:0; transform:scale(0.95); transition:opacity .5s,transform .5s; }
+.tw-result.show { opacity:1; transform:scale(1); }
+.tw-rt { font-size:11px; font-weight:700; color:#0097a7; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+.tw-rr { display:flex; justify-content:space-between; font-size:10.5px; color:#333; padding:4px 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+.tw-rr:last-of-type { border-bottom:none; }
+.tw-rr span { color:#666; }
+.tw-rec { margin-top:12px; padding:10px 14px; background:rgba(0,151,167,0.04); border-radius:8px; border-left:3px solid #0097a7; }
+.tw-rec-t { font-size:9px; font-weight:700; color:#0097a7; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
+.tw-rec-i { font-size:9.5px; color:#444; line-height:1.6; }
+
+/* Tier scale visual */
+.tier-scale { display:flex; gap:3px; margin:12px 0; align-items:flex-end; }
+.tier-bar { width:28px; border-radius:4px 4px 0 0; background:#e0e0e0; transition:all .5s; position:relative; }
+.tier-bar.active { background:linear-gradient(180deg,#0097a7,#00bcd4); }
+.tier-bar-label { position:absolute; bottom:-16px; left:50%; transform:translateX(-50%); font-size:7px; color:#888; }
+.tier-bar-val { position:absolute; top:-14px; left:50%; transform:translateX(-50%); font-size:8px; font-weight:700; color:#0097a7; opacity:0; }
+.tier-bar.active .tier-bar-val { opacity:1; }
+</style>
+</head>
+<body>
+<div class="demo-wrap" id="demoWrap">
+    <div class="esc-hint">Press <kbd>ESC</kbd> to exit</div>
+    <div class="tp-grid" id="tpGrid"></div>
+    <div class="tn-phase" id="tnPhase"></div>
+    <div class="tw-phase" id="twPhase"></div>
+</div>
+
+<script>
+// ===== 8 PROCESS STEPS =====
+var tSteps=[
+    {n:1,cls:'ts1',label:'Customer Catalog',desc:'Build a complete catalog with 297 data points per account covering 26 months of history — capturing the full lifetime story of every account.'},
+    {n:2,cls:'ts2',label:'Revenue Grouping',desc:'Divide customers into 5 revenue tiers (Below500 to Above5M TTM) so peers are compared fairly — smaller accounts don\'t pull statistics of larger ones.'},
+    {n:3,cls:'ts3',label:'Statistical Positioning',desc:'For each of the 297 metrics, compare the account against its group median and average. Assign tier 1–5 per statistic based on relative position.'},
+    {n:4,cls:'ts4',label:'Historical Progression',desc:'Calculate tier history over 26 months. Track whether the account is degrading, improving, or stable over time — progression drives the current tier.'},
+    {n:5,cls:'ts5',label:'Category Scoring',desc:'Group statistics into categories: Financial Health, Billing Complexity, Payment Behavior, Communication, Operational Load — each with weighted contribution to the final score.'},
+    {n:6,cls:'ts6',label:'ML Validation & Outliers',desc:'Apply machine learning to validate thresholds, detect outliers, and identify predictive warning patterns that deterministic rules might miss.'},
+    {n:7,cls:'ts7',label:'Tier Assignment (0–10)',desc:'Calculate final tier from weighted category scores. Tier 0 = ADC/Priority. Tier 10 = Full Automation eligible. The tier determines the support model.'},
+    {n:8,cls:'ts8',label:'Support Model & Governance',desc:'Assign support model: dedicated team (Tier 0–2), shared analyst (Tier 3–5), AI-assisted (Tier 6–8), full automation (Tier 9–10). Set monitoring frequency.'}
+];
+
+var tPipeSpch=[
+    'Step one. Building a complete customer catalog with two hundred ninety-seven data points per account, covering twenty-six months of history.',
+    'Step two. Dividing customers into five revenue groups so that peers are compared fairly — small accounts do not distort the statistics of larger ones.',
+    'Step three. For each metric, comparing the account against its group median and average, and assigning a tier from one to five based on relative position.',
+    'Step four. Calculating tier history over twenty-six months to understand whether the account is degrading, improving, or stable over time.',
+    'Step five. Grouping statistics into weighted categories: Financial Health, Billing Complexity, Payment Behavior, Communication, and Operational Load.',
+    'Step six. Applying machine learning to validate thresholds, detect outliers, and surface predictive patterns that rules alone would miss.',
+    'Step seven. Calculating the final tier from zero to ten. Tier zero means priority support. Tier ten means the account is eligible for full automation.',
+    'Step eight. Assigning the support model and governance frequency based on the tier — from dedicated teams to fully automated handling.'
+];
+
+// ===== THE NUMBERS =====
+var tNums=[
+    {v:'297',l:'Data Points per Account'},{v:'26',l:'Months of History'},{v:'5',l:'Revenue Groups'},
+    {v:'10',l:'Final Tiers (0–10)'},{v:'5',l:'Category Dimensions'},{v:'~25,800',l:'Customers Tiered'},
+    {v:'5',l:'ML Models Applied'},{v:'12',l:'Governance Rules'},{v:'3',l:'Support Model Levels'},
+    {v:'100%',l:'Portfolio Coverage'},{v:'Monthly',l:'Re-calculation Cycle'},{v:'Real-time',l:'Outlier Alerts'}
+];
+
+// ===== WALKTHROUGH =====
+var tWalkSteps=[
+    {t:'Step 1 — Catalog Assembly',txt:'For our test account, we assemble the full catalog: 297 data points covering total AR, aging buckets, DSO, revenue trends, payment frequency, cash application steps, communication volume, dispute history, and external credit signals across 26 monthly snapshots.',stats:['297 metrics','26 months','5 revenue-group context']},
+    {t:'Step 2 — Group Positioning',txt:'The account falls into the Below5M revenue tier. We calculate group-specific medians and averages. The account\'s past due ratio is above the group median but below average — placing it in the middle band.',stats:['Group: Below5M','Past Due: above median','Cash App: below average']},
+    {t:'Step 3 — Tier per Metric',txt:'Each metric receives its tier. Payment frequency: Tier 4 (regular). Aging concentration: Tier 3 (moderate 61-90 bucket). Communication responsiveness: Tier 2 (often unavailable). Billing complexity: Tier 4 (standard). External score: Tier 5 (no concerns).',stats:['Payment: Tier 4','Aging: Tier 3','Communication: Tier 2','External: Tier 5']},
+    {t:'Step 4 — Historical Trend',txt:'Over 26 months, the account shows a stable-to-improving pattern. Past due grows slightly but within the seasonal pattern of its peer group. Payment tier improved from 3 to 4 over the last 12 months. No degradation flags triggered.',stats:['Trend: Stable-Improving','Payment tier: 3→4','No degradation flags']},
+    {t:'Step 5 — Category Scoring',txt:'Weighted category calculation: Financial Health (30%) = Tier 4, Payment Behavior (25%) = Tier 4, Billing Complexity (15%) = Tier 4, Communication (20%) = Tier 2, Operational (10%) = Tier 4. The communication category pulls the score down slightly.',stats:['Financial: 4×30%','Payment: 4×25%','Communication: 2×20%','Weighted avg: 3.7']},
+    {t:'Step 6 — ML Pattern Check',txt:'Machine learning identifies a pattern: end-of-quarter past due spikes correlate with the company\'s reporting cycle — not a risk indicator. The dunning email response rate is high at 85%. No anomalies detected versus the peer cluster. ML confirms the tier assignment.',stats:['Pattern: Quarter-end spikes','Dunning response: 85%','Anomaly: None','ML confirms tier']},
+    {t:'Step 7 — Final Tier',txt:'The weighted score of 3.7 maps to Tier 8 (on the 0–10 scale where 10 = best). The account shows reliable payment behavior, responds to automated communications, and has no external risk signals. The only concern is call availability.',stats:['Final Score: 3.7→Tier 8','Automation eligible','One concern: calls']}
+];
+
+var tWalkSpch=[
+    'First, we assemble the full catalog for our test account — two hundred ninety-seven data points across twenty-six monthly snapshots covering all financial and operational dimensions.',
+    'The account falls into the Below Five Million revenue tier. We calculate group-specific medians and averages to position it fairly against similar-sized customers.',
+    'Each metric receives its own tier assignment. Payment frequency scores a four, aging concentration a three, communication responsiveness only a two because the customer is often unavailable for calls.',
+    'Looking at the twenty-six month history, the account shows a stable-to-improving pattern. Past due grows slightly but within the seasonal norm of its peer group. No degradation flags.',
+    'Now we calculate weighted category scores. Financial Health and Payment Behavior are strong at tier four. But Communication at tier two pulls the overall score down — the customer is hard to reach.',
+    'Machine learning confirms the assessment. It identifies end-of-quarter past due spikes as a reporting cycle pattern, not a risk. Dunning email response rate is eighty-five percent. No anomalies detected.',
+    'The weighted score maps to Tier eight on the zero-to-ten scale. The account is reliable, responds to automation, has no external risk — but is not reachable by phone. This drives the assignment.'
+];
+
+var tResultSpch='The result for our test account: Tier eight out of ten. The category is determined by a combination of historical behavior, strong response to automated dunning emails resulting in payment, slightly growing past due that mirrors peer group trends, high payment probability scores, no negative external indicators, and a regular end-of-quarter pattern indicating the company optimizes their quarter-end books. The one concern is communication — the customer is frequently unavailable for analyst calls. This results in a recommendation for full automation: automated email replies, automated cash assignment, and monthly governance checks for outliers. No dedicated analyst needed.';
+
+// ===== ENGINE =====
+function speak(t,cb){
+    if(!window.speechSynthesis){setTimeout(cb,Math.max(2500,t.length*52));return;}
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.pitch=1;u.volume=0.85;
+    var v=speechSynthesis.getVoices();
+    var ev=v.find(function(x){return x.lang.startsWith('en')&&x.name.indexOf('Google')>-1;})||v.find(function(x){return x.lang.startsWith('en')&&!x.localService;})||v.find(function(x){return x.lang.startsWith('en');});
+    if(ev)u.voice=ev;u.onend=function(){if(cb)cb();};u.onerror=function(){if(cb)cb();};
+    speechSynthesis.speak(u);
+}
+
+var tSkipped=false;
+function phaseA(i){
+    if(i>=tSteps.length){setTimeout(phaseB,700);return;}
+    tSkipped=false;
+    var s=tSteps[i],g=document.getElementById('tpGrid');
+    // Previous buttons to repeat
+    g.querySelectorAll('.tp-skip').forEach(function(btn){
+        btn.textContent='↺';
+        var si=parseInt(btn.getAttribute('data-step'));
+        btn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(tPipeSpch[si],function(){});};
+    });
+    var c=document.createElement('div');c.className='tp-card '+s.cls;
+    c.innerHTML='<div class="tp-num">'+s.n+'</div><div><div class="tp-label">'+s.label+'</div><div class="tp-desc">'+s.desc+'</div></div><button class="tp-skip" data-step="'+i+'">Skip</button>';
+    g.appendChild(c);setTimeout(function(){c.classList.add('show');},50);
+    var skipBtn=c.querySelector('.tp-skip');
+    skipBtn.onclick=function(){
+        tSkipped=true;if(window.speechSynthesis)speechSynthesis.cancel();
+        skipBtn.textContent='↺';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(tPipeSpch[i],function(){});};
+        setTimeout(function(){phaseA(i+1);},100);
+    };
+    speak(tPipeSpch[i],function(){
+        if(tSkipped)return;
+        skipBtn.textContent='↺';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(tPipeSpch[i],function(){});};
+        setTimeout(function(){phaseA(i+1);},250);
+    });
+}
+
+function phaseB(){
+    document.getElementById('tpGrid').classList.add('shrink');
+    var np=document.getElementById('tnPhase');np.classList.add('active');
+    np.innerHTML='<div class="tn-title">The Numbers</div><div class="tn-grid" id="tnGrid"></div>';
+    var g=document.getElementById('tnGrid');
+    tNums.forEach(function(n,i){
+        var c=document.createElement('div');c.className='tn-card';
+        c.innerHTML='<div class="tn-val">'+n.v+'</div><div class="tn-lbl">'+n.l+'</div>';
+        g.appendChild(c);setTimeout(function(){c.classList.add('show');},i*70);
+    });
+    speak('Here are the key metrics of the tiering system.',function(){
+        setTimeout(function(){
+            speak('Now let me show you how it works on a sample account.',function(){setTimeout(phaseC,500);});
+        },400);
+    });
+}
+
+var twSkipped=false;
+function phaseC(){
+    document.getElementById('tnPhase').style.display='none';
+    document.getElementById('tpGrid').style.display='none';
+    var wp=document.getElementById('twPhase');wp.classList.add('active');
+    wp.innerHTML='<div class="tw-title">Live Demo — Test Account (Tier 8)</div>';
+    walkStep(0);
+}
+
+function walkStep(i){
+    if(i>=tWalkSteps.length){setTimeout(showResult,500);return;}
+    twSkipped=false;
+    var ws=tWalkSteps[i],wp=document.getElementById('twPhase');
+    wp.querySelectorAll('.tw-btn').forEach(function(btn){
+        btn.textContent='↺ Repeat';
+        var si=parseInt(btn.getAttribute('data-step'));
+        btn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(tWalkSpch[si],function(){});};
+    });
+    var c=document.createElement('div');c.className='tw-card';c.setAttribute('data-step',i);
+    c.innerHTML='<div class="tw-card-t">'+ws.t+'</div><div class="tw-card-txt">'+ws.txt+'</div><div class="tw-stats">'+ws.stats.map(function(s){return '<span class="tw-stat">'+s+'</span>';}).join('')+'</div><button class="tw-btn" data-step="'+i+'">Skip →</button>';
+    wp.appendChild(c);setTimeout(function(){c.classList.add('show');},50);
+    var skipBtn=c.querySelector('.tw-btn');
+    skipBtn.onclick=function(){
+        twSkipped=true;if(window.speechSynthesis)speechSynthesis.cancel();
+        skipBtn.textContent='↺ Repeat';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(tWalkSpch[i],function(){});};
+        setTimeout(function(){walkStep(i+1);},150);
+    };
+    speak(tWalkSpch[i],function(){
+        if(twSkipped)return;
+        skipBtn.textContent='↺ Repeat';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(tWalkSpch[i],function(){});};
+        setTimeout(function(){walkStep(i+1);},350);
+    });
+}
+
+function showResult(){
+    var wp=document.getElementById('twPhase');wp.innerHTML='<div class="tw-title">Final Assessment</div>';
+    // Tier scale visualization
+    var scaleHtml='<div class="tier-scale">';
+    for(var t=0;t<=10;t++){
+        var h=12+t*4;
+        scaleHtml+='<div class="tier-bar'+(t===8?' active':'')+'" style="height:'+h+'px;"><div class="tier-bar-label">'+t+'</div>'+(t===8?'<div class="tier-bar-val">●</div>':'')+'</div>';
+    }
+    scaleHtml+='</div>';
+
+    var r=document.createElement('div');r.className='tw-result';
+    r.innerHTML='<div class="tw-rt">Test Account — Final Tier Assignment</div>'+
+        scaleHtml+
+        '<div class="tw-rr"><span>Final Tier</span><strong style="color:#0097a7;font-size:16px;">8 / 10</strong></div>'+
+        '<div class="tw-rr"><span>Category</span><strong>Automation Eligible</strong></div>'+
+        '<div class="tw-rr"><span>Payment Behavior</span><strong>Responds to automated dunning</strong></div>'+
+        '<div class="tw-rr"><span>Past Due Trend</span><strong>Growing with peers — not a concern</strong></div>'+
+        '<div class="tw-rr"><span>External Scoring</span><strong>No negative indicators</strong></div>'+
+        '<div class="tw-rr"><span>Pattern</span><strong>End-of-quarter spikes (book optimization)</strong></div>'+
+        '<div class="tw-rr"><span>Concern</span><strong style="color:#ef6c00;">Communication — unavailable for calls</strong></div>'+
+        '<div class="tw-rec"><div class="tw-rec-t">Assignment & Governance</div>'+
+        '<div class="tw-rec-i">• Full automation — automated email replies and cash assignment</div>'+
+        '<div class="tw-rec-i">• No dedicated analyst required</div>'+
+        '<div class="tw-rec-i">• Monthly governance check for outliers and spikes</div>'+
+        '<div class="tw-rec-i">• If communication needed — route to automated channels only</div></div>';
+    wp.appendChild(r);setTimeout(function(){r.classList.add('show');},100);
+    speak(tResultSpch,function(){});
+}
+
+// ESC to exit
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(window.speechSynthesis)speechSynthesis.cancel();var from=new URLSearchParams(window.location.search).get('from');if(from==='projects')window.location.href='index.html#projects';else window.location.href='journey.html?state=end';}});
+
+// INIT
+if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}
+window.addEventListener('DOMContentLoaded',function(){setTimeout(function(){phaseA(0);},500);});
+</script>
+</body>
+</html>

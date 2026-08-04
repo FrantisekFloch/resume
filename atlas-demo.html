@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas — How It Works Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; overflow:hidden; }
+body { font-family:'Montserrat',sans-serif; background:#f8f9fb; }
+
+/* ===== FULL-SCREEN CONTAINER ===== */
+.demo-wrap {
+    position:fixed; inset:0; z-index:10000;
+    background:rgba(248,249,251,0.97);
+    backdrop-filter:blur(4px);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:40px;
+}
+
+/* ESC hint */
+.esc-hint {
+    position:absolute; top:16px; left:20px;
+    font-size:10px; color:#333; letter-spacing:1.5px;
+    text-transform:uppercase; font-weight:600;
+}
+.esc-hint kbd {
+    background:#ddd; border:1px solid #bbb;
+    padding:2px 6px; border-radius:3px;
+    font-family:inherit; font-size:9px; color:#222; font-weight:700;
+}
+
+/* ===== PHASE A: 9 Pipeline Steps (3x3 grid) ===== */
+.pipeline-grid {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:14px; max-width:900px; width:100%;
+    transition: all 1s ease;
+}
+.pipeline-grid.shrink {
+    transform:scale(0.35);
+    opacity:0.15;
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+}
+.pipe-card {
+    background:#fff; border-radius:12px;
+    padding:16px 18px; border-left:4px solid #007DB8;
+    box-shadow:0 2px 12px rgba(0,0,0,0.05);
+    opacity:0; transform:translateY(10px);
+    transition:opacity .5s ease, transform .5s ease;
+}
+.pipe-card.show { opacity:1; transform:translateY(0); }
+.pipe-card-head { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.pipe-num {
+    width:28px; height:28px; border-radius:50%;
+    background:#007DB8; color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; flex-shrink:0;
+}
+.pipe-label { font-size:11px; font-weight:700; color:#222; }
+.pipe-desc { font-size:9.5px; color:#666; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="demo-wrap" id="demoWrap">
+    <div class="esc-hint">Press <kbd>ESC</kbd> to exit</div>
+    <!-- Phase A: Pipeline Grid -->
+    <div class="pipeline-grid" id="pipeGrid"></div>
+    <!-- Phase B: Numbers -->
+    <div class="numbers-phase" id="numPhase"></div>
+    <!-- Phase C: Account Walkthrough -->
+    <div class="walkthrough-phase" id="walkPhase"></div>
+</div>
+
+<style>
+/* Pipeline card colors by step */
+.pipe-card.s1 { border-left-color:#007DB8; } .pipe-card.s1 .pipe-num { background:#007DB8; }
+.pipe-card.s2 { border-left-color:#0097a7; } .pipe-card.s2 .pipe-num { background:#0097a7; }
+.pipe-card.s3 { border-left-color:#5c6bc0; } .pipe-card.s3 .pipe-num { background:#5c6bc0; }
+.pipe-card.s4 { border-left-color:#43a047; } .pipe-card.s4 .pipe-num { background:#43a047; }
+.pipe-card.s5 { border-left-color:#ef6c00; } .pipe-card.s5 .pipe-num { background:#ef6c00; }
+.pipe-card.s6 { border-left-color:#f9a825; } .pipe-card.s6 .pipe-num { background:#f9a825; }
+.pipe-card.s7 { border-left-color:#7b1fa2; } .pipe-card.s7 .pipe-num { background:#7b1fa2; }
+.pipe-card.s8 { border-left-color:#d81b60; } .pipe-card.s8 .pipe-num { background:#d81b60; }
+.pipe-card.s9 { border-left-color:#c62828; } .pipe-card.s9 .pipe-num { background:#c62828; }
+
+/* ===== PHASE B: The Numbers ===== */
+.numbers-phase {
+    display:none; flex-direction:column; align-items:center;
+    gap:20px; max-width:960px; width:100%;
+}
+.numbers-phase.active { display:flex; }
+.numbers-title { font-size:14px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#555; }
+.numbers-grid {
+    display:grid; grid-template-columns:repeat(5,1fr);
+    gap:10px; width:100%;
+}
+.num-card {
+    background:#fff; border-radius:10px; padding:14px 10px;
+    text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.04);
+    border:1px solid #f0f0f2;
+    opacity:0; transform:scale(0.9);
+    transition:opacity .4s, transform .4s;
+}
+.num-card.show { opacity:1; transform:scale(1); }
+.num-val { font-size:22px; font-weight:800; color:#007DB8; }
+.num-lbl { font-size:9px; color:#888; margin-top:4px; letter-spacing:0.5px; }
+
+/* ===== PHASE C: Account Walkthrough ===== */
+.walkthrough-phase {
+    display:none; flex-direction:column; align-items:center;
+    gap:16px; max-width:800px; width:100%;
+}
+.walkthrough-phase.active { display:flex; }
+.walk-title { font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#555; margin-bottom:8px; }
+.walk-card {
+    width:100%; background:#fff; border-radius:12px;
+    padding:18px 22px; box-shadow:0 2px 12px rgba(0,0,0,0.05);
+    border-left:4px solid #007DB8;
+    opacity:0; transform:translateX(-10px);
+    transition:opacity .5s, transform .5s;
+}
+.walk-card.show { opacity:1; transform:translateX(0); }
+.walk-card-title { font-size:12px; font-weight:700; color:#222; margin-bottom:6px; }
+.walk-card-text { font-size:10.5px; color:#555; line-height:1.6; }
+.walk-card-data { display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+.walk-stat { background:#f4f6f9; padding:6px 12px; border-radius:6px; font-size:9px; color:#444; }
+.walk-stat strong { color:#007DB8; }
+
+/* Result card */
+.walk-result {
+    width:100%; background:linear-gradient(135deg,#f8f9fb,#eef1f5);
+    border-radius:12px; padding:20px 24px;
+    border:2px solid #007DB8;
+    box-shadow:0 4px 16px rgba(0,125,184,0.1);
+    opacity:0; transform:scale(0.95);
+    transition:opacity .6s, transform .6s;
+}
+.walk-result.show { opacity:1; transform:scale(1); }
+.walk-result-title { font-size:11px; font-weight:700; color:#007DB8; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+.walk-result-row { display:flex; justify-content:space-between; font-size:10.5px; color:#333; padding:4px 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+.walk-result-row:last-child { border-bottom:none; }
+.walk-result-label { color:#666; }
+.walk-result-val { font-weight:700; color:#222; }
+.walk-rec { margin-top:12px; padding:10px 14px; background:rgba(0,125,184,0.06); border-radius:8px; border-left:3px solid #007DB8; }
+.walk-rec-title { font-size:9px; font-weight:700; color:#007DB8; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; }
+.walk-rec-item { font-size:10px; color:#444; line-height:1.6; }
+</style>
+
+<script>
+// ===== 9 PIPELINE STEPS =====
+var steps = [
+    {n:1,cls:'s1',label:'Raw Data Collection',desc:'29 source tables, 331 columns, across 5 Redshift schemas — aging, revenue, DSO, communication, billing, and operational metrics.'},
+    {n:2,cls:'s2',label:'Account Grouping',desc:'Grouping 410K+ accounts into ~25,800 customers via SPMS IDs, Salesforce links, or standalone. 4 group types identified.'},
+    {n:3,cls:'s3',label:'Derived Metrics',desc:'11-stage processing creating 550+ derived metrics — percent changes, peer comparisons, volatility, frequency counts, direction classifications.'},
+    {n:4,cls:'s4',label:'ML Pattern Discovery',desc:'5 machine learning models analyzing 24 months of time-series data. 252 behavioral features extracted, 100 clusters discovered.'},
+    {n:5,cls:'s5',label:'Deterministic Scoring',desc:'128 individual scores on a 1–10 scale using fixed thresholds. Trend, direction, trajectory, frequency, and categorical scores.'},
+    {n:6,cls:'s6',label:'Consolidation',desc:'19 composite category scores, overall health score, suspension analysis, behavior flags, and escalation eligibility.'},
+    {n:7,cls:'s7',label:'Analysis & Presentation',desc:'Collection lever effectiveness scoring, 12 grouped health scores, 8 analytical dimensions, peer percentiles, and recommendations.'},
+    {n:8,cls:'s8',label:'Customer Story',desc:'Roll up to customer level — one row per customer with ~170 columns: financial position, behavioral patterns, peer positioning, lever history.'},
+    {n:9,cls:'s9',label:'7-Axis Categorization',desc:'Final multi-dimensional classification across 7 independent axes with 10 suggested action paths per customer.'}
+];
+
+// ===== THE NUMBERS =====
+var numbers = [
+    {val:'29',lbl:'Source Tables'},{val:'331',lbl:'Raw Columns'},{val:'550+',lbl:'Derived Metrics'},
+    {val:'410K+',lbl:'Accounts'},{val:'~25,800',lbl:'Customers'},{val:'24',lbl:'Months History'},
+    {val:'5',lbl:'ML Models'},{val:'252',lbl:'Behavioral Features'},{val:'100',lbl:'Clusters'},
+    {val:'128',lbl:'Individual Scores'},{val:'19',lbl:'Composite Scores'},{val:'12',lbl:'Health Scores'},
+    {val:'8',lbl:'Dimensions'},{val:'10',lbl:'CLE Sub-Scores'},{val:'7',lbl:'Categorization Axes'},
+    {val:'10',lbl:'Action Paths'},{val:'14',lbl:'Pattern Flags'},{val:'~170',lbl:'Story Columns'},
+    {val:'9',lbl:'Processing Layers'},{val:'~20K',lbl:'Customer Groups'}
+];
+
+// ===== ACCOUNT WALKTHROUGH STEPS =====
+var walkSteps = [
+    {title:'Step 1 — Data Collection',text:'Collecting all available data from the past 3 years for Test Account: receivables aging, revenue history, correspondence, penalties, contract expansions, applied collection levers, customer service cases, and more.',data:['<strong>36</strong> monthly snapshots','<strong>331</strong> raw attributes','<strong>29</strong> source tables']},
+    {title:'Step 2 — Dimensional Evaluation',text:'For each data dimension, evaluating every possible signal — creating behaviors, trajectories, outliers, and peer similarities. For aging alone: current balance, 1–14 days, 15–30, 31–60, 61–90, 91–180, 181+ buckets with trends.',data:['<strong>7</strong> aging buckets analyzed','<strong>42</strong> trend calculations','<strong>12</strong> volatility metrics']},
+    {title:'Step 3 — Full-Spectrum Analysis',text:'Repeating this evaluation across ALL input sources: revenue patterns, DSO trends, communication frequency, dispute history, payment patterns, billing complexity, and operational metrics.',data:['<strong>550+</strong> derived metrics','<strong>19</strong> base dimensions','<strong>4</strong> time horizons (3M/6M/12M/TTM)']},
+    {title:'Step 4 — Global Context',text:'Running the same analysis for all 25,800 customers globally. This creates the peer context — we now know where Test Account sits relative to similar accounts in the same tier.',data:['<strong>25,800</strong> customers processed','<strong>100</strong> behavioral clusters','<strong>252</strong> ML features per customer']},
+    {title:'Step 5 — Behavioral Grouping',text:'Grouping accounts with similar behavior patterns. Checking for similarities across payment timing, aging persistence, dispute frequency, and response to past actions. Test Account clusters with similar aging-persistent accounts.',data:['<strong>5</strong> ML models','<strong>14</strong> behavioral flags','<strong>Cluster:</strong> Aging-Persistent']},
+    {title:'Step 6 — Collection Lever Effectiveness',text:'Analyzing what worked and what did not for this customer and their peer group. If interest charges were applied — did payment behavior improve? If it got worse (not paying interest charges either), that lever is marked ineffective. Better to try limiting instances or prepare suspension.',data:['<strong>10</strong> CLE sub-scores','<strong>Late fees:</strong> Ineffective','<strong>Suspension:</strong> 78% success in peer group']},
+    {title:'Step 7 — Final Scoring & Categorization',text:'The account receives its final health score, dimensional scores, behavioral category assignment, and recommended next steps based on what works for accounts like this one.',data:['<strong>Health:</strong> 5.8 / 10','<strong>Category:</strong> PEER_OUTLIER_REVIEW','<strong>Track:</strong> A — Active Monitoring']}
+];
+
+// ===== ACCOUNT RESULT =====
+var accountResult = {
+    score:'5.8',category:'Average',profile:'Moderate Risk — Needs monitoring',
+    track:'A',trackName:'Active Monitoring',
+    axes:['Position: Average (5)','Momentum: Stable','Responsiveness: Moderate','Complexity: Complex','Peer Context: Outlier','Pattern: Aging-Persistent','Revenue: Medium Tier'],
+    recommendations:['Skip late fees — historically applied but aging did not improve. Not recommended due to past ineffectiveness.','Onboard to suspension process — peer accounts showed 78% better response rate. Notifies sales team and customer to clear outstanding balance.','Increase monitoring frequency — flag for weekly review given complexity and peer outlier status.','Consider direct outreach — accounts in this behavioral cluster respond to personal contact significantly better than automated reminders.']
+};
+
+// ===== SPEECH =====
+var pipeSpeeches = [
+    'Step one. Collecting raw data from all possible systems and preparing it for analysis.',
+    'Step two. Grouping accounts into customer-level dimensions to look at each customer as a single entity.',
+    'Step three. Creating derived metrics — trends, comparisons, and behavioral signals from every data point.',
+    'Step four. Applying machine learning to discover hidden behavioral patterns across the portfolio.',
+    'Step five. Scoring every dimension of behavior on a one to ten scale using fixed, transparent thresholds.',
+    'Step six. Consolidating everything into composite scores, health categories, and escalation flags.',
+    'Step seven. Analyzing collection lever effectiveness and building evidence-based recommendations.',
+    'Step eight. Rolling everything up into a complete customer story — who they are, where they stand, and what has been tried.',
+    'Step nine. Final categorization across seven independent axes with ten suggested action paths.'
+];
+var numbersSpeech = 'Here are the facts and figures stepping into the whole analytical process.';
+var transitionSpeech = 'Now, let me show you how it works on a simple account.';
+var walkSpeeches = [
+    'First, we connect three years of data sitting across twenty-nine different sources, covering three hundred thirty-one attributes. The main challenge here is not analyzing the data — it is connecting the details correctly. Each system has its own structure, and there is no single unique identifier across all of them.',
+    'Next, we create dimensions and evaluations for every single input column. For example, receivables past due across all thirty-six months becomes a statistical dimension — trailing three, six, and twelve month averages, for every account. Then we examine acceleration, deceleration, and stability across months. We add recent and historical trends, check how peers of similar size and industry perform, and calculate the current momentum and its weight.',
+    'This evaluation is then repeated for all three hundred thirty-one attributes across all sources — revenue, DSO, disputes, payments, billing complexity. The result is over five hundred fifty metrics across nineteen dimensions, applied across all thirty-six months and all accounts in the portfolio.',
+    'Customers are grouped to be evaluated as a single entity, because many of them have accounts across multiple countries and regions. Some are resellers responsible for thousands of accounts. Grouping accounts into customers is crucial for correct strategy setting. For this, five machine learning models evaluate two hundred fifty-two behavioral features.',
+    'The behavioral grouping enables us to handle customers with similar patterns the same way — ensuring consistency and enabling predictive forecasting across the entire portfolio.',
+    'Using the behavioral, industry, and business grouping, we check how effective past collection strategies were. In simple terms — did implementing a particular lever change the payment behavior? From this analysis, we know what statistically works best for each customer group, and we can apply the same effective levers or remove the ones that did not help.',
+    'All evaluation steps result in a single score, category, and recommendation. The score from one to ten sets the collection focus — accounts scoring nine or ten are eligible for full automation and need no human touch at all. Accounts below five are flagged for focused attention, where responsible parties from all business units work together to remove obstacles blocking resolution.'
+];
+var resultSpeech = 'The result for our test account: health score five point eight out of ten, categorized as Peer Outlier Review with active monitoring. Historically, late fees were applied to this account, but the overdue aging did not improve. Therefore, even though late fees remain an option, I would not recommend this step due to its past ineffectiveness. However, customer peers with similar behavior showed that implementing limitations and suspension onboarding were highly effective — response went seventy-eight percent higher. I recommend onboarding this account to the suspension process, which will notify the responsible sales team and the customer on the importance of clearing the outstanding balance.';
+
+// ===== ENGINE =====
+function speak(t,cb){
+    if(!window.speechSynthesis){setTimeout(cb,Math.max(2500,t.length*52));return;}
+    var u=new SpeechSynthesisUtterance(t);u.rate=0.92;u.pitch=1;u.volume=0.85;
+    var v=speechSynthesis.getVoices();
+    var ev=v.find(function(x){return x.lang.startsWith('en')&&x.name.indexOf('Google')>-1;})||v.find(function(x){return x.lang.startsWith('en')&&!x.localService;})||v.find(function(x){return x.lang.startsWith('en');});
+    if(ev)u.voice=ev;u.onend=function(){if(cb)cb();};u.onerror=function(){if(cb)cb();};
+    speechSynthesis.speak(u);
+}
+
+function init(){ phaseA(0); }
+
+// Phase A: Show pipeline steps one by one
+var pipeSkipped=false;
+function phaseA(idx){
+    if(idx>=steps.length){ setTimeout(phaseB,800); return; }
+    pipeSkipped=false;
+    var s=steps[idx];
+    var grid=document.getElementById('pipeGrid');
+    // Change previous skip buttons to repeat
+    grid.querySelectorAll('.pipe-skip').forEach(function(b){b.textContent='↺';var si=parseInt(b.getAttribute('data-s'));b.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(pipeSpeeches[si],function(){});};});
+    var card=document.createElement('div');
+    card.className='pipe-card '+s.cls;
+    card.innerHTML='<div class="pipe-card-head"><div class="pipe-num">'+s.n+'</div><div class="pipe-label">'+s.label+'</div></div><div class="pipe-desc">'+s.desc+'</div><button class="pipe-skip" data-s="'+idx+'" style="position:absolute;top:6px;right:6px;padding:2px 7px;border-radius:8px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:#888;font-size:7px;font-weight:600;cursor:pointer;font-family:Montserrat,sans-serif;">Skip</button>';
+    card.style.position='relative';
+    grid.appendChild(card);
+    setTimeout(function(){card.classList.add('show');},50);
+    var skipBtn=card.querySelector('.pipe-skip');
+    skipBtn.onclick=function(){pipeSkipped=true;if(window.speechSynthesis)speechSynthesis.cancel();skipBtn.textContent='↺';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(pipeSpeeches[idx],function(){});};setTimeout(function(){phaseA(idx+1);},100);};
+    speak(pipeSpeeches[idx],function(){if(pipeSkipped)return;skipBtn.textContent='↺';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(pipeSpeeches[idx],function(){});};setTimeout(function(){phaseA(idx+1);},300);});
+}
+
+// Phase B: Shrink pipeline, show numbers
+function phaseB(){
+    document.getElementById('pipeGrid').classList.add('shrink');
+    var numPhase=document.getElementById('numPhase');
+    numPhase.classList.add('active');
+    numPhase.innerHTML='<div class="numbers-title">The Numbers</div><div class="numbers-grid" id="numGrid"></div>';
+    var grid=document.getElementById('numGrid');
+    numbers.forEach(function(n,i){
+        var card=document.createElement('div');
+        card.className='num-card';
+        card.innerHTML='<div class="num-val">'+n.val+'</div><div class="num-lbl">'+n.lbl+'</div>';
+        grid.appendChild(card);
+        setTimeout(function(){card.classList.add('show');},i*80);
+    });
+    speak(numbersSpeech,function(){
+        setTimeout(function(){
+            speak(transitionSpeech,function(){ setTimeout(phaseC,600); });
+        },500);
+    });
+}
+
+// Phase C: Account Walkthrough
+function phaseC(){
+    document.getElementById('numPhase').style.display='none';
+    document.getElementById('pipeGrid').style.display='none';
+    var wp=document.getElementById('walkPhase');
+    wp.classList.add('active');
+    wp.innerHTML='<div class="walk-title">Live Demo — Test Account</div>';
+    showWalkStep(0);
+}
+
+var walkSkipped=false;
+function showWalkStep(idx){
+    if(idx>=walkSteps.length){ setTimeout(showResult,600); return; }
+    walkSkipped=false;
+    var ws=walkSteps[idx];
+    var wp=document.getElementById('walkPhase');
+    wp.querySelectorAll('.walk-skip').forEach(function(b){b.textContent='↺ Repeat';var si=parseInt(b.getAttribute('data-s'));b.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(walkSpeeches[si],function(){});};});
+    var card=document.createElement('div');
+    card.className='walk-card';card.style.position='relative';
+    var dataHtml=ws.data.map(function(d){return '<div class="walk-stat">'+d+'</div>';}).join('');
+    card.innerHTML='<div class="walk-card-title">'+ws.title+'</div><div class="walk-card-text">'+ws.text+'</div><div class="walk-card-data">'+dataHtml+'</div><button class="walk-skip" data-s="'+idx+'" style="position:absolute;top:8px;right:10px;padding:3px 9px;border-radius:10px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.1);color:#888;font-size:8px;font-weight:600;cursor:pointer;font-family:Montserrat,sans-serif;">Skip →</button>';
+    wp.appendChild(card);
+    setTimeout(function(){card.classList.add('show');},50);
+    var skipBtn=card.querySelector('.walk-skip');
+    skipBtn.onclick=function(){walkSkipped=true;if(window.speechSynthesis)speechSynthesis.cancel();skipBtn.textContent='↺ Repeat';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(walkSpeeches[idx],function(){});};setTimeout(function(){showWalkStep(idx+1);},150);};
+    speak(walkSpeeches[idx],function(){if(walkSkipped)return;skipBtn.textContent='↺ Repeat';skipBtn.onclick=function(){if(window.speechSynthesis)speechSynthesis.cancel();speak(walkSpeeches[idx],function(){});};setTimeout(function(){showWalkStep(idx+1);},400);});
+}
+
+function showResult(){
+    var wp=document.getElementById('walkPhase');
+    // Clear walk steps and center the result
+    wp.innerHTML='<div class="walk-title">Final Assessment</div>';
+    var r=accountResult;
+    var axesHtml=r.axes.map(function(a){return '<div class="walk-result-row"><span class="walk-result-label">'+a.split(':')[0]+'</span><span class="walk-result-val">'+a.split(':')[1]+'</span></div>';}).join('');
+    var recsHtml=r.recommendations.map(function(rc){return '<div class="walk-rec-item">• '+rc+'</div>';}).join('');
+    var resEl=document.createElement('div');
+    resEl.className='walk-result';
+    resEl.innerHTML='<div class="walk-result-title">Final Assessment — Test Account</div>'+
+        '<div class="walk-result-row"><span class="walk-result-label">Health Score</span><span class="walk-result-val" style="color:#007DB8;font-size:14px;">'+r.score+' / 10</span></div>'+
+        '<div class="walk-result-row"><span class="walk-result-label">Health Category</span><span class="walk-result-val">'+r.category+'</span></div>'+
+        '<div class="walk-result-row"><span class="walk-result-label">Profile</span><span class="walk-result-val">'+r.profile+'</span></div>'+
+        '<div class="walk-result-row"><span class="walk-result-label">Track</span><span class="walk-result-val">'+r.track+' — '+r.trackName+'</span></div>'+
+        '<div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06);">'+axesHtml+'</div>'+
+        '<div class="walk-rec"><div class="walk-rec-title">Recommended Actions</div>'+recsHtml+'</div>';
+    wp.appendChild(resEl);
+    setTimeout(function(){resEl.classList.add('show');},100);
+    speak(resultSpeech,function(){});
+}
+
+document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+        if(window.speechSynthesis)speechSynthesis.cancel();
+        var from=new URLSearchParams(window.location.search).get('from');
+        if(from==='projects')window.location.href='index.html#projects';
+        else window.location.href='journey.html?state=end';
+    }
+});
+
+// INIT
+if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}
+window.addEventListener('DOMContentLoaded',function(){setTimeout(init,500);});
+</script>
+</body>
+</html>

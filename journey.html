@@ -670,14 +670,15 @@ function openDeliveryModal(idx){
     ];
     var subs=['Amazon Web Services · OP2 Strategic FinOps Investment · FCF: $193MM','Amazon Web Services · Hybrid Weighted Forecasting Engine','Amazon Web Services · Intelligent Account Automation','Amazon Web Services · Salesforce + AR Data Integration'];
     var tagHtml=tags[idx].map(function(t){return '<span style="display:inline-block;padding:4px 10px;border-radius:12px;background:#f0f1f4;color:#444;font-size:9px;font-weight:500;margin:2px;">'+t+'</span>';}).join('');
-    var demoBtn = idx===0 ? ' <button id="atlasHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#007DB8,#00a8e8);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,125,184,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : idx===2 ? ' <button id="tieringHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#0097a7,#00bcd4);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,151,167,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : '';
+    var demoBtn = idx===0 ? ' <button id="atlasHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#007DB8,#00a8e8);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,125,184,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : idx===1 ? ' <button id="forecastHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#1565c0,#42a5f5);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(21,101,192,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : idx===2 ? ' <button id="tieringHowBtn" style="padding:7px 16px;border-radius:16px;background:linear-gradient(135deg,#0097a7,#00bcd4);color:#fff;border:none;cursor:pointer;font-family:Montserrat,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;box-shadow:0 3px 10px rgba(0,151,167,0.2);vertical-align:middle;margin-left:10px;animation:howGlow 2s ease infinite;">See How It Works →</button>' : '';
     var m=document.createElement('div');
     m.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
     m.innerHTML='<div style="background:#fff;border-radius:16px;max-width:680px;width:92%;max-height:88vh;overflow-y:auto;padding:0;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;"><button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,0.9);border:none;font-size:22px;cursor:pointer;color:#888;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,0.1);">&times;</button><img src="'+d.img+'" style="width:100%;height:180px;object-fit:cover;"><div style="padding:24px 28px 28px;"><div style="font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#FF9900;margin-bottom:6px;">'+d.badge+'</div><h3 style="font-size:18px;font-weight:700;color:#222;margin-bottom:4px;display:inline;">'+d.t+'</h3>'+demoBtn+'<div style="font-size:11px;color:#888;margin-top:8px;margin-bottom:16px;">'+subs[idx]+'</div><div style="font-size:13px;color:#444;line-height:1.75;margin-bottom:16px;">'+fullDesc[idx]+'</div><div style="margin-bottom:14px;">'+tagHtml+'</div><div style="font-size:11px;color:#666;padding-top:10px;border-top:1px solid #eee;">'+fullImpact[idx]+'</div></div></div>';
     document.body.appendChild(m);
     m.addEventListener('click',function(e){if(e.target===m)m.remove();});
-    if(idx===0){setTimeout(function(){var hBtn=document.getElementById('atlasHowBtn');if(hBtn)hBtn.addEventListener('click',function(){m.remove();startAtlasDemo();});},50);}
-    if(idx===2){setTimeout(function(){var hBtn=document.getElementById('tieringHowBtn');if(hBtn)hBtn.addEventListener('click',function(){m.remove();startTieringDemo();});},50);}
+    if(idx===0){setTimeout(function(){var hBtn=document.getElementById('atlasHowBtn');if(hBtn)hBtn.addEventListener('click',function(){window.location.href='atlas-demo.html?from=journey';});},50);}
+    if(idx===1){setTimeout(function(){var hBtn=document.getElementById('forecastHowBtn');if(hBtn)hBtn.addEventListener('click',function(){window.location.href='forecast-demo.html?from=journey';});},50);}
+    if(idx===2){setTimeout(function(){var hBtn=document.getElementById('tieringHowBtn');if(hBtn)hBtn.addEventListener('click',function(){window.location.href='tiering-demo.html?from=journey';});},50);}
 }
 function togglePause(){
     isPaused=!isPaused;
@@ -886,10 +887,25 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var ad=docu
 if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}
 window.addEventListener('DOMContentLoaded',function(){
     var params=new URLSearchParams(window.location.search);
-    if(params.get('demo')==='atlas'){setTimeout(startAtlasDemo,500);}
-    else if(params.get('demo')==='tiering'){setTimeout(startTieringDemo,500);}
-    else if(params.get('demo')==='forecast'){setTimeout(startForecastDemo,500);}
-    else{setTimeout(init,400);}
+    if(params.get('state')==='end'){
+        // Show end state directly — all timelines, all deliveries, clickable
+        setTimeout(function(){
+            buildTL('l',dellData,[]);buildTL('r',awsPos,awsDel);buildGrid();
+            showRail('l');showRail('r');
+            // Show all stops
+            document.querySelectorAll('.tl-stop').forEach(function(s){s.classList.add('vis');});
+            document.getElementById('dProg').style.height='100%';
+            document.getElementById('aProg').style.height='100%';
+            // Show phase 2 with all cards
+            document.getElementById('p1').classList.remove('active');
+            document.getElementById('p2').classList.add('active');
+            document.querySelectorAll('.d-card').forEach(function(c){c.classList.add('show');});
+            // Make clickable
+            endJourney();
+        },300);
+    } else {
+        setTimeout(init,400);
+    }
 });
 </script>
 </body>
